@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motivation Kaksha - College Predictor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="cstyle.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <img src="logo_of_motivation_kaksha.png" alt="Motivation Kaksha Logo" class="logo">
+                <h1 class="header-title">College Predictor(CSAB)</h1>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="https://t.me/Motivation_kaksha">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="filters-container">
+                <h2>Predict College</h2>
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="year">Year *:</label>
+                        <select id="year" required>
+                            <option value="">Select Year</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                            <option value="2020">2020</option>
+                            <option value="2019">2019</option>
+                            <!-- Add more options here -->
+                        </select>
+                    </div>
+                    <!-- Add a div for the pop-up -->
+                    <div id="popup" style="display: none;">
+                        <h2><b>Welcome to Motivation Kaksha!</b></h2>
+                        <p>~This website is designed to help you predict your college admissions based on your rank and other factors.</p>
+                        <p>~To use this website, simply enter your rank and other details in the filters section, and click on the "Predict College" button.</p>
+                        <p>~* star marked field are mandatory to filled</p>
+                        <p>~all field are not required to filled to show data</p>
+                        <p><i>~If the Closing/Opening rank has a suffix 'P', it indicates that the corresponding rank is from Preparatory Rank List.</i></p>
+                        <p><b>~NOTE - IN Institute NAME USE CORRECT NAME ELSE LEAVE IT BLANK</b> </p>
+                        <p>~for any queires contact us on <a href="https://t.me/motivationkaksha_discussion">Telegram</a></p>
+                        <button id="close-popup">Close</button>
+                    </div>
+                    <div class="filter-group">
+                        <label for="institute_name">Institute Name:</label>
+                        <input type="text" id="institute_name" placeholder="Enter institute name (e.g., Indian Institute of Technology Bhubaneswar)">
+                    </div>
+                    <div class="filter-group">
+                        <label for="round_no">Round No:</label>
+                        <select id="round_no">
+                            <option value="All">All</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="quota">Quota:</label>
+                        <select id="quota">
+                            <option value="AI">AI</option>
+                            <option value="OS">OS</option>
+                            <option value="HS">HS</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="seat_type">Seat Type:</label>
+                        <select id="seat_type">
+                            <option value="All">All</option>
+                            <option value="OPEN">OPEN</option>
+                            <option value="OPEN-PWD">OPEN-PWD</option>
+                            <option value="GEN-EWS">GEN-EWS</option>
+                            <option value="GEN-EWS-PWD">GEN-EWS-PWD</option>
+                            <option value="OBC-NCL">OBC-NCL</option>
+                            <option value="OBC-NCL-PWD">OBC-NCL-PWD</option>
+                            <option value="SC">SC</option>
+                            <option value="SC-PWD">SC-PWD</option>
+                            <option value="ST">ST</option>
+                            <option value="ST-PWD">ST-PWD</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="gender">Gender*:</label>
+                        <select id="gender" required>
+                            <option value="All">All</option>
+                            <option value="Gender-Neutral">Gender-Neutral</option>
+                            <option value="Female-only (including Supernumerary)">Female-only (including Supernumerary)</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="program_name">Program Name:</label>
+                        <select id="program_name" required>
+                            <option value="">All</option>
+                            <option value="Civil Engineering (4 Years, Bachelor of Technology)">Civil Engineering (4 Years, Bachelor of Technology)</option>
+                            <option value="Civil Engineering and M. Tech. in Structural Engineering (5 Years, Bachelor and Master of Technology (Dual Degree))">Civil Engineering and M. Tech. in Structural Engineering (5 Years, Bachelor and Master of Technology (Dual Degree))</option>
+                            <option value="aerospace">Aerospace Engineering</option>
+                            <option value="chemical">Chemical Engineering</option>
+                            <option value="civil">Civil Engineering</option>
+                            <option value="computer">Computer Science and Engineering</option>
+                            <option value="electrical">Electrical Engineering</option>
+                            <option value="mechanical">Mechanical Engineering</option>
+                            <option value="metallurgical">Metallurgical and Materials Engineering</option>
+                            <option value="biotechnology">Biotechnology</option>
+                            <option value="physics">Engineering Physics</option>
+                            <option value="mathematics">Applied Mathematics</option>
+                            <option value="chemistry">Applied Chemistry</option>
+                            <option value="environmental">Environmental Science and Engineering</option>
+                            <option value="management">Management Studies</option>
+                            <option value="humanities">Humanities and Social Sciences</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="your_rank">Your Rank:</label>
+                        <input type="number" id="your_rank" placeholder="Enter your rank">
+                    </div>
+                </div>
+                <div id="loading">Loading data... please wait</div> <main>
+                    <div class="container">
+                        <button id="submit-btn" class="btn">Predict College <i class="fas fa-arrow-right"></i></button>
+                        </div>
+            </div>
+            
+            <div class="background">
+            <div class="results-container">
+                <h2>Predicted Colleges</h2>
+                <div class="results">
+                    <table id="result-table">
+                        <thead>
+                            <tr>
+                                <th>Institute</th>
+                                <th>Program Name</th>
+                                <th>Quota</th>
+                                <th>Seat Type</th>
+                                <th>Gender</th>
+                                <th>Opening Rank</th>
+                                <th>Closing Rank</th>
+                                <th>Year</th>
+                                <th>Round</th>
+                                <th>Probability</th>
+                            </tr>
+                        </thead>
+                        <tbody id="result-body"></tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <button id="prev-btn" class="btn prev-next-btn">Previous</button>
+                    <span id="page-info"></span>
+                    <button id="next-btn" class="btn prev-next-btn">Next</button>
+                </div>
+            </div>
+            </div>
+        </div>
+             
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Motivation Kaksha. All rights reserved.</p>
+            <h4>DEVELOPED BY MOTIVATION KAKSHA TEAM(Adarsh , Pankaj)<a href="https://t.me/unofficial_g_o_d"> Telegram</a></h4>
+        </div>
+    </footer>
+    
+    <script src="cscript.js"></script>
+
+</body>
+</html>
