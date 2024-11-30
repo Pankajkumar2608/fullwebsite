@@ -1,4 +1,4 @@
-# College Preditor site
+
 # College Predictor Website
 
 The **College Predictor Website** is a web application designed to assist students in predicting the colleges they are eligible for based on their entrance exam rank and preferences. The site provides an intuitive interface to input data and get personalized recommendations.
