@@ -8,12 +8,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-<<<<<<< HEAD
-  "description": ""
-=======
   "description": "",
   "dependencies": {
-    "vite": "^5.4.8"
+    "axios": "^1.7.9"
   }
->>>>>>> master
 }

@@ -26,28 +26,21 @@ function fetchCSVData() {
       loadingDiv.style.display = 'none';
     });
 }
+function filterData() {
+  const cacheBustingParam = `?v=${Date.now()}`;
+  fetch(`https://filter.motivationkaksha.com/filter${cacheBustingParam}`)
+    .then(response => response.text())
+    .then(data => {
+      csvData = parseCsv(data);
+      filteredData = [...csvData];
+      updateResultTable(getPageData());
+      updatePageInfo();
 
+      loadingDiv.style.display = 'none';
+    });
+}
 function parseCsv(data) {
-  const rows = data.split('\n');
-  return rows.slice(1).map(row => {
-    let inQuotes = false;
-    let currentField = '';
-    const values = [];
-
-    for (let i = 0; i < row.length; i++) {
-      const char = row[i];
-
-      if (char === '"') {
-        inQuotes = !inQuotes;
-      } else if (char === ',' && !inQuotes) {
-        values.push(currentField.trim());
-        currentField = '';
-      } else {
-        currentField += char;
-      }
-    }
-
-    values.push(currentField.trim());
+  
 
     return {
       institute: values[0],
@@ -60,8 +53,44 @@ function parseCsv(data) {
       year: values[7],
       round: values[8]
     };
-  });
+  
 }
+
+// function parseCsv(data) {
+//   const rows = data.split('\n');
+//   return rows.slice(1).map(row => {
+//     let inQuotes = false;
+//     let currentField = '';
+//     const values = [];
+
+//     for (let i = 0; i < row.length; i++) {
+//       const char = row[i];
+
+//       if (char === '"') {
+//         inQuotes = !inQuotes;
+//       } else if (char === ',' && !inQuotes) {
+//         values.push(currentField.trim());
+//         currentField = '';
+//       } else {
+//         currentField += char;
+//       }
+//     }
+
+//     values.push(currentField.trim());
+
+//     return {
+//       institute: values[0],
+//       program_name: values[1],
+//       quota: values[2],
+//       seat_type: values[3],
+//       gender: values[4],
+//       opening_rank: values[5],
+//       closing_rank: values[6],
+//       year: values[7],
+//       round: values[8]
+//     };
+//   });
+// }
 
 function populateFilterOptions() {
   const yearSelect = document.getElementById('year');

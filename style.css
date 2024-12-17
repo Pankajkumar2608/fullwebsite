@@ -670,6 +670,7 @@ footer {
     box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
     color: white;
 }
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
