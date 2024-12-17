@@ -1,0 +1,89 @@
+body {
+    font-family: 'Nunito','Poppins', sans-serif;
+    margin: 0;
+    background-color: black; /* Light background */
+    color: #333;
+    overflow-x: hidden;
+    line-height: 1.6; /* Improve readability */
+}
+nav {
+    background-color: black;
+    padding: 1rem 0;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    transition: top 0.3s ease-in-out;
+}
+
+nav.hide {
+    top: -70px;
+}
+
+nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav .logo img {
+    height: 40px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav li {
+    margin-left: 2rem;
+}
+
+nav li a {
+    color: #7e7c7c; /* Dark text for light background */
+}
+
+/* Hamburger Menu Styling */
+.menu-toggle {
+    display: none;
+    cursor: pointer;
+}
+
+.bar {
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    margin: 5px 0;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+h1, h2, h3, h4, p {
+    margin: 0.5rem 0; /* Improved spacing */
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+h2 {
+    color: #2962FF; /* Primary color */
+    text-align: center;
+}
+
+a {
+    color: #2962FF;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #0056b3;
+}

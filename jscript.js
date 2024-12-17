@@ -85,6 +85,7 @@ const quotaSelect = document.getElementById('quota');
 const seatTypeSelect = document.getElementById('seat_type');
 const genderSelect = document.getElementById('gender');
 const programNameSelect = document.getElementById('program_name');
+
 instituteNameInput.value = '';
 populateSelect(quotaSelect, ['AI', 'OS', 'HS']);
 populateSelect(seatTypeSelect, [ 'OPEN', 'OPEN (PwD)', 'EWS', 'EWS (PwD)', 'OBC-NCL', 'OBC-NCL (PwD)', 'SC', 'SC (PwD)', 'ST', 'ST (PwD)']);
