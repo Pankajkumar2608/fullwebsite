@@ -1,4 +1,5 @@
-const { default: axios } = require("axios");
+import axios from "axios";
+import { response } from "express";
 
 let csvData = [];
 let filteredData = [];
@@ -15,75 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updatePageInfo();
 });
 
-// function fetchCSVData() {
-//   const cacheBustingParam = `?v=${Date.now()}`;
-//   fetch(`/Combined_josaa(in).csv${cacheBustingParam}`)
-//     .then(response => response.text())
-//     .then(data => {
-//       csvData = parseCsv(data);
-//       filteredData = [...csvData];
-//       updateResultTable(getPageData());
-//       updatePageInfo();
 
-//       loadingDiv.style.display = 'none';
-//     });
-// }
-function filter(){
-  const Year = document.getElementById('year').value;
-  const institute = document.getElementById('institute_name').value;
-  const round = document.getElementById('round_no').value;
-  const quota = document.getElementById('quota').value;
-  const SeatType = document.getElementById('seat_type').value;
-  const gender = document.getElementById('gender').value;
-  const programName = document.getElementById('program_name').value;
-
-  axios.post('/filter', { Year, institute, round, quota, SeatType, gender, programName })
-    .then(response => {
-      filteredData = response.data;
-      
-      updateResultTable(getPageData());
-      updatePageInfo();
-    })
-    .catch(error => {
-      console.error('Error filtering data:', error);
-    });
-}
-
-function parseCsv(data) {
-  const rows = data.split('\n');
-  return rows.slice(1).map(row => {
-    let inQuotes = false;
-    let currentField = '';
-    const values = [];
-
-    for (let i = 0; i < row.length; i++) {
-      const char = row[i];
-
-      if (char === '"') {
-        inQuotes = !inQuotes;
-      } else if (char === ',' && !inQuotes) {
-        values.push(currentField.trim());
-        currentField = '';
-      } else {
-        currentField += char;
-      }
-    }
-
-    values.push(currentField.trim());
-
-    return {
-      institute: values[0],
-      program_name: values[1],
-      quota: values[2],
-      seat_type: values[3],
-      gender: values[4],
-      opening_rank: values[5],
-      closing_rank: values[6],
-      year: values[7],
-      round: values[8]
-    };
-  });
-}
 
 function populateFilterOptions() {
   const yearSelect = document.getElementById('year');
@@ -93,26 +26,149 @@ function populateFilterOptions() {
   yearSelect.addEventListener('change', () => {
     const selectedYear = yearSelect.value;
     if (selectedYear === '2024') {
-      populateSelect(roundNoSelect, ['1', '2', '3', '4', '5']);
+      populateSelect(roundNoSelect, ['1', '2','3','4','5']);
     } else {
-      populateSelect(roundNoSelect, ['1', '2', '3', '4', '5', '6']);
+      populateSelect(roundNoSelect, ['1', '2','3','4','5','6']);
     }
   });
 
-  populateSelect(yearSelect, ['2024', '2023','2022', '2021', '2020']);
-  populateSelect(roundNoSelect, ['1', '2', '3', '4', '5']); // Default for 2024
+  populateSelect(yearSelect, ['2024', '2023','2022', '2021']);
+  populateSelect(roundNoSelect, ['1', '2','3','4','5']); 
 }
 const instituteNameInput = document.getElementById('institute_name');
 const quotaSelect = document.getElementById('quota');
 const seatTypeSelect = document.getElementById('seat_type');
 const genderSelect = document.getElementById('gender');
 const programNameSelect = document.getElementById('program_name');
+const closingRank = document.getElementById('closing_rank');
 
-instituteNameInput.value = '';
-populateSelect(quotaSelect, ['AI', 'OS', 'HS']);
+
+populateSelect(instituteNameInput,  [
+  "ALL",
+  "Indian Institute of Technology Bhubaneswar",
+  "Indian Institute of Technology Bombay",
+  "Indian Institute of Technology Mandi",
+  "Indian Institute of Technology Delhi",
+  "Indian Institute of Technology Indore",
+  "Indian Institute of Technology Kharagpur",
+  "Indian Institute of Technology Hyderabad",
+  "Indian Institute of Technology Jodhpur",
+  "Indian Institute of Technology Kanpur",
+  "Indian Institute of Technology Madras",
+  "Indian Institute of Technology Gandhinagar",
+  "Indian Institute of Technology Patna",
+  "Indian Institute of Technology Roorkee",
+  "Indian Institute of Technology (ISM) Dhanbad",
+  "Indian Institute of Technology Ropar",
+  "Indian Institute of Technology (BHU) Varanasi",
+  "Indian Institute of Technology Guwahati",
+  "Indian Institute of Technology Bhilai",
+  "Indian Institute of Technology Goa",
+  "Indian Institute of Technology Palakkad",
+  "Indian Institute of Technology Tirupati",
+  "Indian Institute of Technology Jammu",
+  "Indian Institute of Technology Dharwad",
+  "Dr. B R Ambedkar National Institute of Technology, Jalandhar",
+  "Malaviya National Institute of Technology Jaipur",
+  "Maulana Azad National Institute of Technology Bhopal",
+  "Motilal Nehru National Institute of Technology Allahabad",
+  "National Institute of Technology Agartala",
+  "National Institute of Technology Calicut",
+  "National Institute of Technology Delhi",
+  "National Institute of Technology Durgapur",
+  "National Institute of Technology Goa",
+  "National Institute of Technology Hamirpur",
+  "National Institute of Technology Karnataka, Surathkal",
+  "National Institute of Technology Meghalaya",
+  "National Institute of Technology Nagaland",
+  "National Institute of Technology Patna",
+  "National Institute of Technology Puducherry",
+  "National Institute of Technology Raipur",
+  "National Institute of Technology Sikkim",
+  "National Institute of Technology Arunachal Pradesh",
+  "National Institute of Technology, Jamshedpur",
+  "National Institute of Technology, Kurukshetra",
+  "National Institute of Technology, Manipur",
+  "National Institute of Technology, Mizoram",
+  "National Institute of Technology, Rourkela",
+  "National Institute of Technology, Silchar",
+  "National Institute of Technology, Srinagar",
+  "National Institute of Technology, Tiruchirappalli",
+  "National Institute of Technology, Uttarakhand",
+  "National Institute of Technology, Warangal",
+  "Sardar Vallabhbhai National Institute of Technology, Surat",
+  "Visvesvaraya National Institute of Technology, Nagpur",
+  "National Institute of Technology, Andhra Pradesh",
+  "Indian Institute of Engineering Science and Technology, Shibpur",
+  "Atal Bihari Vajpayee Indian Institute of Information Technology & Management Gwalior",
+  "Indian Institute of Information Technology (IIIT)Kota, Rajasthan",
+  "Indian Institute of Information Technology Guwahati",
+  "Indian Institute of Information Technology(IIIT) Kalyani, West Bengal",
+  "Indian Institute of Information Technology(IIIT) Kilohrad, Sonepat, Haryana",
+  "Indian Institute of Information Technology(IIIT) Una, Himachal Pradesh",
+  "Indian Institute of Information Technology (IIIT), Sri City, Chittoor",
+  "Indian Institute of Information Technology(IIIT), Vadodara, Gujrat",
+  "Indian Institute of Information Technology, Allahabad",
+  "Indian Institute of Information Technology, Design & Manufacturing, Kancheepuram",
+  "Pt. Dwarka Prasad Mishra Indian Institute of Information Technology, Design & Manufacture Jabalpur",
+  "Indian Institute of Information Technology Manipur",
+  "Indian Institute of Information Technology Tiruchirappalli",
+  "Indian Institute of Information Technology Lucknow",
+  "Indian Institute of Information Technology(IIIT) Dharwad",
+  "Indian Institute of Information Technology Design & Manufacturing Kurnool, Andhra Pradesh",
+  "Indian Institute of Information Technology(IIIT) Kottayam",
+  "Indian Institute of Information Technology (IIIT) Ranchi",
+  "Indian Institute of Information Technology (IIIT) Nagpur",
+  "Indian Institute of Information Technology (IIIT) Pune",
+  "Indian Institute of Information Technology Bhagalpur",
+  "Indian Institute of Information Technology Bhopal",
+  "Indian Institute of Information Technology Surat",
+  "Indian Institute of Information Technology, Agartala",
+  "Indian institute of information technology, Raichur, Karnataka",
+  "Indian Institute of Information Technology, Vadodara International Campus Diu (IIITVICD)",
+  "Assam University, Silchar",
+"Birla Institute of Technology, Mesra, Ranchi",
+  "Gurukula Kangri Vishwavidyalaya, Haridwar",
+  "Indian Institute of Carpet Technology, Bhadohi",
+  "Institute of Infrastructure, Technology, Research and Management-Ahmedabad",
+  "Institute of Technology, Guru Ghasidas Vishwavidyalaya (A Central University), Bilaspur, (C.G.)",
+  "J.K. Institute of Applied Physics & Technology, Department of Electronics & Communication, University of Allahabad- Allahabad",
+  "National Institute of Electronics and Information Technology, Aurangabad (Maharashtra)",
+  "National Institute of Advanced Manufacturing Technology, Ranchi",
+  "Sant Longowal Institute of Engineering and Technology",
+  "Mizoram University, Aizawl",
+  "School of Engineering, Tezpur University, Napaam, Tezpur",
+  "School of Planning & Architecture, Bhopal",
+  "School of Planning & Architecture, New Delhi",
+  "School of Planning & Architecture: Vijayawada",
+  "Shri Mata Vaishno Devi University, Katra, Jammu & Kashmir",
+  "International Institute of Information Technology, Naya Raipur",
+  "University of Hyderabad",
+  "Punjab Engineering College, Chandigarh",
+  "Jawaharlal Nehru University, Delhi",
+  "International Institute of Information Technology, Bhubaneswar",
+  "Central institute of Technology Kokrajar, Assam",
+  "Puducherry Technological University, Puducherry",
+  "Ghani Khan Choudhary Institute of Engineering and Technology, Malda, West Bengal",
+  "Central University of Rajasthan, Rajasthan",
+  "National Institute of Food Technology Entrepreneurship and Management, Kundli",
+  "National Institute of Food Technology Entrepreneurship and Management, Thanjavur",
+  "North Eastern Regional Institute of Science and Technology, Nirjuli-791109 (Itanagar), Arunachal Pradesh",
+  "Indian Institute of Handloom Technology(IIHT), Varanasi",
+  "Chhattisgarh Swami Vivekanada Technical University, Bhilai (CSVTU Bhilai)",
+  "Institute of Chemical Technology, Mumbai: Indian Oil Odisha Campus, Bhubaneswar",
+  "North-Eastern Hill University, Shillong",
+  "Central University of Jammu",
+  "Institute of Engineering and Technology, Dr. H. S. Gour University. Sagar (A Central University)",
+  "Central University of Haryana",
+  "Birla Institute of Technology, Deoghar Off-Campus",
+  "Birla Institute of Technology, Patna Off-Campus",
+  "Indian Institute of Handloom Technology, Salem"
+]);
+populateSelect(quotaSelect, [ 'AI','OS', 'HS']);
 populateSelect(seatTypeSelect, [ 'OPEN', 'OPEN (PwD)', 'EWS', 'EWS (PwD)', 'OBC-NCL', 'OBC-NCL (PwD)', 'SC', 'SC (PwD)', 'ST', 'ST (PwD)']);
 populateSelect(genderSelect, ['Gender-Neutral', 'Female-only (including Supernumerary)']);
-populateSelect(programNameSelect, ['All','Civil Engineering (4 Years, Bachelor of Technology)', 'Civil Engineering and M. Tech. in Structural Engineering (5 Years, Bachelor and Master of Technology (Dual Degree))', 'aerospace', 'chemical', 'civil', 'computer', 'electrical', 'mechanical', 'metallurgical', 'biotechnology', 'physics', 'mathematics', 'chemistry', 'environmental', 'management', 'humanities']);
+populateSelect(programNameSelect, ['All','Civil Engineering (4 Years, Bachelor of Technology)', 'Civil Engineering and M. Tech. in Structural Engineering (5 Years, Bachelor and Master of Technology (Dual Degree))', 'Aerospace Engineering (4 Years, Bachelor of Technology)', 'chemical', 'Computer Science and Engineering (4 Years, Bachelor of Technology)', 'Electrical Engineering (4 Years, Bachelor of Technology)','Electronics and Communication Engineering (4 Years, Bachelor of Technology)', 'mechanical', 'metallurgical', 'biotechnology', 'Engineering Physics (4 Years, Bachelor of Technology)', 'Mathematics (4 Years, Bachelor of Technology)', 'chemistry', 'environmental', 'management', 'humanities']);
 
 function addFilterEventListeners() {
   const submitBtn = document.getElementById('submit-btn');
@@ -141,45 +197,28 @@ function addPaginationEventListeners() {
 }
 
 function filterAndUpdateResults() {
-  const year = document.getElementById('year').value;
-  const instituteName = document.getElementById('institute_name').value;
-  const roundNo = document.getElementById('round_no').value;
+  const Year = document.getElementById('year').value;
+  const institute = document.getElementById('institute_name').value;
+  const round = document.getElementById('round_no').value;
   const quota = document.getElementById('quota').value;
-  const seatType = document.getElementById('seat_type').value;
+  const SeatType = document.getElementById('seat_type').value;
   const gender = document.getElementById('gender').value;
   const programName = document.getElementById('program_name').value;
+  const userRank = document.getElementById('your_rank').value;
 
   
   if (!year || !roundNo || !quota || !seatType || !gender || !programName) {
     alert('Please fill all the required fields.');
     return;
   }
-
-  filteredData = csvData.slice();
-  if (year) filteredData = filteredData.filter(row => row.year === year);
-  if (instituteName) {
-    let userInput = instituteName.toLowerCase().trim(); 
+  axios.post('/filter', {Year,round,institute,userRank,quota,SeatType,gender,programName}).then(response => {
+    filteredData = response.data.filteredData;
+    currentPage = 1;
+    updateResultTable(getPageData(filteredData));
+    updatePageInfo();
+    
+  })
   
-    // Replace abbreviations in user input
-    userInput = userInput.replace(/\biit\b/g, "indian institute of technology");
-    userInput = userInput.replace(/\bnit\b/g, "national institute of technology");
-  
-    const userInputWords = userInput.split(/\s+/); 
-  
-    filteredData = filteredData.filter(row => {
-      const instituteWords = row.institute.toLowerCase().split(/\s+/);
-      return userInputWords.every(userInputWord => 
-        instituteWords.some(instituteWord => instituteWord.includes(userInputWord))
-      );
-    });
-  }
-  if (roundNo) filteredData = filteredData.filter(row => row.round === roundNo);
-  if (quota) filteredData = filteredData.filter(row => row.quota === quota);
-  if (seatType) filteredData = filteredData.filter(row => row.seat_type === seatType);
-  if (gender) filteredData = filteredData.filter(row => row.gender === gender);
-  if (programName !== 'All') {
-    filteredData = filteredData.filter(row => row.program_name.toLowerCase().includes(programName.toLowerCase()));
-  }
 
   currentPage = 1;
   updateResultTable(getPageData(filteredData));
@@ -193,7 +232,6 @@ function updateResultTable(data) {
   data.forEach(row => {
     const tr = document.createElement('tr');
     
-
     const instituteCell = document.createElement('td');
     instituteCell.textContent = row.institute;
     tr.appendChild(instituteCell);
@@ -245,4 +283,3 @@ function updatePaginationButtons() {
   prevBtn.disabled = currentPage === 1;
   nextBtn.disabled = currentPage * itemsPerPage >= filteredData.length;
 }
-
