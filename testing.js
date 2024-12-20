@@ -1,38 +1,72 @@
+import axios from "axios";
+const populateSelect = (selectElement, options) => {
+    selectElement.innerHTML = '<option value="">Select</option>';
+    options.forEach(option => {
+      const optionElement = document.createElement('option');
+      optionElement.value = option;
+      optionElement.textContent = option;
+      selectElement.appendChild(optionElement);
+    });
+  };
 
 
 
-document.addEventListener('DOMContentLoaded', () => {
-  populateFilterOptions();
-  addFilterEventListeners();
-  addPaginationEventListeners();
-  updatePageInfo();
-});
 
-const itemsPerPage = 20;
-let filteredData = [];
-let currentPage = 1;
+function filterData(){
+    const Year = document.getElementById('year').value;
+    const round = document.getElementById('round_no').value;
+    const institute = document.getElementById('institute_name').value;
+    const quota = document.getElementById('quota').value;
+    const SeatType = document.getElementById('seat_type').value;
+    const gender = document.getElementById('gender').value;
+    const AcademicProgramName = document.getElementById('program_name').value;
+    const userRank = document.getElementById('your_rank').value;
+
+    axios.post('https://7edcacd9-2aea-46d0-93e6-b4fdfcd57d9d-00-2wkn1xpm2v4pu.sisko.replit.dev/filter',{Year,round,institute,userRank,quota,SeatType,gender,AcademicProgramName}).then(response => {
+        const filterData = response.data.filteredData;
+        const table = document.getElementById('result-table');
+        table.innerHTML = '';
+        filterData.forEach(filterData => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${filterData.institute}</td>
+                <td>${filterData.AcademicProgramName}</td>
+                <td>${filterData.opening_rank}</td>
+                <td>${filterData.closing_rank}</td>
+            `;
+            table.appendChild(row);
+        })
+
+    })
+
+}
 
 function populateFilterOptions() {
-  const yearSelect = document.getElementById('year');
-  const roundNoSelect = document.getElementById('round_no');
+    const yearSelect = document.getElementById('year');
+    const roundNoSelect = document.getElementById('round_no');
+    
+  
+    yearSelect.addEventListener('change', () => {
+      const selectedYear = yearSelect.value;
+      if (selectedYear === '2024') {
+        populateSelect(roundNoSelect, ['1', '2','3','4','5']);
+      } else {
+        populateSelect(roundNoSelect, ['1', '2','3','4','5','6']);
+      }
+    });
+  
+    populateSelect(yearSelect, ['2024', '2023','2022', '2021']);
+    populateSelect(roundNoSelect, ['1', '2','3','4','5']); 
+  }
   const instituteNameInput = document.getElementById('institute_name');
   const quotaSelect = document.getElementById('quota');
   const seatTypeSelect = document.getElementById('seat_type');
   const genderSelect = document.getElementById('gender');
   const programNameSelect = document.getElementById('program_name');
-
-  yearSelect.addEventListener('change', () => {
-    const selectedYear = yearSelect.value;
-    if (selectedYear === '2024') {
-      populateSelect(roundNoSelect, ['1', '2', '3', '4', '5']);
-    } else {
-      populateSelect(roundNoSelect, ['1', '2', '3', '4', '5', '6']);
-    }
-  });
-
-  populateSelect(yearSelect, ['2024', '2023', '2022', '2021']);
-  populateSelect(roundNoSelect, ['1', '2', '3', '4', '5']);
-  populateSelect(instituteNameInput, [
+  const closingRank = document.getElementById('closing_rank');
+  
+  
+  populateSelect(instituteNameInput,  [
     "ALL",
     "Indian Institute of Technology Bhubaneswar",
     "Indian Institute of Technology Bombay",
@@ -154,148 +188,11 @@ function populateFilterOptions() {
     "Birla Institute of Technology, Patna Off-Campus",
     "Indian Institute of Handloom Technology, Salem"
   ]);
-  populateSelect(quotaSelect, ['AI', 'OS', 'HS']);
-  populateSelect(seatTypeSelect, ['OPEN', 'OPEN (PwD)', 'EWS', 'EWS (PwD)', 'OBC-NCL', 'OBC-NCL (PwD)', 'SC', 'SC (PwD)', 'ST', 'ST (PwD)']);
+  populateSelect(quotaSelect, [ 'AI','OS', 'HS']);
+  populateSelect(seatTypeSelect, [ 'OPEN', 'OPEN (PwD)', 'EWS', 'EWS (PwD)', 'OBC-NCL', 'OBC-NCL (PwD)', 'SC', 'SC (PwD)', 'ST', 'ST (PwD)']);
   populateSelect(genderSelect, ['Gender-Neutral', 'Female-only (including Supernumerary)']);
-  populateSelect(programNameSelect, [
-    'All',
-    'Civil Engineering (4 Years, Bachelor of Technology)',
-    'Civil Engineering and M. Tech. in Structural Engineering (5 Years, Bachelor and Master of Technology (Dual Degree))',
-    'Aerospace Engineering (4 Years, Bachelor of Technology)',
-    'chemical',
-    'Computer Science and Engineering (4 Years, Bachelor of Technology)',
-    'Electrical Engineering (4 Years, Bachelor of Technology)',
-    'Electronics and Communication Engineering (4 Years, Bachelor of Technology)',
-    'mechanical',
-    'metallurgical',
-    'biotechnology',
-    'Engineering Physics (4 Years, Bachelor of Technology)',
-    'Mathematics (4 Years, Bachelor of Technology)',
-    'chemistry',
-    'environmental',
-    'management',
-    'humanities'
-  ]);
-}
+  populateSelect(programNameSelect, ['All','Civil Engineering (4 Years, Bachelor of Technology)', 'Civil Engineering and M. Tech. in Structural Engineering (5 Years, Bachelor and Master of Technology (Dual Degree))', 'Aerospace Engineering (4 Years, Bachelor of Technology)', 'chemical', 'Computer Science and Engineering (4 Years, Bachelor of Technology)', 'Electrical Engineering (4 Years, Bachelor of Technology)','Electronics and Communication Engineering (4 Years, Bachelor of Technology)', 'mechanical', 'metallurgical', 'biotechnology', 'Engineering Physics (4 Years, Bachelor of Technology)', 'Mathematics (4 Years, Bachelor of Technology)', 'chemistry', 'environmental', 'management', 'humanities']);
+  
 
-function populateSelect(select, options) {
-  select.innerHTML = '<option value="">Select</option>';
-  options.forEach(option => {
-    const optionElement = document.createElement('option');
-    optionElement.value = option;
-    optionElement.textContent = option;
-    select.appendChild(optionElement);
-  });
-}
-
-function addFilterEventListeners() {
-  const submitBtn = document.getElementById('submit-btn');
-  submitBtn.addEventListener('click', filterAndUpdateResults);
-}
-
-function addPaginationEventListeners() {
-  const prevBtn = document.getElementById('prev-btn');
-  const nextBtn = document.getElementById('next-btn');
-
-  prevBtn.addEventListener('click', () => {
-    if (currentPage > 1) {
-      currentPage--;
-      updateResultTable(getPageData());
-      updatePageInfo();
-    }
-  });
-
-  nextBtn.addEventListener('click', () => {
-    if (currentPage * itemsPerPage < filteredData.length) {
-      currentPage++;
-      updateResultTable(getPageData());
-      updatePageInfo();
-    }
-  });
-}
-
-function filterAndUpdateResults() {
-  const Year = document.getElementById('year').value;
-  const institute = document.getElementById('institute_name').value;
-  const round = document.getElementById('round_no').value;
-  const quota = document.getElementById('quota').value;
-  const SeatType = document.getElementById('seat_type').value;
-  const gender = document.getElementById('gender').value;
-  const AcademicProgramName = document.getElementById('program_name').value;
-  const userRank = document.getElementById('your_rank').value;
-
-  axios.post('https://7edcacd9-2aea-46d0-93e6-b4fdfcd57d9d-00-2wkn1xpm2v4pu.sisko.replit.dev/filter', { institute, 
-    AcademicProgramName, 
-    quota, 
-    SeatType,
-    gender, 
-    userRank,
-    Year,
-    round})
-    .then(response => {
-      filteredData = response.data.filteredData;
-      console.log(filteredData);
-      const resultbody = document.getElementById('result-body');
-      resultbody.innerHTML = '';
-      filteredData.forEach(row => {
-        const tr = document.createElement('tr');
-
-        const instituteCell = document.createElement('td');
-        instituteCell.textContent = row.institute;
-      currentPage = 1;
-      updateResultTable(getPageData());
-      updatePageInfo();
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
-}
-
-function updateResultTable(filterData) {
-  const resultBody = document.getElementById('result-body');
-  resultBody.innerHTML = '';
-
-  filterDatadata.forEach(row => {
-    const tr = document.createElement('tr');
-
-    const instituteCell = document.createElement('td');
-    instituteCell.textContent = row.institute;
-    tr.appendChild(instituteCell);
-
-    const programNameCell = document.createElement('td');
-    programNameCell.textContent = row.AcademicProgramName;
-    tr.appendChild(programNameCell);
-
-    const openingRankCell = document.createElement('td');
-    openingRankCell.textContent = row.opening_rank;
-    tr.appendChild(openingRankCell);
-
-    const closingRankCell = document.createElement('td');
-    closingRankCell.textContent = row.closing_rank;
-    tr.appendChild(closingRankCell);
-
-    resultBody.appendChild(tr);
-  });
-
-  updatePaginationButtons();
-}
-
-function getPageData() {
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  return filteredData.slice(startIndex, endIndex);
-}
-
-function updatePageInfo() {
-  const pageInfo = document.getElementById('page-info');
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
-}
-
-function updatePaginationButtons() {
-  const prevBtn = document.getElementById('prev-btn');
-  const nextBtn = document.getElementById('next-btn');
-
-  prevBtn.disabled = currentPage === 1;
-  nextBtn.disabled = currentPage * itemsPerPage >= filteredData.length;
-}
+  const filterButton = document.getElementById('filter-button');
+    filterButton.addEventListener('click', filterData);
