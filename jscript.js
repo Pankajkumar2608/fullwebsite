@@ -1,14 +1,12 @@
 
-
-
 document.addEventListener('DOMContentLoaded', () => {
   populateFilterOptions();
   addFilterEventListeners();
-  addPaginationEventListeners();
-  updatePageInfo();
+  filterAndUpdateResults();
+  
 });
 
-const itemsPerPage = 20;
+const itemsPerPage = 1000;
 let filteredData = [];
 let currentPage = 1;
 
@@ -193,26 +191,6 @@ function addFilterEventListeners() {
   submitBtn.addEventListener('click', filterAndUpdateResults);
 }
 
-function addPaginationEventListeners() {
-  const prevBtn = document.getElementById('prev-btn');
-  const nextBtn = document.getElementById('next-btn');
-
-  prevBtn.addEventListener('click', () => {
-    if (currentPage > 1) {
-      currentPage--;
-      updateResultTable(getPageData());
-      updatePageInfo();
-    }
-  });
-
-  nextBtn.addEventListener('click', () => {
-    if (currentPage * itemsPerPage < filteredData.length) {
-      currentPage++;
-      updateResultTable(getPageData());
-      updatePageInfo();
-    }
-  });
-}
 
 function filterAndUpdateResults() {
   const Year = document.getElementById('year').value;
@@ -223,79 +201,93 @@ function filterAndUpdateResults() {
   const gender = document.getElementById('gender').value;
   const AcademicProgramName = document.getElementById('program_name').value;
   const userRank = document.getElementById('your_rank').value;
+  if(!userRank){
+    alert('Please enter your rank ');
+    
+  }else if(!Year){
+    alert('Please select a year');
+  }else if(!round){
+    alert('Please select a round');
+  }else if(!quota){
+    alert('Please select a quota');
+  }else if(!SeatType){
+    alert('Please select a seat type');
+  }else if(!gender){
+    alert('Please select a gender');
+  }else{
+    return;
+  }
 
-  axios.post('https://7edcacd9-2aea-46d0-93e6-b4fdfcd57d9d-00-2wkn1xpm2v4pu.sisko.replit.dev/filter', { institute, 
-    AcademicProgramName, 
-    quota, 
-    SeatType,
-    gender, 
-    userRank,
+  
+  document.getElementById('result-body').innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
+
+  axios.post('https://collegepredictorapi.onrender.com/filter', {
     Year,
-    round})
-    .then(response => {
-      filteredData = response.data.filteredData;
-      console.log(filteredData);
-      const resultbody = document.getElementById('result-body');
-      resultbody.innerHTML = '';
-      filteredData.forEach(row => {
-        const tr = document.createElement('tr');
+    institute,
+    round,
+    quota,
+    SeatType,
+    gender,
+    AcademicProgramName,
+    userRank
+  })
+  .then(response => {
+    
+    
+    
+    filteredData = response.data.filterData || [];
+    
+    if (filteredData.length === 0) {
+      document.getElementById('result-body').innerHTML = 
+        '<tr><td colspan="4">No results found</td></tr>';
+      return;
+    }
 
-        const instituteCell = document.createElement('td');
-        instituteCell.textContent = row.institute;
-      currentPage = 1;
-      updateResultTable(getPageData());
-      updatePageInfo();
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
+    
+    currentPage = 1;
+    const pageData = getPageData();
+    updateResultTable(pageData);
+    
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    document.getElementById('result-body').innerHTML = 
+      '<tr><td colspan="4">Error fetching data. Please try again.</td></tr>';
+  });
 }
 
-function updateResultTable(filterData) {
+function updateResultTable(data) {
   const resultBody = document.getElementById('result-body');
   resultBody.innerHTML = '';
 
-  filterDatadata.forEach(row => {
-    const tr = document.createElement('tr');
+  if (!Array.isArray(data)) {
+    console.error('Data is not an array:', data);
+    return;
+  }
 
-    const instituteCell = document.createElement('td');
-    instituteCell.textContent = row.institute;
-    tr.appendChild(instituteCell);
-
-    const programNameCell = document.createElement('td');
-    programNameCell.textContent = row.AcademicProgramName;
-    tr.appendChild(programNameCell);
-
-    const openingRankCell = document.createElement('td');
-    openingRankCell.textContent = row.opening_rank;
-    tr.appendChild(openingRankCell);
-
-    const closingRankCell = document.createElement('td');
-    closingRankCell.textContent = row.closing_rank;
-    tr.appendChild(closingRankCell);
-
-    resultBody.appendChild(tr);
+  data.forEach(item => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${item.institute || ''}</td>
+      <td>${item['Academic Program Name'] || ''}</td>
+      <td>${item['Opening Rank'] || ''}</td>
+      <td>${item['Closing Rank'] || ''}</td>
+    `;
+    resultBody.appendChild(row);
   });
 
-  updatePaginationButtons();
+  
 }
 
+
+
 function getPageData() {
+  if (!Array.isArray(filteredData)) {
+    console.error('filteredData is not an array:', filteredData);
+    return [];
+  }
+  
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   return filteredData.slice(startIndex, endIndex);
-}
-
-function updatePageInfo() {
-  const pageInfo = document.getElementById('page-info');
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
-}
-
-function updatePaginationButtons() {
-  const prevBtn = document.getElementById('prev-btn');
-  const nextBtn = document.getElementById('next-btn');
-
-  prevBtn.disabled = currentPage === 1;
-  nextBtn.disabled = currentPage * itemsPerPage >= filteredData.length;
 }
