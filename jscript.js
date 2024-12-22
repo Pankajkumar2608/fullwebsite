@@ -191,8 +191,66 @@ function populateSelect(select, options) {
 
 function addFilterEventListeners() {
   const submitBtn = document.getElementById('submit-btn');
+  const downloadBtn = document.getElementById('download-Btn')
+  downloadBtn.addEventListener('click', downloadPdf);
   submitBtn.addEventListener("click", filterAndUpdateResults);
 }
+function downloadPdf() {
+  try {
+    // Import jsPDF
+    const { jsPDF } = window.jspdf;
+    
+    // Create new document
+    const doc = new jsPDF();
+    
+    // Add title
+    doc.setFontSize(16);
+    doc.text('Predictor By Motivation Kaksha', 15, 15);
+    // Add subtitle
+    doc.setFontSize(14);
+    const userRank = document.getElementById('your_rank').value;
+    doc.text(`Results for Rank: ${userRank}`, 15, 25);
+    
+
+    
+    // Add headers
+    doc.setFontSize(12);
+    doc.text('Institute Name', 15, 30);
+    doc.text('Program Name', 70, 30);
+    doc.text('Opening Rank', 140, 30);
+    doc.text('Closing Rank', 170, 30);
+    
+    let y = 40;
+    
+    // Add data rows
+    doc.setFontSize(10);
+    filteredData.forEach((item) => {
+      if (y > 280) {
+        doc.addPage();
+        y = 20;
+      }
+      
+      // Split long text
+      const institute = doc.splitTextToSize(item.institute || '', 50);
+      const program = doc.splitTextToSize(item['Academic Program Name'] || '', 65);
+      
+      // Add row data
+      doc.text(institute, 15, y);
+      doc.text(program, 70, y);
+      doc.text(item['Opening Rank'].toString(), 140, y);
+      doc.text(item['Closing Rank'].toString(), 170, y);
+      
+      y += Math.max(institute.length, program.length) * 5 + 5;
+    });
+    
+    // Save PDF
+    doc.save('college-predictor-results-by-motivationkaksha.pdf');
+  } catch (error) {
+    console.error('PDF Generation Error:', error);
+    alert('Error generating PDF. Please try again.');
+  }
+}
+
 
 function filterAndUpdateResults() {
   const Year = document.getElementById('year').value;
@@ -234,7 +292,7 @@ function filterAndUpdateResults() {
   document.getElementById('result-body').innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
 
   // Make API call
-  axios.post('https://7edcacd9-2aea-46d0-93e6-b4fdfcd57d9d-00-2wkn1xpm2v4pu.sisko.replit.dev/filter', {
+  axios.post('https://collegepredictorapi.onrender.com/filter', {
     Year,
     institute,
     round,

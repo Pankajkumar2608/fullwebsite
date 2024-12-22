@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="jstyle.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
 </head>
 <body>
     <header>
@@ -106,6 +108,9 @@
                         <span id="page-info"></span>
                         <button id="next-btn" class="btn prev-next-btn">Next</button>
                     </div> -->
+                    <div class="container">
+                        <button id="download-Btn" type="button" class="d-btn">Download <i class="fa fa-download" aria-hidden="true"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -118,5 +123,6 @@
     </footer>
     <script src="jscript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
 </body>
 </html>
