@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
   populateFilterOptions();
   addFilterEventListeners();
   filterAndUpdateResults();
+
+
+  
   
 });
 
@@ -188,9 +191,8 @@ function populateSelect(select, options) {
 
 function addFilterEventListeners() {
   const submitBtn = document.getElementById('submit-btn');
-  submitBtn.addEventListener('click', filterAndUpdateResults);
+  submitBtn.addEventListener("click", filterAndUpdateResults);
 }
-
 
 function filterAndUpdateResults() {
   const Year = document.getElementById('year').value;
@@ -201,27 +203,38 @@ function filterAndUpdateResults() {
   const gender = document.getElementById('gender').value;
   const AcademicProgramName = document.getElementById('program_name').value;
   const userRank = document.getElementById('your_rank').value;
-  if(!userRank){
-    alert('Please enter your rank ');
-    
-  }else if(!Year){
+
+  // Validation
+  if(!userRank) {
+    alert('Please enter your rank');
+    return;
+  }
+  if(!Year) {
     alert('Please select a year');
-  }else if(!round){
+    return;
+  }
+  if(!round) {
     alert('Please select a round');
-  }else if(!quota){
+    return;
+  }
+  if(!quota) {
     alert('Please select a quota');
-  }else if(!SeatType){
+    return;
+  }
+  if(!SeatType) {
     alert('Please select a seat type');
-  }else if(!gender){
+    return;
+  }
+  if(!gender) {
     alert('Please select a gender');
-  }else{
     return;
   }
 
-  
+  // Show loading state
   document.getElementById('result-body').innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
 
-  axios.post('https://collegepredictorapi.onrender.com/filter', {
+  // Make API call
+  axios.post('https://7edcacd9-2aea-46d0-93e6-b4fdfcd57d9d-00-2wkn1xpm2v4pu.sisko.replit.dev/filter', {
     Year,
     institute,
     round,
@@ -232,9 +245,6 @@ function filterAndUpdateResults() {
     userRank
   })
   .then(response => {
-    
-    
-    
     filteredData = response.data.filterData || [];
     
     if (filteredData.length === 0) {
@@ -243,11 +253,9 @@ function filterAndUpdateResults() {
       return;
     }
 
-    
     currentPage = 1;
     const pageData = getPageData();
     updateResultTable(pageData);
-    
   })
   .catch(error => {
     console.error('Error:', error);
