@@ -34,7 +34,7 @@ function populateFilterOptions() {
   populateSelect(yearSelect, ['2024', '2023', '2022', '2021']);
   populateSelect(roundNoSelect, ['1', '2', '3', '4', '5']);
   populateSelect(instituteNameInput, [
-    "ALL",
+    
     "Indian Institute of Technology Bhubaneswar",
     "Indian Institute of Technology Bombay",
     "Indian Institute of Technology Mandi",
@@ -159,7 +159,7 @@ function populateFilterOptions() {
   populateSelect(seatTypeSelect, ['OPEN', 'OPEN (PwD)', 'EWS', 'EWS (PwD)', 'OBC-NCL', 'OBC-NCL (PwD)', 'SC', 'SC (PwD)', 'ST', 'ST (PwD)']);
   populateSelect(genderSelect, ['Gender-Neutral', 'Female-only (including Supernumerary)']);
   populateSelect(programNameSelect, [
-    'All',
+    
     'Civil Engineering (4 Years, Bachelor of Technology)',
     'Civil Engineering and M. Tech. in Structural Engineering (5 Years, Bachelor and Master of Technology (Dual Degree))',
     'Aerospace Engineering (4 Years, Bachelor of Technology)',
@@ -301,10 +301,7 @@ function filterAndUpdateResults() {
     alert('Please select a year');
     return;
   }
-  if(!round) {
-    alert('Please select a round');
-    return;
-  }
+  
   if(!quota) {
     alert('Please select a quota');
     return;

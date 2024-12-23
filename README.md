@@ -21,11 +21,11 @@ The **College Predictor Website** is a web application designed to assist studen
   - HTML5
   - CSS3
   - JavaScript
-- **Backend **
+- **Backend:**
   - Node.js or Flask
   - Firebase or MongoDB for data storage
 - **Deployment:**
-  - Hosted on platforms like GitHub Pages, Vercel, or Netlify.
+  - Hosted on platforms like GitHub Pages, Vercel, or Netlify
 
 ---
 
@@ -34,15 +34,20 @@ The **College Predictor Website** is a web application designed to assist studen
 1. Clone the repository:
    ```bash
    git clone https://github.com/yourusername/college-predictor.git
-cd college-predictor
-npm install
-npm start
-.
-├── index.html          # Main HTML file
-├── style.css           # Styling for the website
-├── script.js           # Logic and interactivity
-├── assets/             # Images, icons, and other static assets
-├── data/               # JSON or other data files (optional)
-├── backend/            # Backend scripts (if applicable)
-└── README.md           # Project documentation
+   cd college-predictor
+   npm install
+   npm start
+   ```
+
+2. Project structure:
+   ```
+   .
+   ├── index.html          # Main HTML file
+   ├── style.css           # Styling for the website
+   ├── script.js           # Logic and interactivity
+   ├── assets/             # Images, icons, and other static assets
+   ├── data/               # JSON or other data files (optional)
+   ├── backend/            # Backend scripts (if applicable)
+   └── README.md           # Project documentation
+   ```
 

@@ -20,9 +20,11 @@ body {
 header {
   background-color: var(--secondary-color);
   color: var(--background-color);
-  padding: 14px 0;
+  padding: 10px 0;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   width: 100%;
+  border-radius: 5px;
+  padding-left: auto;
   margin-left: 25px;
 }
 
@@ -174,7 +176,7 @@ nav ul li a:hover {
 
 .results-container {
   background-color: #fff;
-  padding: 30px;
+  padding: 25px;
   width: 100%;
   border-radius: 12px;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
@@ -221,9 +223,14 @@ tr:nth-child(even) {
 footer {
   background-color: var(--secondary-color);
   color: var(--background-color);
-  padding: 12px 0;
+  padding: 6px 0;
   text-align: center;
+  justify-content: center;
   font-size: 14px;
+  width: 100%;
+  border-radius: 5px;
+  padding-left: auto;
+  margin-left: 25px;
 }
 
 /* Animations */
@@ -275,10 +282,13 @@ footer {
   nav ul {
     flex-direction: column;
     align-items: center;
+
   }
 
   nav ul li {
     margin: 5px 0;
+    align-items: center;
+    justify-self: unset;
   }
 
   .filters {
@@ -311,10 +321,12 @@ footer {
 
   nav ul {
     flex-direction: row;
+    
   }
 
   .filters {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    
   }
 
   table {
