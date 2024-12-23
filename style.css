@@ -6,8 +6,13 @@ body {
     color: #333;
     overflow-x: hidden;
     line-height: 1.6; /* Improve readability */
+    
 }
 
+.anime{
+    z-index: -100;
+}
+  
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -54,14 +59,15 @@ a:hover {
 
 /* Navbar Styling */
 nav {
-    background-color: black;
+    
     padding: 1rem 0;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     position: fixed;
     width: 100%;
     top: 0;
-    z-index: 1000;
+    
     transition: top 0.3s ease-in-out;
+    
 }
 
 nav.hide {
@@ -135,12 +141,36 @@ nav li a {
 
 /* Predictors Section */
 #predictors {
-    padding: 4rem 0; /* Add spacing around sections */
+    padding: 2rem 0; /* Add spacing around sections */
 }
+.wrp {
+    height: 50vh;
+    width: 100%;
+    z-index: -100;
+  
+    svg {
+      height: 100%;
+      width: 100%;
+      z-index: -100;
+  
+      * {
+        transform-origin: center;
+        transform-box: fill-box;
+      }
+  
+      .swet,
+      .debre,
+      .flash,
+      #paper1 {
+        opacity: 0;
+      }
+    }
+  }
+  
 
 .predictors-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
 }
 
@@ -149,10 +179,8 @@ nav li a {
     border-radius: 10px;
     padding: 2rem;
     text-align: center;
-    color: #333;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
     position: relative;
 }
@@ -705,5 +733,31 @@ footer {
 
     h1 {
         font-size: 2rem;
+    }
+}
+.animation-wrapper {
+    width: 50%;
+    padding-bottom: 50%;
+  }
+  
+.sphere-animation {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 580px;
+    height: 580px;
+    margin: -290px 0 0 -290px;
+}
+  
+.sphere path {
+    fill: url(#sphereGradient);
+    stroke-width: 1px;
+    stroke: rgba(80,80,80,.35);
+    backface-visibility: hidden;
+  }
+  
+@media (min-width: 500px) {
+    .sphere path {
+      stroke-width: .4px;
     }
 }
