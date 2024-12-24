@@ -26,6 +26,7 @@ header {
   border-radius: 5px;
   padding-left: auto;
   margin-left: 25px;
+  
 }
 
 .header-content {
@@ -112,7 +113,7 @@ nav ul li a:hover {
 .filter-group input[type="text"]:focus,
 .filter-group input[type="number"]:focus {
   outline: none;
-  border-color: var(--primary-color);
+  border-color: rgb(254, 216, 2);
 }
 
 .btn {

@@ -192,6 +192,7 @@ function populateSelect(select, options) {
 function addFilterEventListeners() {
   const submitBtn = document.getElementById('submit-btn');
   const downloadBtn = document.getElementById('download-Btn')
+  
   downloadBtn.addEventListener('click', downloadPdf);
   submitBtn.addEventListener("click", filterAndUpdateResults);
 }

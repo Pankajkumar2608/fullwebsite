@@ -4,7 +4,7 @@ let filteredData = [];
 let currentPage = 1;
 const itemsPerPage = 20;
 const background = document.querySelector('.background');
-const loadingDiv = document.getElementById('loading');
+const loadingDiv = document.getElementById('book');
 
 document.addEventListener('DOMContentLoaded', () => {
   fetchCSVData();
@@ -24,7 +24,7 @@ function fetchCSVData() {
       updateResultTable(getPageData());
       updatePageInfo();
 
-      loadingDiv.style.display = 'none';
+      bookDiv.style.display = 'none';
     });
 }
 
