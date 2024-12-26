@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Comparison Tool</title>
+    <link rel="stylesheet" href="compare.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="comparison-container">
+        <div class="comparison-grid">
+            <div class="college-card">
+                <h3>College 1</h3>
+                <div class="select-wrapper">
+                    <select class="college-select" id="college1">
+                        <option value="">Select College</option>
+                    </select>
+                </div>
+                <div class="select-wrapper">
+                    <select class="branch-select" id="branch1">
+                        <option value="">Select Branch</option>
+                    </select>
+                </div>
+                <div class="college-stats">
+                    <div class="stat">
+                        <i class="fas fa-users"></i>
+                        <span>Placement Rate: 95%</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-indian-rupee-sign"></i>
+                        <span>Avg Package: 8.5 LPA</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vs-badge">
+                <span>VS</span>
+            </div>
+
+            <div class="college-card">
+                <h3>College 2</h3>
+                <div class="select-wrapper">
+                    <select class="college-select" id="college2">
+                        <option value="">Select College</option>
+                    </select>
+                </div>
+                <div class="select-wrapper">
+                    <select class="branch-select" id="branch2">
+                        <option value="">Select Branch</option>
+                    </select>
+                </div>
+                <div class="college-stats">
+                    <div class="stat">
+                        <i class="fas fa-users"></i>
+                        <span>Placement Rate: 92%</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-indian-rupee-sign"></i>
+                        <span>Avg Package: 7.2 LPA</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-container">
+            <button id="submit-btn" class="compare-btn">
+                Compare Colleges
+                <i class="fas fa-chart-bar"></i>
+            </button>
+        </div>
+
+        <div class="results-container">
+            <h2>Comparison Results</h2>
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metrics</th>
+                            <th>College 1</th>
+                            <th>College 2</th>
+                        </tr>
+                    </thead>
+                    <tbody id="comparison-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="compare.js"></script>
+</body>
+</html>
