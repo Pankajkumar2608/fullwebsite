@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Percentile Calculator | Motivation Kaksha</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #2962ff;
+        --secondary: #0056b3;
+        --dark: #1a1a1a;
+        --light: #ffffff;
+        --glass: rgba(255, 255, 255, 0.1);
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+        color: var(--light);
+        min-height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+      }
+
+      .calculator-container {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass);
+        border-radius: 20px;
+        padding: 3rem 2rem;
+        width: 100%;
+        max-width: 500px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: rgb(255, 171, 0);
+        font-size: 2rem;
+        font-weight: 600;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        width: 100%;
+      }
+
+      .input-group {
+        position: relative;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      input {
+        width: 100%;
+        padding: 1rem;
+        border: 1px solid var(--glass);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--light);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 2px rgba(41, 98, 255, 0.2);
+      }
+
+      button {
+        background: rgb(255, 171, 0);
+        color: black;
+        border: none;
+        padding: 1rem;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        justify-items: center;
+        align-items: center;
+        transition: transform 0.3s ease;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+      }
+
+      .result {
+        margin-top: 2rem;
+        padding: 1rem;
+        border-radius: 10px;
+        background: rgba(41, 98, 255, 0.1);
+        text-align: center;
+        display: none;
+      }
+
+      .result.show {
+        display: block;
+        animation: fadeIn 0.5s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .calculator-container {
+          padding: 1.5rem;
+        }
+
+        h1 {
+          font-size: 1.5rem;
+        }
+      }
+
+      @media (max-width: 768px) and (orientation: landscape) {
+        .calculator-container {
+          padding: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="calculator-container">
+      <h1>Percentile Calculator</h1>
+      <div>
+        <div class="input-group">
+          <label for="Percentile">Enter your percentile:</label>
+          <input
+            type="number"
+            id="Percentile"
+            placeholder="Enter your percentile"
+          />
+          <label for="Quota">Select your Quota:</label>
+          <select id="Quota">
+            <option value="General" id="general">General</option>
+            <option value="OBC" id="obc">OBC</option>
+            <option value="SC" id="sc">SC</option>
+            <option value="ST" id="st">ST</option>
+            <option value="EWS" id="ews">EWS</option>
+          </select>
+        </div>
+        <button style="margin-top: 2rem" id="button">Submit</button>
+        <div class="result" id="result"></div>
+      </div>
+    </div>
+
+    <script>
+      const button = document.getElementById("button");
+      const percentileInput = document.getElementById("Percentile");
+      const result = document.getElementById("result");
+      const quota = document.getElementById("Quota");
+
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        const percentileValue = parseFloat(percentileInput.value);
+
+        if (
+          isNaN(percentileValue) ||
+          percentileValue < 0 ||
+          percentileValue > 100
+        ) {
+          result.innerHTML =
+            "Please enter a valid percentile between 0 and 100";
+          result.style.color = "#ff4444";
+          return;
+        }
+
+        const quotaValue = quota.value;
+        if (quotaValue) {
+          const total_candidates = 1380000;
+        
+          const overall_rank =
+            ((100 - percentile) / 100) * total_candidates + 1;
+          const category_candidates =
+            total_candidates * (category_percentage / 100);
+          const category_rank =
+            ((100 - percentile) / 100) * category_candidates + 1;
+
+          result.innerHTML = `Your General rank is approximately ${Math.round(
+            generalRank
+          ).toLocaleString()}`;
+          result.style.color = "#4CAF50";
+        }
+
+        result.classList.add("show");
+      });
+    </script>
+  </body>
+</html>
