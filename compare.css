@@ -34,6 +34,7 @@ body {
     border: 1px solid var(--glass);
     border-radius: 16px;
     padding: 2rem;
+    
     transition: transform 0.3s ease;
 }
 
@@ -43,11 +44,12 @@ body {
 }
 
 .select-wrapper {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
 select {
     width: 100%;
+    margin: 0.5rem;
     padding: 12px;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.1);
@@ -65,7 +67,13 @@ select {
     font-weight: bold;
     color: var(--accent);
     text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    @keyframes pulsate {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.2); opacity: 0.7; }
+        100% { transform: scale(1); opacity: 1; }
+    }
 }
+
 
 .college-stats {
     display: grid;
@@ -82,8 +90,8 @@ select {
 }
 
 .compare-btn {
-    background: linear-gradient(45deg, var(--primary), var(--secondary));
-    color: white;
+    background: rgb(255, 171, 0);
+    color: black;
     border: none;
     padding: 1rem 2rem;
     border-radius: 30px;
@@ -109,6 +117,7 @@ select {
     margin-top: 3rem;
 }
 
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -126,12 +135,46 @@ th {
     font-weight: 600;
 }
 
-@media (max-width: 768px) {
+
+@media screen and (max-width: 480px) {
     .comparison-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0.5rem;
+    }
+    
+    th, td {
+        padding: 0.75rem;
+        font-size: 0.9rem;
     }
     
     .vs-badge {
-        margin: 1rem 0;
+        margin: 0.5rem 0;
+        font-size: 1.5rem;
     }
 }
+
+@media screen and (min-width: 481px) and (max-width: 767px) {
+    .comparison-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .vs-badge {
+        margin: 0.75rem 0;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .comparison-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+    
+    .vs-badge {
+        display: flex;
+        align-items: center;
+        font-size: 2rem;
+    }
+}
+

@@ -26,23 +26,41 @@ const pool = new Pool({
 app.post('/colleges', async (req, res) => {
     const { collegeName1, collegeName2 } = req.body;
 
-    const college1Query = `SELECT * FROM colleges WHERE name = $1`;
-    const college2Query = `SELECT * FROM colleges WHERE name = $1`;
+    // Input validation
+    if (!collegeName1 && !collegeName2) {
+        return res.status(400).json({ error: 'At least one college name is required' });
+    }
+
+    const collegeQuery = `
+        SELECT "College Type", "Location", "NIRF Rank", 
+               "Highest Package (LPA)", "Average Package (LPA)", 
+               "Placement Rate (%)", "Facilities", "Reddit Review"
+        FROM college_review 
+        WHERE "College Name" = $1
+        
+    `;
 
     try {
-        
-        const [college1Result, college2Result] = await Promise.all([
-            pool.query(college1Query, [collegeName1]),
-            pool.query(college2Query, [collegeName2])
-        ]);
+        let college1Data = null;
+        let college2Data = null;
 
-        const college1Data = college1Result.rows[0] || null; 
-        const college2Data = college2Result.rows[0] || null;
+        if (collegeName1) {
+            const college1Result = await pool.query(collegeQuery, [collegeName1]);
+            college1Data = college1Result.rows[0];
+        }
 
-        res.status(200).json({ college1: college1Data, college2: college2Data });
+        if (collegeName2) {
+            const college2Result = await pool.query(collegeQuery, [collegeName2]);
+            college2Data = college2Result.rows[0];
+        }
+
+        res.status(200).json({ 
+            college1: college1Data, 
+            college2: college2Data 
+        });
     } catch (err) {
         console.error('Database Query Error:', err);
-        res.status(500).send('Internal Server Error');
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 

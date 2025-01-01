@@ -11,25 +11,25 @@
     <div class="comparison-container">
         <div class="comparison-grid">
             <div class="college-card">
-                <h3>College 1</h3>
+                <h3 style="color: rgb(255, 171, 0);">College 1</h3>
                 <div class="select-wrapper">
                     <select class="college-select" id="college1">
                         <option value="">Select College</option>
                     </select>
                 </div>
-                <div class="select-wrapper">
+                <!-- <div class="select-wrapper">
                     <select class="branch-select" id="branch1">
                         <option value="">Select Branch</option>
                     </select>
-                </div>
+                </div> -->
                 <div class="college-stats">
                     <div class="stat">
                         <i class="fas fa-users"></i>
-                        <span>Placement Rate: 95%</span>
+                        <span id ="placement1">Placement Rate: </span>
                     </div>
                     <div class="stat">
                         <i class="fas fa-indian-rupee-sign"></i>
-                        <span>Avg Package: 8.5 LPA</span>
+                        <span id ="package1">Avg Package: </span>
                     </div>
                 </div>
             </div>
@@ -39,25 +39,25 @@
             </div>
 
             <div class="college-card">
-                <h3>College 2</h3>
+                <h3 style="color: rgb(255, 171, 0);">College 2</h3>
                 <div class="select-wrapper">
                     <select class="college-select" id="college2">
                         <option value="">Select College</option>
                     </select>
                 </div>
-                <div class="select-wrapper">
+                <!-- <div class="select-wrapper">
                     <select class="branch-select" id="branch2">
                         <option value="">Select Branch</option>
                     </select>
-                </div>
+                </div> -->
                 <div class="college-stats">
                     <div class="stat">
                         <i class="fas fa-users"></i>
-                        <span>Placement Rate: 92%</span>
+                        <span id="placement2">Placement Rate:</span>
                     </div>
                     <div class="stat">
                         <i class="fas fa-indian-rupee-sign"></i>
-                        <span>Avg Package: 7.2 LPA</span>
+                        <span id="package2">Avg Package: </span>
                     </div>
                 </div>
             </div>
@@ -74,19 +74,15 @@
             <h2>Comparison Results</h2>
             <div class="comparison-table">
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Metrics</th>
-                            <th>College 1</th>
-                            <th>College 2</th>
-                        </tr>
-                    </thead>
+                    
                     <tbody id="comparison-body">
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+    <h5 style="text-align: center; color: rgb(255, 171, 0);">Copyright Reserved &copy; Motivation Kaksha</h5>
     <script src="compare.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 </html>

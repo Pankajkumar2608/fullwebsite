@@ -1,194 +1,191 @@
-/* filepath: /C:/Users/ASUS/Desktop/landing page/compare.js */
-document.addEventListener('DOMContentLoaded', () => {
-    // Populate dropdowns with college data
-    const colleges = [
-        "Indian Institute of Technology Bhubaneswar",
-    "Indian Institute of Technology Bombay",
-    "Indian Institute of Technology Mandi",
-    "Indian Institute of Technology Delhi",
-    "Indian Institute of Technology Indore",
-    "Indian Institute of Technology Kharagpur",
-    "Indian Institute of Technology Hyderabad",
-    "Indian Institute of Technology Jodhpur",
-    "Indian Institute of Technology Kanpur",
-    "Indian Institute of Technology Madras",
-    "Indian Institute of Technology Gandhinagar",
-    "Indian Institute of Technology Patna",
-    "Indian Institute of Technology Roorkee",
-    "Indian Institute of Technology (ISM) Dhanbad",
-    "Indian Institute of Technology Ropar",
-    "Indian Institute of Technology (BHU) Varanasi",
-    "Indian Institute of Technology Guwahati",
-    "Indian Institute of Technology Bhilai",
-    "Indian Institute of Technology Goa",
-    "Indian Institute of Technology Palakkad",
-    "Indian Institute of Technology Tirupati",
-    "Indian Institute of Technology Jammu",
-    "Indian Institute of Technology Dharwad",
-    "Dr. B R Ambedkar National Institute of Technology, Jalandhar",
-    "Malaviya National Institute of Technology Jaipur",
-    "Maulana Azad National Institute of Technology Bhopal",
-    "Motilal Nehru National Institute of Technology Allahabad",
-    "National Institute of Technology Agartala",
-    "National Institute of Technology Calicut",
-    "National Institute of Technology Delhi",
-    "National Institute of Technology Durgapur",
-    "National Institute of Technology Goa",
-    "National Institute of Technology Hamirpur",
-    "National Institute of Technology Karnataka, Surathkal",
-    "National Institute of Technology Meghalaya",
-    "National Institute of Technology Nagaland",
-    "National Institute of Technology Patna",
-    "National Institute of Technology Puducherry",
-    "National Institute of Technology Raipur",
-    "National Institute of Technology Sikkim",
-    "National Institute of Technology Arunachal Pradesh",
-    "National Institute of Technology, Jamshedpur",
-    "National Institute of Technology, Kurukshetra",
-    "National Institute of Technology, Manipur",
-    "National Institute of Technology, Mizoram",
-    "National Institute of Technology, Rourkela",
-    "National Institute of Technology, Silchar",
-    "National Institute of Technology, Srinagar",
-    "National Institute of Technology, Tiruchirappalli",
-    "National Institute of Technology, Uttarakhand",
-    "National Institute of Technology, Warangal",
-    "Sardar Vallabhbhai National Institute of Technology, Surat",
-    "Visvesvaraya National Institute of Technology, Nagpur",
-    "National Institute of Technology, Andhra Pradesh",
-    "Indian Institute of Engineering Science and Technology, Shibpur",
-    "Atal Bihari Vajpayee Indian Institute of Information Technology & Management Gwalior",
-    "Indian Institute of Information Technology (IIIT)Kota, Rajasthan",
-    "Indian Institute of Information Technology Guwahati",
-    "Indian Institute of Information Technology(IIIT) Kalyani, West Bengal",
-    "Indian Institute of Information Technology(IIIT) Kilohrad, Sonepat, Haryana",
-    "Indian Institute of Information Technology(IIIT) Una, Himachal Pradesh",
-    "Indian Institute of Information Technology (IIIT), Sri City, Chittoor",
-    "Indian Institute of Information Technology(IIIT), Vadodara, Gujrat",
-    "Indian Institute of Information Technology, Allahabad",
-    "Indian Institute of Information Technology, Design & Manufacturing, Kancheepuram",
-    "Pt. Dwarka Prasad Mishra Indian Institute of Information Technology, Design & Manufacture Jabalpur",
-    "Indian Institute of Information Technology Manipur",
-    "Indian Institute of Information Technology Tiruchirappalli",
-    "Indian Institute of Information Technology Lucknow",
-    "Indian Institute of Information Technology(IIIT) Dharwad",
-    "Indian Institute of Information Technology Design & Manufacturing Kurnool, Andhra Pradesh",
-    "Indian Institute of Information Technology(IIIT) Kottayam",
-    "Indian Institute of Information Technology (IIIT) Ranchi",
-    "Indian Institute of Information Technology (IIIT) Nagpur",
-    "Indian Institute of Information Technology (IIIT) Pune",
-    "Indian Institute of Information Technology Bhagalpur",
-    "Indian Institute of Information Technology Bhopal",
-    "Indian Institute of Information Technology Surat",
-    "Indian Institute of Information Technology, Agartala",
-    "Indian institute of information technology, Raichur, Karnataka",
-    "Indian Institute of Information Technology, Vadodara International Campus Diu (IIITVICD)",
-    "Assam University, Silchar",
-    "Birla Institute of Technology, Mesra, Ranchi",
-    "Gurukula Kangri Vishwavidyalaya, Haridwar",
-    "Indian Institute of Carpet Technology, Bhadohi",
-    "Institute of Infrastructure, Technology, Research and Management-Ahmedabad",
-    "Institute of Technology, Guru Ghasidas Vishwavidyalaya (A Central University), Bilaspur, (C.G.)",
-    "J.K. Institute of Applied Physics & Technology, Department of Electronics & Communication, University of Allahabad- Allahabad",
-    "National Institute of Electronics and Information Technology, Aurangabad (Maharashtra)",
-    "National Institute of Advanced Manufacturing Technology, Ranchi",
-    "Sant Longowal Institute of Engineering and Technology",
-    "Mizoram University, Aizawl",
-    "School of Engineering, Tezpur University, Napaam, Tezpur",
-    "School of Planning & Architecture, Bhopal",
-    "School of Planning & Architecture, New Delhi",
-    "School of Planning & Architecture: Vijayawada",
-    "Shri Mata Vaishno Devi University, Katra, Jammu & Kashmir",
-    "International Institute of Information Technology, Naya Raipur",
-    "University of Hyderabad",
-    "Punjab Engineering College, Chandigarh",
-    "Jawaharlal Nehru University, Delhi",
-    "International Institute of Information Technology, Bhubaneswar",
-    "Central institute of Technology Kokrajar, Assam",
-    "Puducherry Technological University, Puducherry",
-    "Ghani Khan Choudhary Institute of Engineering and Technology, Malda, West Bengal",
-    "Central University of Rajasthan, Rajasthan",
-    "National Institute of Food Technology Entrepreneurship and Management, Kundli",
-    "National Institute of Food Technology Entrepreneurship and Management, Thanjavur",
-    "North Eastern Regional Institute of Science and Technology, Nirjuli-791109 (Itanagar), Arunachal Pradesh",
-    "Indian Institute of Handloom Technology(IIHT), Varanasi",
-    "Chhattisgarh Swami Vivekanada Technical University, Bhilai (CSVTU Bhilai)",
-    "Institute of Chemical Technology, Mumbai: Indian Oil Odisha Campus, Bhubaneswar",
-    "North-Eastern Hill University, Shillong",
-    "Central University of Jammu",
-    "Institute of Engineering and Technology, Dr. H. S. Gour University. Sagar (A Central University)",
-    "Central University of Haryana",
-    "Birla Institute of Technology, Deoghar Off-Campus",
-    "Birla Institute of Technology, Patna Off-Campus",
-    "Indian Institute of Handloom Technology, Salem"
-    ];
-    const branches = [
-    'Civil Engineering (4 Years, Bachelor of Technology)',
-    'Civil Engineering and M. Tech. in Structural Engineering (5 Years, Bachelor and Master of Technology (Dual Degree))',
-    'Aerospace Engineering (4 Years, Bachelor of Technology)',
-    'chemical',
-    'Computer Science and Engineering (4 Years, Bachelor of Technology)',
-    'Electrical Engineering (4 Years, Bachelor of Technology)',
-    'Electronics and Communication Engineering (4 Years, Bachelor of Technology)',
-    'mechanical',
-    'metallurgical',
-    'biotechnology',
-    'Engineering Physics (4 Years, Bachelor of Technology)',
-    'Mathematics (4 Years, Bachelor of Technology)',
-    'chemistry',
-    'environmental',
-    'management',
-    'humanities'
-    ];
+document.addEventListener("DOMContentLoaded", () => {
+  const colleges = [
+    "IIT Bhubaneswar",
+    "IIT Bombay",
+    "IIT Mandi",
+    "IIT Delhi",
+    "IIT Goa",
+    "IIT Palakkad",
+    "IIT Tirupati",
+    "IIT Madras",
+    "IIT Guwahati",
+    "IIT Indore",
+    "IIT Kanpur",
+    "IIT Jodhpur",
+    "IIT Kharagpur",
+    "IIT Hyderabad",
+    "IIT Patna",
+    "IIT Ropar",
+    "IIT Roorkee",
+    "IIT (BHU) Varanasi",
+    "IIT Jammu",
+    "IIT Bhilai",
+    "IIT Dharwad",
+    "IIT (ISM) Dhanbad",
+    "IIT Gandhinagar",
+    "NIT Jallandhar",
+    "NIT Jaipur",
+    "NIT Bhopal",
+    "NIT Allahabad",
+    "NIT Mizoram",
+    "NIT Warangal",
+    "NIT Arunachal Pradesh",
+    "NIT Silchar",
+    "NIT Patna",
+    "NIT Calicut",
+    "NIT Raipur",
+    "NIT Delhi",
+    "NIT Goa",
+    "NIT Hamirpur",
+    "NIT Kurukshetra",
+    "NIT Srinagar",
+    "NIT Jamshedpur",
+    "NIT Manipur",
+    "NIT Meghalaya",
+    "NIT Nagaland",
+    "NIT Rourkela",
+    "NIT Puducherry",
+    "NIT Surathkal",
+    "NIT Sikkim",
+    "NIT Trichy",
+    "NIT Agartala",
+    "NIT Uttarakhand",
+    "NIT Durgapur",
+    "NIT Surat",
+    "NIT Nagpur",
+    "NIT Tadepalligudam",
+    "NIT Andhra Pradesh",
+    "IIIT Gwalior",
+    "IIIT Allahabad",
+    "IIITDM Jabalpur",
+    "IIITDM Kancheepuram",
+    "IIIT Sri City",
+    "IIIT Guwahati",
+    "IIIT Vadodara",
+    "IIIT Kota",
+    "IIIT Tiruchirappalli",
+    "IIIT Una",
+    "IIIT Sonepat",
+    "IIIT Kalyani",
+    "IIIT Lucknow",
+    "IIIT Dharwad",
+    "IIIT Kurnool",
+    "IIIT Kottayam",
+    "IIIT Manipur",
+    "IIIT Nagpur",
+    "IIIT Pune",
+    "IIIT Ranchi",
+    "IIIT Bangalore",
+    "IIIT Bhubaneswar",
+    "IIIT Kerala",
+    "IIIT Naya Raipur",
+    "IIITDM Jabalpur",
+  ];
 
-    function populateDropdowns() {
-        const collegeSelects = document.querySelectorAll('.college-select');
-        const branchSelects = document.querySelectorAll('.branch-select');
+  function populateDropdowns() {
+    const collegeSelects = document.querySelectorAll(".college-select");
+    const branchSelects = document.querySelectorAll(".branch-select");
 
-        collegeSelects.forEach(select => {
-            colleges.forEach(college => {
-                const option = document.createElement('option');
-                option.value = college;
-                option.textContent = college;
-                select.appendChild(option);
-            });
-        });
+    collegeSelects.forEach((select) => {
+      colleges.forEach((college) => {
+        const option = document.createElement("option");
+        option.value = college;
+        option.textContent = college;
+        select.appendChild(option);
+      });
+    });
+  }
 
-        branchSelects.forEach(select => {
-            branches.forEach(branch => {
-                const option = document.createElement('option');
-                option.value = branch;
-                option.textContent = branch;
-                select.appendChild(option);
-            });
-        });
-    }
+  populateDropdowns();
 
-    // Initialize dropdowns
-    populateDropdowns();
-
-    // Compare button click handler
-    document.getElementById('submit-btn').addEventListener('click', compareColleges);
-
-    function compareColleges() {
-        // Add comparison logic here
-        const comparisonBody = document.getElementById('comparison-body');
-        comparisonBody.innerHTML = `
-            <tr>
-                <td>NIRF Ranking</td>
-                <td>1</td>
-                <td>2</td>
-            </tr>
-            <tr>
-                <td>Placement Rate</td>
-                <td>95%</td>
-                <td>92%</td>
-            </tr>
-            <tr>
-                <td>Average Package</td>
-                <td>8.5 LPA</td>
-                <td>7.2 LPA</td>
-            </tr>
-        `;
-    }
+  eventListener();
 });
+function eventListener() {
+  const compareBtn = document.getElementById("submit-btn");
+  compareBtn.addEventListener("click", compareColleges);
+}
+
+function compareColleges() {
+  const collegeName1 = document.getElementById("college1").value;
+  const collegeName2 = document.getElementById("college2").value;
+
+  axios
+    .post(
+      "https://7edcacd9-2aea-46d0-93e6-b4fdfcd57d9d-00-2wkn1xpm2v4pu.sisko.replit.dev/colleges",
+      {
+        collegeName1,
+        collegeName2,
+      }
+    )
+    .then((response) => {
+      const filterdata1 = response.data.college1;
+      const filteredData2 = response.data.college2;
+
+      updateUI(filterdata1, filteredData2);
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+}
+
+function updateUI(filterdata1, filteredData2) {
+  const spanPlacmentRate1 = document.getElementById("placement1");
+  const spanPlacmentRate2 = document.getElementById("placement2");
+  const spanPackage = document.getElementById("package1");
+  const spanPackage2 = document.getElementById("package2");
+
+  spanPlacmentRate1.textContent = `Placement Rate: ${filterdata1["Placement Rate (%)"]} %`;
+  spanPlacmentRate2.textContent = `Placement Rate: ${filteredData2["Placement Rate (%)"]} %`;
+  spanPackage.textContent = `Avg Package: ${filterdata1["Average Package (LPA)"]} LPA`;
+  spanPackage2.textContent = `Avg Package: ${filteredData2["Average Package (LPA)"]} LPA`;
+  const collegeName1 = document.getElementById("college1").value;
+  const collegeName2 = document.getElementById("college2").value;
+
+  const comparisonBody = document.getElementById("comparison-body");
+  comparisonBody.innerHTML = `
+      <thead>
+            <tr>
+                <th>Metrics</th>
+                <th>${collegeName1}</th>
+                <th>${collegeName2}</th>           
+            </tr>
+                        
+       </thead>
+      
+      <tr>
+        <td>NIRF Ranking</td>
+        <td>${filterdata1["NIRF Rank"]}</td>
+        <td>${filteredData2["NIRF Rank"]}</td>
+      </tr>
+      <tr>
+        <td>Placement Rate</td>
+        <td>${filterdata1["Placement Rate (%)"]}</td>
+        <td>${filteredData2["Placement Rate (%)"]}</td>
+      </tr>
+      <tr>
+        <td>Average Package (LPA)</td>
+        <td>${filterdata1["Average Package (LPA)"]}</td>
+        <td>${filteredData2["Average Package (LPA)"]}</td>
+      </tr>
+      <tr>
+        <td>Location</td>
+        <td>${filterdata1["Location"]}</td>
+        <td>${filteredData2["Location"]}</td>
+      </tr>
+      <tr>
+        <td>Highest Package (LPA)</td>
+        <td>${filterdata1["Highest Package (LPA)"]}</td>
+        <td>${filteredData2["Highest Package (LPA)"]}</td>
+      </tr>
+      <tr>
+        <td>Facilities</td>
+        <td>${filterdata1["Facilities"]}</td>
+        <td>${filteredData2["Facilities"]}</td>
+      </tr>
+      <tr>
+        <td>Reddit Review</td>
+        <td>${filterdata1["Reddit Review"]}</td>
+        <td>${filteredData2["Reddit Review"]}</td>
+      </tr>
+    `;
+}
