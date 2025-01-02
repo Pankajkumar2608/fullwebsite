@@ -97,6 +97,10 @@
         cursor: pointer;
         justify-items: center;
         align-items: center;
+        flex: content;
+        flex-direction: column;
+
+        
 
         transition: transform 0.3s ease;
       }
@@ -165,7 +169,7 @@
   </head>
   <body>
     <div class="calculator-container">
-      <h1>Percentile Calculator</h1>
+      <h1>Rank Predictor</h1>
       <div>
         <div class="input-group">
           <label for="Percentile">Enter your percentile:</label>
@@ -197,9 +201,10 @@
             <option value="ews">EWS</option>
           </select>
         </div>
-        <button style="margin-top: 2rem" id="button">Calculate Rank</button>
+        <button style="margin-top: 2rem " id="button">Calculate Rank</button>
         <div class="result" id="result"></div>
         <div class="result1" id="result1"></div>
+        <a href="howWePredict.html" style="display: flex; flex-direction: column; justify-items: center; margin-top: 1rem; color: rgb(255, 171, 0) ; align-items: center;">How we Predict rank</a>
 
       </div>
     </div>

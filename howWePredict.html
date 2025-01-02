@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How We Predict JEE Mains Rank</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: rgb(255, 171, 0) ;
+        }
+        .formula {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>How We Predict Your JEE Mains Rank from Percentile</h1>
+    
+    <h2>The Basic Formula</h2>
+    <p>We use a simple formula to estimate your rank based on your percentile:</p>
+    <div class="formula">
+        Rank = ((100 - Percentile) / 100) * Total_Candidates + 1
+    </div>
+    
+    <h2>Total Candidates</h2>
+    <p>We assume a total of 1,380,000 candidates based on previous year's data.</p>
+    
+    <h2>Category-Specific Calculations</h2>
+    <p>Depending on your category, we adjust the calculation:</p>
+    <ul>
+        <li>General: We only calculate the overall rank</li>
+        <li>OBC: We calculate both overall rank and category rank (using 525,362 candidates)</li>
+        <li>SC: We calculate both overall rank and category rank (using 132,167 candidates)</li>
+        <li>ST: We calculate both overall rank and category rank (using 46,805 candidates)</li>
+        <li>EWS: We calculate both overall rank and category rank (using 149,767 candidates)</li>
+    </ul>
+    
+    <h2>Rounding</h2>
+    <p>The final rank is rounded to the nearest whole number.</p>
+    
+    <h2>Important Notes</h2>
+    <ul>
+        <li>This is an estimation based on previous data and may not be 100% accurate.</li>
+        <li>The actual number of candidates may vary each year.</li>
+        <li>For very high percentiles, the prediction may be less precise due to the density of candidates at the top.</li>
+    </ul>
+</body>
+</html>
