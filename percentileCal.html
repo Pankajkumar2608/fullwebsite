@@ -75,7 +75,7 @@
         border: 1px solid var(--glass);
         border-radius: 10px;
         background: rgba(255, 255, 255, 0.05);
-        color: var(--light);
+        color: white;
         font-size: 1rem;
         transition: all 0.3s ease;
       }
@@ -97,11 +97,15 @@
         cursor: pointer;
         justify-items: center;
         align-items: center;
+
         transition: transform 0.3s ease;
       }
 
       button:hover {
         transform: translateY(-2px);
+      }
+      quota:hover {
+        transform: translate(-2px);
       }
 
       .result {
@@ -114,6 +118,19 @@
       }
 
       .result.show {
+        display: block;
+        animation: fadeIn 0.5s ease;
+      }
+      .result1 {
+        margin-top: 2rem;
+        padding: 1rem;
+        border-radius: 10px;
+        background: rgba(41, 98, 255, 0.1);
+        text-align: center;
+        display: none;
+      }
+
+      .result1.show {
         display: block;
         animation: fadeIn 0.5s ease;
       }
@@ -157,17 +174,33 @@
             id="Percentile"
             placeholder="Enter your percentile"
           />
-          <label for="Quota">Select your Quota:</label>
-          <select id="Quota">
-            <option value="General" id="general">General</option>
-            <option value="OBC" id="obc">OBC</option>
-            <option value="SC" id="sc">SC</option>
-            <option value="ST" id="st">ST</option>
-            <option value="EWS" id="ews">EWS</option>
+          <label for="Quota" style="margin-top: 0.5rem"
+            >Select your Quota:</label
+          >
+          <select
+            id="quota"
+            style="
+              border-radius: 0.5rem;
+              block-size: 2rem;
+              background-color: #2d2d2d;
+              width: 15rem;
+              border-color: aliceblue;
+              box-shadow: #0056b3;
+              font-weight: 400;
+              color: white;
+            "
+          >
+            <option value="general">General</option>
+            <option value="obc">OBC</option>
+            <option value="sc">SC</option>
+            <option value="st">ST</option>
+            <option value="ews">EWS</option>
           </select>
         </div>
-        <button style="margin-top: 2rem" id="button">Submit</button>
+        <button style="margin-top: 2rem" id="button">Calculate Rank</button>
         <div class="result" id="result"></div>
+        <div class="result1" id="result1"></div>
+
       </div>
     </div>
 
@@ -175,7 +208,8 @@
       const button = document.getElementById("button");
       const percentileInput = document.getElementById("Percentile");
       const result = document.getElementById("result");
-      const quota = document.getElementById("Quota");
+      const result1 = document.getElementById("result1")
+      const quota = document.getElementById("quota");
 
       button.addEventListener("click", (e) => {
         e.preventDefault();
@@ -190,27 +224,128 @@
           result.innerHTML =
             "Please enter a valid percentile between 0 and 100";
           result.style.color = "#ff4444";
+          result.classList.add('show')
+          // var video = document.createElement("video");
+          // video.width = 540;
+          // video.height = 360;
+          // video.controls = true;
+          // video.autoplay = true;
+          // video.playsinline = true;
+
+          // // Create source element
+          // var source = document.createElement("source");
+          // source.src = "./Abey Tu Thoda Sa Behen Ka Loda Hai Kya Meme Template.mp4";
+          // source.type = "video/mp4";
+          
+
+
+          // // Append source to video
+          // video.appendChild(source);
+
+          // // Append video to container
+          // videoContainer.appendChild(video);
           return;
         }
 
         const quotaValue = quota.value;
-        if (quotaValue) {
+        if (!quotaValue || quotaValue === "general") {
           const total_candidates = 1380000;
-        
+
           const overall_rank =
-            ((100 - percentile) / 100) * total_candidates + 1;
-          const category_candidates =
-            total_candidates * (category_percentage / 100);
-          const category_rank =
-            ((100 - percentile) / 100) * category_candidates + 1;
+            ((100 - percentileValue) / 100) * total_candidates + 1;
 
           result.innerHTML = `Your General rank is approximately ${Math.round(
-            generalRank
+            overall_rank
           ).toLocaleString()}`;
           result.style.color = "#4CAF50";
+          result.classList.add("show");
+
+        } else if (quotaValue === "obc") {
+          const total_candidates = 1380000;
+          const category_candidates = 525362;
+
+          const overall_rank =
+            ((100 - percentileValue) / 100) * total_candidates + 1;
+
+          const category_rank =
+            ((100 - percentileValue) / 100) * category_candidates + 1;
+
+          result.innerHTML = `Your overall Rank rank is approximately ${Math.round(
+            overall_rank
+          ).toLocaleString()}`;
+          result1.innerHTML = `Your  Obc rank is approximately ${Math.round(
+            category_rank
+          ).toLocaleString()}`;
+          result.style.color = "#4CAF50";
+          result.classList.add("show");
+          result1.classList.add("show");
+          result1.style.color = "#4CAF50";
+
+        } else if (quotaValue === "sc") {
+          const total_candidates = 1380000;
+          category_candidates = 132167;
+
+          const overall_rank =
+            ((100 - percentileValue) / 100) * total_candidates + 1;
+
+          const category_rank =
+            ((100 - percentileValue) / 100) * category_candidates + 1;
+
+          result.innerHTML = `Your overall Rank rank is approximately ${Math.round(
+            overall_rank
+          ).toLocaleString()}`;
+          result1.innerHTML = `Your  SC rank is approximately ${Math.round(
+            category_rank
+          ).toLocaleString()}`;
+          result.style.color = "#4CAF50";
+          result.classList.add("show");
+          result1.classList.add("show");
+          result1.style.color = "#4CAF50";
+
+        } else if (quotaValue === "st") {
+          const total_candidates = 1380000;
+          const category_candidates = 46805;
+
+          const overall_rank =
+            ((100 - percentileValue) / 100) * total_candidates + 1;
+
+          const category_rank =
+            ((100 - percentileValue) / 100) * category_candidates + 1;
+
+          result.innerHTML = `Your overall Rank rank is approximately ${Math.round(
+            overall_rank
+          ).toLocaleString()}`;
+          result1.innerHTML = `Your  ST rank is approximately ${Math.round(
+            category_rank
+          ).toLocaleString()}`;
+          
+          result.style.color = "#4CAF50";
+          result.classList.add("show");
+          result1.classList.add("show");
+          result1.style.color = "#4CAF50";
+        } else if (quotaValue === "ews") {
+          const total_candidates = 1380000;
+          const category_candidates = 149767;
+
+          const overall_rank =
+            ((100 - percentileValue) / 100) * total_candidates + 1;
+
+          const category_rank =
+            ((100 - percentileValue) / 100) * category_candidates + 1;
+
+          result.innerHTML = `Your overall Rank rank is approximately ${Math.round(
+            overall_rank
+          ).toLocaleString()}`;
+          result1.innerHTML = `Your  EWS rank is approximately ${Math.round(
+            category_rank
+          ).toLocaleString()}`;
+          result.style.color = "#4CAF50";
+          result.classList.add("show");
+          result1.style.color = "#4CAF50";
+          result1.classList.add("show");
         }
 
-        result.classList.add("show");
+        
       });
     </script>
   </body>

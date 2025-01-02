@@ -18,6 +18,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    
 }
 
 h1, h2, h3, h4, p {
@@ -175,6 +176,7 @@ nav li a {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
+    flex-direction: column;
 }
 
 .predictor-box {
@@ -186,6 +188,7 @@ nav li a {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
     position: relative;
+    
 }
 
 .predictor-box:hover {
