@@ -2,33 +2,33 @@
 let prevScrollpos = window.pageYOffset;
 const navBar = document.getElementById("mainNav");
 
-const headline = document.getElementById('typing-headline');
-const textToType = "Predict Your Ideal College";
-let index = 0;
-let isDeleting = false;
+// const headline = document.getElementById('typing-headline');
+// const textToType = "Predict Your Ideal College";
+// let index = 0;
+// let isDeleting = false;
 
 
 
-function type() {1
-  const currentText = headline.textContent;
+// function type() {1
+//   const currentText = headline.textContent;
 
-  if (!isDeleting && index < textToType.length) {
-    headline.textContent = textToType.substring(0, index + 1);
-    index++;
-  } else if (isDeleting && index > 0) {
-    headline.textContent = textToType.substring(0, index - 1);
-    index--;
-  }
+//   if (!isDeleting && index < textToType.length) {
+//     headline.textContent = textToType.substring(0, index + 1);
+//     index++;
+//   } else if (isDeleting && index > 0) {
+//     headline.textContent = textToType.substring(0, index - 1);
+//     index--;
+//   }
 
-  let typingSpeed = 80;
-  if (index === textToType.length || index === 0) {
-    typingSpeed = 1000;
-    isDeleting = !isDeleting;
+//   let typingSpeed = 80;
+//   if (index === textToType.length || index === 0) {
+//     typingSpeed = 1000;
+//     isDeleting = !isDeleting;
     
-  }
+//   }
 
-  setTimeout(type, typingSpeed);
-}
+//   setTimeout(type, typingSpeed);
+// }
 
 window.addEventListener('load', type);
 
@@ -331,73 +331,6 @@ const PAPER = anime({
   opacity: [0.3, .7, 0],
   easing: 'easeInOutSine',
 })
-// Add animation on scroll
-const observerOptions = {
-  threshold: 0.1
-};
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('animate');
-    }
-  });
-}, observerOptions);
 
-document.querySelectorAll('.predictor-box, .step, .benefit, h2').forEach(el => {
-  observer.observe(el);
-});/* filepath: /C:/Users/ASUS/Desktop/landing page/index.js */
-// Enhanced scroll animations
-const observerOptions = {
-  threshold: 0.1,
-  rootMargin: '50px'
-};
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('animate');
-      
-      // Add specific animations for different elements
-      if (entry.target.classList.contains('predictor-box')) {
-        entry.target.style.transitionDelay = '0.2s';
-      }
-    }
-  });
-}, observerOptions);
-
-// Observe elements
-document.querySelectorAll('.predictor-box, .step, .benefit, h2').forEach(el => {
-  observer.observe(el);
-});
-
-// Smooth scroll handling
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    e.preventDefault();
-    const targetId = this.getAttribute('href');
-    const targetElement = document.querySelector(targetId);
-    
-    if (targetElement) {
-      window.scrollTo({
-        top: targetElement.offsetTop - 80,
-        behavior: 'smooth'
-      });
-    }
-  });
-});
-
-// Enhanced navbar behavior
-let prevScrollpos = window.pageYOffset;
-const navbar = document.querySelector('nav');
-
-window.addEventListener('scroll', () => {
-  const currentScrollPos = window.pageYOffset;
-  
-  if (prevScrollpos > currentScrollPos) {
-    navbar.style.transform = 'translateY(0)';
-  } else {
-    navbar.style.transform = 'translateY(-100%)';
-  }
-  
-  prevScrollpos = currentScrollPos;

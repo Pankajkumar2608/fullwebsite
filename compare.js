@@ -82,9 +82,11 @@ document.addEventListener("DOMContentLoaded", () => {
     "IIITDM Jabalpur",
   ];
 
+  
+
   function populateDropdowns() {
     const collegeSelects = document.querySelectorAll(".college-select");
-    const branchSelects = document.querySelectorAll(".branch-select");
+    
 
     collegeSelects.forEach((select) => {
       colleges.forEach((college) => {
@@ -100,18 +102,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
   eventListener();
 });
+
+
 function eventListener() {
   const compareBtn = document.getElementById("submit-btn");
   compareBtn.addEventListener("click", compareColleges);
+}
+function showLoading(isLoading){
+  const loader = document.getElementById("loader");
+  if(isLoading){
+    loader.style.display = "block";
+    loader.innerHTML = "Loading...";
+  }
+  else{
+    loader.style.display = "none";
+  }
+
 }
 
 function compareColleges() {
   const collegeName1 = document.getElementById("college1").value;
   const collegeName2 = document.getElementById("college2").value;
+  if (!collegeName1 || !collegeName2) {
+    alert("Please select both colleges");
+    return;
+  }
+  if(collegeName1===collegeName2){
+    alert("Please select different colleges");
+    return;
+  }
+  showLoading(true);
+  
+  
+  
 
   axios
     .post(
-      "https://7edcacd9-2aea-46d0-93e6-b4fdfcd57d9d-00-2wkn1xpm2v4pu.sisko.replit.dev/colleges",
+      "https://comparecollegeapi.onrender.com/colleges",
       {
         collegeName1,
         collegeName2,
@@ -120,13 +147,17 @@ function compareColleges() {
     .then((response) => {
       const filterdata1 = response.data.college1;
       const filteredData2 = response.data.college2;
+      showLoading(false);
 
       updateUI(filterdata1, filteredData2);
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
+      showLoading(false);
     });
 }
+
+
 
 function updateUI(filterdata1, filteredData2) {
   const spanPlacmentRate1 = document.getElementById("placement1");
@@ -134,14 +165,16 @@ function updateUI(filterdata1, filteredData2) {
   const spanPackage = document.getElementById("package1");
   const spanPackage2 = document.getElementById("package2");
 
-  spanPlacmentRate1.textContent = `Placement Rate: ${filterdata1["Placement Rate (%)"]} %`;
-  spanPlacmentRate2.textContent = `Placement Rate: ${filteredData2["Placement Rate (%)"]} %`;
-  spanPackage.textContent = `Avg Package: ${filterdata1["Average Package (LPA)"]} LPA`;
-  spanPackage2.textContent = `Avg Package: ${filteredData2["Average Package (LPA)"]} LPA`;
+  spanPlacmentRate1.textContent = `Placement Rate: ${filterdata1["Placement Rate (%)"]} `;
+  spanPlacmentRate2.textContent = `Placement Rate: ${filteredData2["Placement Rate (%)"]} `;
+  spanPackage.textContent = `Avg Package: ${filterdata1["Average Package (LPA)"]} `;
+  spanPackage2.textContent = `Avg Package: ${filteredData2["Average Package (LPA)"]} `;
   const collegeName1 = document.getElementById("college1").value;
   const collegeName2 = document.getElementById("college2").value;
 
   const comparisonBody = document.getElementById("comparison-body");
+  showLoading(false);
+  
   comparisonBody.innerHTML = `
       <thead>
             <tr>
