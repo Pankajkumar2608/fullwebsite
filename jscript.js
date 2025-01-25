@@ -317,7 +317,9 @@ function filterAndUpdateResults() {
   }
 
   // Show loading state
-  document.getElementById('result-body').innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
+  
+  document.getElementById('result-body').innerHTML = `document.getElementById('waiting').innerHTML = '<img src="https://media.tenor.com/LMz_TrIOxV8AAAAM/mr-bean-mrbean.gif" alt="Loading...">`;
+
 
   // Make API call
   axios.post('https://collegepredictorapi.onrender.com/filter', {
@@ -353,6 +355,7 @@ function filterAndUpdateResults() {
 function updateResultTable(data) {
   const resultBody = document.getElementById('result-body');
   resultBody.innerHTML = '';
+  document.getElementById('waiting').style.display = 'none';
 
   if (!Array.isArray(data)) {
     console.error('Data is not an array:', data);
