@@ -4,7 +4,7 @@ let filteredData = [];
 let currentPage = 1;
 const itemsPerPage = 20;
 const background = document.querySelector('.background');
-const loadingDiv = document.getElementById('book');
+const loadingDiv = document.getElementById('loading');
 
 document.addEventListener('DOMContentLoaded', () => {
   fetchCSVData();
@@ -24,7 +24,7 @@ function fetchCSVData() {
       updateResultTable(getPageData());
       updatePageInfo();
 
-      bookDiv.style.display = 'none';
+      loadingDiv.style.display = 'none';
     });
 }
 
@@ -216,11 +216,11 @@ function filterAndUpdateResults() {
   const programName = document.getElementById('program_name').value;
   const closingRank = document.getElementById('your_rank').value;
 
-  // Ensure all fields are required
-  // if (!year || !roundNo || !quota || !seatType || !gender || !programName) {
-  //   alert('Please fill all the required fields.');
-  //   return;
-  // }
+  
+  if (!year || !roundNo || !quota || !seatType || !gender || !programName) {
+    alert('Please fill all the required fields.');
+     return;
+  }
 
   filteredData = csvData.slice();
   if (year) filteredData = filteredData.filter(row => row.year === year);
@@ -250,7 +250,7 @@ function filterAndUpdateResults() {
   if (closingRank) {
     const rank = parseInt(closingRank);
     const minRank = Math.max(1, rank - 1500);
-    const maxRank = rank + 10000;
+    const maxRank = rank + 15000;
     filteredData = filteredData.filter(row => {
         const rowRank = parseInt(row.closing_rank);
         return rowRank >= minRank && rowRank <= maxRank;

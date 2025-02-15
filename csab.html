@@ -2,6 +2,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0MLEH3SXZV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0MLEH3SXZV');
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Motivation Kaksha - College Predictor</title>
@@ -12,7 +21,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="jstyle.css">
+    <link rel="stylesheet" href="cstyle.css">
 </head>
 <body>
     <header>
@@ -96,14 +105,7 @@
                         <input type="number" id="your_rank" placeholder="Enter your rank">
                     </div>
                 </div>
-                <div class="book">
-                    <div class="book__pg-shadow"></div>
-                    <div class="book__pg"></div>
-                    <div class="book__pg book__pg--2"></div>
-                    <div class="book__pg book__pg--3"></div>
-                    <div class="book__pg book__pg--4"></div>
-                    <div class="book__pg book__pg--5"></div>
-                </div>
+                <div id="loading">Loading data... please wait</div> <main>
                     <div class="container">
                         <button id="submit-btn" class="btn">Predict College <i class="fas fa-arrow-right"></i></button>
                         </div>
