@@ -17,7 +17,7 @@ const elements = {
 // Constants
 const CONFIG = {
   itemsPerPage: 1000,
-  apiEndpoint: 'https://60cc5f2b-203d-486f-88f9-53a070052c8e-00-210snj9zzv69v.pike.replit.dev',
+  apiEndpoint: 'https://collegepredictorapi.onrender.com',
   debounceDelay: 300,
   pdfConfig: {
     headerColor: [230, 203, 48],

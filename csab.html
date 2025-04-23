@@ -1,155 +1,247 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0MLEH3SXZV"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Motivation Kaksha - College Predictor & Rank Trends</title>
 
-  gtag('config', 'G-0MLEH3SXZV');
-</script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Motivation Kaksha - College Predictor</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="cstyle.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+
+    <!-- Choices.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Your Custom CSS -->
+    <link rel="stylesheet" href="cstyle.css" />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0MLEH3SXZV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-0MLEH3SXZV');
+    </script>
 </head>
 <body>
+    <!-- Loading Indicator -->
+    <div id="loading" class="loading-overlay">
+        <div class="spinner"></div>
+        <span>Loading predictor data...</span>
+    </div>
+
+    <!-- Header -->
     <header>
-        <div class="container">
-            <div class="header-content">
-                <img src="motivation kaksha logo.png" alt="Motivation Kaksha Logo" class="logo" >
-                
-                <nav>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
+        <div class="header-content">
+            <a href="index.html" class="logo-link" aria-label="Motivation Kaksha Home">
+                <img src="motivation kaksha logo.png" alt="Motivation Kaksha Logo" class="logo" />
+            </a>
+            <div class="nav-container">
+                <nav id="main-nav">
+                    <ul class="nav-links">
+                        <li><a href="index.html" class="active">Home</a></li>
                         <li><a href="#">About</a></li>
-                        <li><a href="https://t.me/Motivation_kaksha">Contact</a></li>
+                        <li><a href="https://t.me/Motivation_kaksha" target="_blank" rel="noopener noreferrer">Contact</a></li>
+                        <li>
+                            <button id="view-saved-btn" class="secondary-btn btn-small view-saved-header-btn">
+                                <i class="fas fa-star" aria-hidden="true"></i> Saved (<span id="saved-count">0</span>)
+                            </button>
+                        </li>
                     </ul>
                 </nav>
+                <button id="mobile-menu-toggle" class="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
+                    <span></span><span></span><span></span>
+                </button>
             </div>
         </div>
+        <div class="mobile-nav-wrapper">
+            <ul class="nav-links-small">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="https://t.me/Motivation_kaksha" target="_blank" rel="noopener noreferrer">Contact</a></li>
+                <li>
+                     <button id="view-saved-btn-mobile" class="secondary-btn btn-small view-saved-header-btn" style="width: 80%; margin: 10px auto; display: block;">
+                        <i class="fas fa-star" aria-hidden="true"></i> Saved (<span id="saved-count-mobile">0</span>)
+                    </button>
+                </li>
+            </ul>
+        </div>
     </header>
+
+    <!-- Main Content Area -->
     <main>
-        <div class="container">
-            <div class="filters-container">
-                <h2>Predict College</h2>
-                <div class="filters">
-                    <div class="filter-group">
-                        <label for="year">Year:</label>
-                        <select id="year" required>
-                            <option value="">Select Year</option>
-                            
-                            
+        <div class="container"> 
+            <form id="filter-form" novalidate>
+
+                <!-- Primary Filters Section -->
+                <section id="primary-filters-section" class="search-container card" aria-labelledby="primary-filters-heading">
+                    <h2 id="primary-filters-heading">Primary Filters</h2>
+                    <div class="filter-section">
+                        <label for="your_rank" class="required-label">Your Rank <span style="color: red;">*</span></label>
+                        <input type="number" id="your_rank" name="your_rank" required placeholder="Enter Your CRL Rank" min="1" aria-describedby="your_rank-error" />
+                        <span class="error-message" id="your_rank-error" aria-live="polite"></span>
+                    </div>
+                    <div class="filter-section" style="margin-top: 1rem;"> 
+                   
+                        <label for="seat_type" class="required-label">Category <span style="color: red;">*</span></label>
+                        <select id="seat_type" name="seat_type" required aria-describedby="seat_type-error">
+                            <option value="">Select Category</option>
+                            <!-- Options populated by JS -->
                         </select>
+                        <span class="error-message" id="seat_type-error" aria-live="polite"></span>
                     </div>
-                    <div id="popup" style="display: none;">
-                        <h2><b>Welcome to Motivation Kaksha!</b></h2>
-                        <p>This website is designed to help you predict your college admissions based on your rank and other factors.</p>
-                        <p>To use this website, simply enter your rank and other details in the filters section, and click on the "Predict College" button.</p>
-                        <p>* star marked field are mandatory to filled</p>
-                        <p>all field are not required to filled to show data</p>
-                        <p><i>If the Closing/Opening rank has a suffix 'P', it indicates that the corresponding rank is from Preparatory Rank List.</i></p>
-                        <p><b>NOTE - IN Institute NAME USE CORRECT NAME ELSE LEAVE IT BLANK</b> </p>
-                        <p>for any queires contact us on <a href="https://t.me/motivationkaksha_discussion">Telegram</a></p>
-                        <button id="close-popup">Close</button>
-                    </div>
-                    <div class="filter-group">
-                        <label for="institute_name">Institute Name:</label>
-                        <select id="institute_name">
-                        </select>
-                           
-                    </div>
-                    <div class="filter-group">
-                        <label for="round_no">Round No:</label>
-                        <select id="round_no">
-                            
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="quota">Quota:</label>
-                        <select id="quota">
-                            
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="seat_type">Seat Type:</label>
-                        <select id="seat_type">
-                            
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="gender">Gender*:</label>
-                        <select id="gender" required>
-                           
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="program_name">Program Name:</label>
-                        <select id="program_name" required>
-                            
-                            
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="your_rank">Your Rank:</label>
-                        <input type="number" id="your_rank" placeholder="Enter your rank">
-                    </div>
-                </div>
-                <div id="loading">Loading data... please wait</div> <main>
-                    <div class="container">
-                        <button id="submit-btn" class="btn">Predict College <i class="fas fa-arrow-right"></i></button>
+                </section>
+
+                <!-- Optional Filters Section -->
+                <!-- Changed ID to be unique -->
+                <section id="optional-filters-section" class="search-container card" aria-labelledby="optional-filters-heading">
+                    <h2 id="optional-filters-heading">Optional Filters</h2>
+
+                    <!-- Removed the duplicate <form> tag from here -->
+                    <div class="filter-grid">
+                        <div class="filter-section">
+                            <label for="quota">Quota</label>
+                            <select id="quota" name="quota" aria-describedby="quota-error">
+                                <option value="">Select</option>
+                                <!-- Options populated by JS -->
+                            </select>
+                            <span class="error-message" id="quota-error" aria-live="polite"></span>
                         </div>
-            </div>
-            
-            <div class="background">
-            <div class="results-container">
-                <h2>Predicted Colleges</h2>
-                <div class="results">
-                    <table id="result-table">
+                        <div class="filter-section">
+                            <label for="gender">Gender</label>
+                            <select id="gender" name="gender" aria-describedby="gender-error">
+                                <option value="">Select</option>
+                                <!-- Options populated by JS -->
+                            </select>
+                            <span class="error-message" id="gender-error" aria-live="polite"></span>
+                        </div>
+                        <div class="filter-section">
+                            <label for="year">Year</label>
+                            <select id="year" name="year" aria-describedby="year-error">
+                                <option value="">Select</option>
+                                <!-- Options populated by JS -->
+                            </select>
+                            <span class="error-message" id="year-error" aria-live="polite"></span>
+                        </div>
+                        <div class="filter-section">
+                            <label for="round_no">Round No</label>
+                            <select id="round_no" name="round_no" aria-describedby="round_no-error">
+                                <option value="">Select</option>
+                                <!-- Options populated by JS -->
+                            </select>
+                            <span class="error-message" id="round_no-error" aria-live="polite"></span>
+                        </div>
+                        <div class="filter-section filter-group--institute">
+                            <label for="institute_name">Institute Name (Optional)</label>
+                            <select id="institute_name" name="institute_name" aria-describedby="institute_name-error"></select>
+                            <span class="error-message" id="institute_name-error" aria-live="polite"></span>
+                        </div>
+                        <div class="filter-section filter-group--program">
+                            <label for="program_name">Program Name (Optional)</label>
+                            <select id="program_name" name="program_name" aria-describedby="program_name-error"></select>
+                            <span class="error-message" id="program_name-error" aria-live="polite"></span>
+                        </div>
+                    </div>
+
+                    <!-- Buttons Container - NOW INSIDE THE SINGLE FORM -->
+                    <div class="buttons-container">
+                        <button type="button" id="clear-filters-btn" class="secondary-btn">
+                            <i class="fas fa-eraser" aria-hidden="true"></i> Clear Filters
+                        </button>
+                        <button type="submit" id="submit-btn" class="primary-btn">
+                            <i class="fas fa-search" aria-hidden="true"></i> Predict College
+                        </button>
+                    </div>
+                    <!-- General Form Error -->
+                    <div id="form-error" class="message error-message" style="display: none;" aria-live="polite"></div>
+                    <!-- Removed the closing </form> tag from here -->
+                </section>
+
+            <!-- ***** END SINGLE FORM ***** -->
+            </form>
+
+            <!-- Results Section -->
+            <section id="results-section" class="results-container" style="display: none;" aria-live="polite">
+                <div class="results-header">
+                    <h2 id="results-heading" class="results-title">Predicted Colleges</h2>
+                    <button id="download-results-btn" class="secondary-btn" disabled>
+                         <i class="fas fa-file-pdf" aria-hidden="true"></i> Download Results (PDF)
+                    </button>
+                </div>
+                <div id="results-status" class="message info-message" aria-live="polite"></div>
+                <div class="table-responsive-wrapper">
+                    <table id="result-table" class="results-table" aria-labelledby="results-heading">
                         <thead>
                             <tr>
-                                <th>Institute</th>
-                                <th>Program Name</th>
-                                <th>Opening Rank</th>
-                                <th>Closing Rank</th>
-                                
+                                <th scope="col">Institute & Details</th>
+                                <th scope="col">Program Name</th>
+                                <th scope="col">Opening Rank</th>
+                                <th scope="col">Closing Rank</th>
+                                <th scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="result-body"></tbody>
                     </table>
                 </div>
-                <div class="pagination">
-                    <button id="prev-btn" class="btn prev-next-btn">Previous</button>
-                    <span id="page-info"></span>
-                    <button id="next-btn" class="btn prev-next-btn">Next</button>
-                </div>
-            </div>
-            </div>
-        </div>
-             
+                <div class="pagination" id="pagination"></div>
+            </section>
+        </div> <!-- End .container -->
     </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 Motivation Kaksha. All rights reserved.</p>
-            <h3>DEVELOPED BY Pankaj<a href="https://t.me/unofficial_g_o_d"> Telegram</a></h3>
+    <!-- Trend Modal -->
+    <div id="trend-modal" class="modal" style="display: none" aria-labelledby="trend-modal-title" aria-modal="true" role="dialog">
+        <div class="modal-content card">
+            <button class="modal-close" aria-label="Close trend modal">×</button>
+            <h3 id="trend-modal-title">Rank Trend</h3>
+            <div id="trend-info" class="trend-info">Loading trend data...</div>
+            <div class="chart-container">
+                <canvas id="trend-chart" role="img" aria-label="Rank trend chart over years"></canvas>
+            </div>
+            <div id="trend-error" class="message error-message" style="display: none" aria-live="assertive"></div>
         </div>
+    </div>
+
+    <!-- Saved Colleges Modal -->
+    <div id="saved-colleges-modal" class="modal" style="display: none" aria-labelledby="saved-modal-title" aria-modal="true" role="dialog">
+        <div class="modal-content card">
+            <button class="modal-close" aria-label="Close saved colleges modal">×</button>
+            <h3 id="saved-modal-title">Saved College Options</h3>
+            <div id="saved-colleges-list" class="saved-colleges-list">
+                <p class="no-saved-message">Loading saved colleges...</p>
+            </div>
+            <div class="modal-footer">
+                <button id="clear-saved-btn" class="secondary-btn btn-danger">
+                    <i class="fas fa-trash-alt" aria-hidden="true"></i> Clear All Saved
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© <span id="current-year">2025</span> Motivation Kaksha. All rights reserved.</p>
+        <p>Developed by Pankaj | Connect on <a href="https://t.me/unofficial_g_o_d" target="_blank" rel="noopener noreferrer">Telegram <i class="fab fa-telegram-plane" aria-hidden="true"></i></a></p>
     </footer>
-    
-    <script src="cscript.js"></script>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" title="Back to Top" aria-label="Scroll back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- JS Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- Your Custom JS -->
+    <!-- Make sure this points to the script with the latest applyFilters logic -->
+    <script src="cscript.v11.js" defer></script>
 
 </body>
 </html>
-
-
-
