@@ -58,4 +58,4 @@ Feel free to fork the repository and submit pull requests. For major changes, pl
 This project is licensed under the ISC License.
 
 ## Contact
-For more information, contact us at [adarsh@motivationkaksha.com](mailto:adarsh@motivationkaksha.com) or join our [Telegram group](https://t.me/motivationkaksha_discussion).
+For more information, contact us at [pankajmotivationkaksha.com](mailto:pankaj@motivationkaksha.com) or join our [Telegram group](https://t.me/motivationkaksha_discussion).
