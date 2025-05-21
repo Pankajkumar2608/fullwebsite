@@ -1,465 +1,319 @@
 let prevScrollpos = window.pageYOffset;
-const siteHeader = document.querySelector(".site-header"); // Target header element
-const navBar = document.getElementById("mainNav"); // Still needed for offset calculation
-const menuToggle = document.querySelector(".menu-toggle"); // Target toggle button
+const siteHeader = document.querySelector(".site-header");
+const mainNav = document.getElementById("mainNav"); // Changed var name for clarity
+const menuToggle = document.querySelector(".menu-toggle");
+const mainNavMenu = document.getElementById("mainNavMenu");
 
 
+// --- Typing Animation ---
 const headlineTarget = document.getElementById('typing-headline-target');
 if (headlineTarget) {
-    const textToType = headlineTarget.textContent; // Get text from HTML
+    const textToType = headlineTarget.textContent.trim(); // Get text from HTML & trim
     headlineTarget.textContent = ''; // Clear initial text
     let index = 0;
     let isDeleting = false;
+    const typingDelay = 100; // Time between typing characters
+    const deletingDelay = 50;  // Time between deleting characters
+    const pauseDelay = 2000;   // Pause at end of typing/deleting
 
     function type() {
-        const currentText = headlineTarget.textContent;
-        const fullText = textToType; // Use original text
+        const currentWord = textToType; // Using the full original text
 
-        if (!isDeleting && index < fullText.length) {
-            headlineTarget.textContent = fullText.substring(0, index + 1);
-            index++;
-        } else if (isDeleting && index > 0) {
-            headlineTarget.textContent = fullText.substring(0, index - 1);
+        if (isDeleting) {
+            headlineTarget.textContent = currentWord.substring(0, index - 1);
             index--;
+        } else {
+            headlineTarget.textContent = currentWord.substring(0, index + 1);
+            index++;
         }
 
-        let typingSpeed = 80;
-        // If finished typing or finished deleting
-        if ((!isDeleting && index === fullText.length) || (isDeleting && index === 0)) {
-            typingSpeed = 1500; // Pause longer at the end and beginning
-            isDeleting = !isDeleting; // Switch mode
-        } else if (isDeleting) {
-             typingSpeed = 50; // Delete faster
+        let delay = isDeleting ? deletingDelay : typingDelay;
+
+        if (!isDeleting && index === currentWord.length) {
+            delay = pauseDelay; // Pause after typing
+            isDeleting = true;
+        } else if (isDeleting && index === 0) {
+            delay = pauseDelay / 2; // Shorter pause before re-typing
+            isDeleting = false;
         }
-
-
-        setTimeout(type, typingSpeed);
+        setTimeout(type, delay);
     }
     // Start typing effect only if the target exists
-    window.addEventListener('load', () => setTimeout(type, 500)); // Add a small delay
+    window.addEventListener('load', () => setTimeout(type, 500));
 }
 
-
+// --- Header Scroll Behavior ---
 window.onscroll = function() {
-    if (!siteHeader) return; // Exit if header doesn't exist
+    if (!siteHeader || !mainNav) return;
 
     let currentScrollPos = window.pageYOffset;
 
-    // Show if scrolling up or near top
     if (prevScrollpos > currentScrollPos || currentScrollPos < 50) {
         siteHeader.classList.remove("hide");
-    }
-    // Hide only if scrolling down past a threshold and menu isn't open
-    else if (currentScrollPos > 100 && !navBar.classList.contains('active')) {
+    } else if (currentScrollPos > 100 && !mainNav.classList.contains('active')) {
+        // Only hide if menu is not active
         siteHeader.classList.add("hide");
     }
     prevScrollpos = currentScrollPos;
 
-    // Add 'scrolled' class for background change
-    if (navBar) { // Check if navBar exists
-         if (currentScrollPos > 50) {
-             navBar.classList.add("scrolled");
-         } else {
-             navBar.classList.remove("scrolled");
-         }
+    if (currentScrollPos > 50) {
+        mainNav.classList.add("scrolled");
+    } else {
+        mainNav.classList.remove("scrolled");
     }
 };
 
+// --- Mobile Menu Toggle ---
 function toggleMenu() {
-    if (navBar && menuToggle) {
-        navBar.classList.toggle("active"); // Use 'active' class consistent with CSS
-        const isExpanded = navBar.classList.contains("active");
-        menuToggle.setAttribute('aria-expanded', isExpanded);
+    if (mainNav && menuToggle && mainNavMenu) {
+        mainNav.classList.toggle("active"); // Toggle on nav element for styles
+        const isExpanded = mainNav.classList.contains("active");
+        menuToggle.setAttribute('aria-expanded', isExpanded.toString());
 
-        // Prevent hiding the header while the menu is open
-        if (isExpanded && siteHeader) {
-            siteHeader.classList.remove('hide');
+        if (isExpanded) {
+            siteHeader.classList.remove('hide'); // Ensure header is visible when menu is open
+            // Optional: trap focus within menu
+        } else {
+            // Optional: release focus trap
         }
     }
 }
 
+// --- Smooth Scrolling for Anchor Links ---
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-
         const targetId = this.getAttribute('href');
-        try { // Add try-catch for robustness
-            const targetElement = document.querySelector(targetId);
+        if (targetId === "#" || targetId.length <= 1) return; // Ignore empty or standalone #
 
-            if (targetElement && navBar) {
-                let offset = navBar.offsetHeight;
-                 // If nav is hidden, don't subtract its height (or subtract less)
-                if (siteHeader && siteHeader.classList.contains('hide')) {
-                    offset = 10; // Small offset when nav is hidden
-                }
+        const targetElement = document.querySelector(targetId);
 
-                // Close mobile menu *before* scrolling
-                if (navBar.classList.contains('active')) {
-                     navBar.classList.remove("active");
-                     if (menuToggle) {
-                         menuToggle.setAttribute('aria-expanded', 'false');
-                     }
-                }
+        if (targetElement) {
+            e.preventDefault();
+            let offset = mainNav ? mainNav.offsetHeight : 70; // Default offset if mainNav not found
 
-                // Use timeout to allow menu closing animation to start
-                setTimeout(() => {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - offset,
-                        behavior: 'smooth'
-                    });
-                 }, 100); // Small delay
+            if (siteHeader && siteHeader.classList.contains('hide')) {
+                // If header is hidden, use a smaller offset or none if it's fully off-screen
+                // This depends on how 'hide' class works. Assuming it slides out completely.
+                offset = 15; // Small offset for visual comfort
             }
-        } catch (error) {
-            console.error("Error finding or scrolling to element:", error);
+
+            // Close mobile menu *before* scrolling
+            if (mainNav && mainNav.classList.contains('active')) {
+                 toggleMenu(); // Use the toggle function to correctly update ARIA too
+            }
+
+            // Use timeout to allow menu closing animation to start/finish
+            setTimeout(() => {
+                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - offset;
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+             }, mainNav && mainNav.classList.contains('active') ? 300 : 50); // Longer delay if menu was open
         }
     });
 });
 
-const accordionHeaders = document.querySelectorAll(".accordion-header");
 
+// --- Accordion Functionality ---
+const accordionHeaders = document.querySelectorAll(".accordion-header");
 accordionHeaders.forEach(header => {
     header.addEventListener('click', () => {
         const content = header.nextElementSibling;
-        if (!content) return; // Exit if no content element found
+        if (!content || !content.classList.contains('accordion-content')) {
+            console.warn("Accordion content not found for header:", header);
+            return;
+        }
 
         const currentlyExpanded = header.getAttribute('aria-expanded') === 'true';
-
-        // Set ARIA attribute immediately
-        header.setAttribute('aria-expanded', !currentlyExpanded);
+        header.setAttribute('aria-expanded', (!currentlyExpanded).toString());
 
         if (!currentlyExpanded) {
-            // Remove 'hidden' to allow CSS transition
-            content.hidden = false;
-            // Force reflow to ensure transition works correctly after display change
-            // void content.offsetWidth; // This can sometimes help, but requestAnimationFrame is often better
-
-            // Use requestAnimationFrame to apply styles in the next frame
-             requestAnimationFrame(() => {
+            // Open accordion
+            content.hidden = false; // Make it visible for scrollHeight calculation & CSS styles
+            requestAnimationFrame(() => { // Ensure 'hidden' is processed before calculating scrollHeight
                 content.style.maxHeight = content.scrollHeight + "px";
-                // Add padding/opacity styles managed by CSS based on [aria-expanded="true"] + .accordion-content selector
-             });
-
+                // Opacity and padding transitions are handled by CSS:
+                // .accordion-header[aria-expanded="true"] + .accordion-content
+            });
         } else {
+            // Close accordion
             content.style.maxHeight = '0px';
-            // Add hidden attribute *after* transition ends
-            // CSS now handles the hiding via the [aria-expanded="false"] + .accordion-content selector
-            // The transitionend listener might still be useful for complex cleanup if needed
-            /*
-            content.addEventListener('transitionend', () => {
-                if (header.getAttribute('aria-expanded') === 'false') {
-                   // content.hidden = true; // Re-hide if strictly necessary
-                }
-            }, { once: true });
-            */
+            // 'hidden' attribute can be re-added after transition for semantics/accessibility,
+            // but CSS opacity and max-height=0 effectively hides it.
+            // If you use 'hidden', ensure transitionend listener for it.
+            // For now, relying on CSS to hide it via max-height and opacity.
+            // content.addEventListener('transitionend', () => {
+            //     if (header.getAttribute('aria-expanded') === 'false') {
+            //        content.hidden = true;
+            //     }
+            // }, { once: true });
         }
     });
 });
 
 
-// --- Anime.js Animations ---
+// --- Anime.js Animations (with existence checks) ---
 const GLOBAL_CFG = {
-    loop: true
+    loop: true,
+    // Consider adding a global easing or let individual animations define it
+    // easing: 'easeInOutSine'
 };
 
 function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Check if elements exist before animating
-let swetCollection = document.querySelectorAll('.swet');
-if (swetCollection.length > 0) {
-    swetCollection.forEach((el, index) => {
-        anime({
-            ...GLOBAL_CFG,
-            targets: el,
-            opacity: [0, 1, 0],
-            delay: index * 100,
-            duration: index * 1500,
-            translateY: index * 2,
-            easing: 'easeInOutSine'
+// Helper function to check if element exists for anime.js
+function animateIfExists(selector, options) {
+    const element = document.querySelector(selector);
+    const elements = document.querySelectorAll(selector); // For collections
+
+    if (elements.length > 1) { // Handle collections
+        if (elements.length > 0) {
+            anime({ ...GLOBAL_CFG, targets: elements, ...options });
+        }
+    } else if (element) { // Handle single element
+        anime({ ...GLOBAL_CFG, targets: selector, ...options });
+    }
+}
+function animateCollectionIfExists(selector, individualOptionsFn) {
+    const collection = document.querySelectorAll(selector);
+    if (collection.length > 0) {
+        collection.forEach((el, index) => {
+            anime({
+                ...GLOBAL_CFG,
+                targets: el,
+                ...(individualOptionsFn ? individualOptionsFn(el, index) : {})
+            });
         });
-    });
+    }
 }
 
-let spitCollection = document.querySelectorAll('.spit');
-if (spitCollection.length > 0) {
-    spitCollection.forEach((el, index) => {
-        anime({
-            ...GLOBAL_CFG,
-            targets: el,
-            opacity: [0, 1, 0],
-            delay: 500,
-            duration: index * 1000,
-            translateY: getRndInteger(-30, 30),
-            translateX: getRndInteger(-30, 30),
-            easing: 'easeInOutSine'
-        });
-    });
-}
+animateCollectionIfExists('.swet', (el, index) => ({
+    opacity: [0, 1, 0],
+    delay: index * 100,
+    duration: index * 1500 + 1000, // Ensure some minimum duration
+    translateY: index * 2,
+    easing: 'easeInOutSine'
+}));
 
-let debreCollection = document.querySelectorAll('.debre');
-if (debreCollection.length > 0) {
-    debreCollection.forEach((el, index) => {
-        anime({
-            ...GLOBAL_CFG,
-            targets: el,
-            opacity: [0, 1, 0],
-            delay: index * 100,
-            duration: index * 100,
-            scaleX: 1.3,
-            scaleY: 1.3,
-            translateY: getRndInteger(-10, -40),
-            translateX: getRndInteger(-30, 30),
-            easing: 'linear'
-        });
-    });
-}
+animateCollectionIfExists('.spit', (el, index) => ({
+    opacity: [0, 1, 0],
+    delay: 500 + index * 50, // Stagger delay slightly
+    duration: (index + 1) * 1000 + 500,
+    translateY: getRndInteger(-30, 30),
+    translateX: getRndInteger(-30, 30),
+    easing: 'easeInOutSine'
+}));
 
-if (document.querySelector('#gear1 path')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#gear1 path',
-        rotate: 360,
-        easing: 'linear',
-        duration: 5000
-    });
-}
-if (document.querySelector('#gear2 path')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#gear2 path',
-        rotate: -360,
-        easing: 'linear',
-        duration: 5000
-    });
-}
-if (document.querySelector('#shortArrow')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#shortArrow',
-        rotate: 360,
-        duration: 10000,
-        easing: 'linear',
-        transformOrigin: ['4px 25px 0', '6px 27px 0']
-    });
-}
-if (document.querySelector('#longArrow')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#longArrow',
-        rotate: 360,
-        duration: 800,
-        easing: 'linear',
-        transformOrigin: ['2px 32px 0', '10px 39px 0']
-    });
-}
-if (document.querySelector('#leftHand')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#leftHand',
-        rotate: 4,
-        duration: 1200,
-        direction: 'alternate',
-        easing: 'easeInOutSine',
-        transformOrigin: ['2px 32px 0', '10px 39px 0']
-    });
-}
-if (document.querySelector('#leftPalm')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#leftPalm',
-        translateX: -8,
-        duration: 1200,
-        direction: 'alternate',
-        easing: 'easeInOutSine',
-        transformOrigin: ['2px 32px 0', '10px 39px 0']
-    });
-}
-if (document.querySelector('#rightHand')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#rightHand',
-        rotate: 4,
-        duration: 700,
-        direction: 'alternate',
-        easing: 'easeInOutSine',
-        transformOrigin: ['280px 120px 0', '280px 120px 0']
-    });
-}
-if (document.querySelector('#rightPalm')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#rightPalm',
-        rotate: 4,
-        translateX: '-10px',
-        translateY: '-3px',
-        duration: 700,
-        direction: 'alternate',
-        easing: 'easeInOutSine',
-        transformOrigin: ['30px 30px 0', '30px 30px 0']
-    });
-}
-if (document.querySelector('#pen')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#pen',
-        rotate: 5,
-        translateX: '-10px',
-        translateY: '-3px',
-        duration: 700,
-        direction: 'alternate',
-        easing: 'easeInOutSine',
-        transformOrigin: ['30px 30px 0', '30px 30px 0']
-    });
-}
-if (document.querySelector('#mounth')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#mounth',
-        scaleX: 1.05,
-        scaleY: [1.1, .95],
-        duration: 1800,
-        direction: 'alternate',
-        easing: 'easeInOutSine',
-        transformOrigin: ['30px 30px 0', '30px 30px 0']
-    });
-}
-if (document.querySelector('#tongue')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#tongue',
-        rotate: -3,
-        scaleX: 1.1,
-        scaleY: [1.05, .8],
-        duration: 1800,
-        direction: 'alternate',
-        easing: 'easeInOutSine',
-        transformOrigin: ['30px 10px 0', '30px 10px 0']
-    });
-}
-if (document.querySelector('#head')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#head',
-        rotate: -2,
-        duration: 2000,
-        direction: 'alternate',
-        easing: 'easeInOutSine',
-        transformOrigin: ['200px 200px 0', '200px 200px 0']
-    });
-}
-if (document.querySelector('#hair1')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#hair1',
-        rotate: -1.5,
-        duration: 2000,
-        direction: 'alternate',
-        easing: 'easeInOutSine',
-        transformOrigin: ['200px 200px 0', '200px 200px 0']
-    });
-}
-if (document.querySelector('#hair2')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#hair2',
-        rotate: -2,
-        duration: 2000,
-        direction: 'alternate',
-        easing: 'easeInOutSine',
-        transformOrigin: ['100px 180px 0', '100px 180px 0']
-    });
-}
-if (document.querySelector('#brows')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#brows',
-        rotate: -5,
-        translateY: -1,
-        duration: 800,
-        direction: 'alternate',
-        easing: 'easeInOutSine',
-    });
-}
-if (document.querySelector('#leftEye')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#leftEye',
-        duration: 3000,
-        scaleY: [.1, 1],
-        delay: anime.stagger(100, {start: 500}),
-        easing: 'easeInOutSine',
-    });
-}
-if (document.querySelector('#rghtEye')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#rghtEye',
-        duration: 3000,
-        scaleY: [.1, 1],
-        delay: anime.stagger(100, {start: 600}),
-        easing: 'easeInOutSine',
-    });
-}
-if (document.querySelector('#flash1')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#flash1',
-        duration: getRndInteger(400, 500),
-        scaleY: [.6],
-        scaleX: [.6],
-        rotate: getRndInteger(-4, 4),
-        opacity: [0, .7, 0],
-        easing: 'easeInOutSine',
-    });
-}
-if (document.querySelector('#flash2')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#flash2',
-        delay: 500,
-        duration: getRndInteger(400, 500),
-        scaleY: [.6],
-        scaleX: [.6],
-        rotate: getRndInteger(-4, 4),
-        opacity: [0, .7, 0],
-        easing: 'easeInOutSine',
-    });
-}
-if (document.querySelector('#whiteFlash1')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#whiteFlash1',
-        duration: 1000,
-        opacity: [0, 0, .9, .7, .7, 0],
-        easing: 'easeOutQuint',
-    });
-}
-if (document.querySelector('#whiteFlash2')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#whiteFlash2',
-        duration: 900,
-        delay: 200,
-        opacity: [0, .6, 0],
-        easing: 'linear',
-    });
-}
-if (document.querySelector('#paper1')) {
-    anime({
-        ...GLOBAL_CFG,
-        targets: '#paper1',
-        delay: 500,
-        duration: 3500,
-        scaleY: [0, .6],
-        scaleX: [0, .6],
-        translateX: [-200, -100],
-        translateY: [-200, -100],
-        rotate: getRndInteger(-400, -100),
-        opacity: [0.3, .7, 0],
-        easing: 'easeInOutSine',
-    });
-}
+animateCollectionIfExists('.debre', (el, index) => ({
+    opacity: [0, 1, 0],
+    delay: index * 100,
+    duration: (index + 1) * 100 + 500,
+    scaleX: 1.3,
+    scaleY: 1.3,
+    translateY: getRndInteger(-10, -40),
+    translateX: getRndInteger(-30, 30),
+    easing: 'linear'
+}));
+
+animateIfExists('#gear1 path', { rotate: 360, easing: 'linear', duration: 5000 });
+animateIfExists('#gear2 path', { rotate: -360, easing: 'linear', duration: 5000 });
+
+animateIfExists('#shortArrow', {
+    rotate: 360, duration: 10000, easing: 'linear',
+    transformOrigin: ['4px 25px 0', '6px 27px 0'] // Make sure this is correct for your SVG
+});
+animateIfExists('#longArrow', {
+    rotate: 360, duration: 8000, easing: 'linear', // Slowed down slightly
+    transformOrigin: ['2px 32px 0', '10px 39px 0'] // Make sure this is correct
+});
+
+animateIfExists('#leftHand', {
+    rotate: 4, duration: 1200, direction: 'alternate', easing: 'easeInOutSine',
+    transformOrigin: ['10px 39px 0', '10px 39px 0'] // Adjusted for consistency example
+});
+animateIfExists('#leftPalm', {
+    translateX: -8, duration: 1200, direction: 'alternate', easing: 'easeInOutSine',
+});
+
+animateIfExists('#rightHand', {
+    rotate: 4, duration: 700, direction: 'alternate', easing: 'easeInOutSine',
+    transformOrigin: ['280px 120px 0', '280px 120px 0']
+});
+animateIfExists('#rightPalm', {
+    rotate: 4, translateX: '-10px', translateY: '-3px', duration: 700,
+    direction: 'alternate', easing: 'easeInOutSine',
+    transformOrigin: ['30px 30px 0', '30px 30px 0']
+});
+animateIfExists('#pen', {
+    rotate: 5, translateX: '-10px', translateY: '-3px', duration: 700,
+    direction: 'alternate', easing: 'easeInOutSine',
+    transformOrigin: ['30px 30px 0', '30px 30px 0']
+});
+
+animateIfExists('#mounth', { // mouth, not mounth
+    scaleX: 1.05, scaleY: [1.1, .95], duration: 1800, direction: 'alternate', easing: 'easeInOutSine',
+    transformOrigin: ['center center 0'] // Use center if not specific
+});
+animateIfExists('#tongue', {
+    rotate: -3, scaleX: 1.1, scaleY: [1.05, .8], duration: 1800,
+    direction: 'alternate', easing: 'easeInOutSine',
+    transformOrigin: ['center 10px 0'] // Example
+});
+
+animateIfExists('#head', {
+    rotate: -2, duration: 2000, direction: 'alternate', easing: 'easeInOutSine',
+    transformOrigin: ['center bottom 0'] // Example: rotate around neck
+});
+animateIfExists('#hair1', {
+    rotate: -1.5, duration: 2000, direction: 'alternate', easing: 'easeInOutSine',
+    transformOrigin: ['center bottom 0']
+});
+animateIfExists('#hair2', {
+    rotate: -2, duration: 2000, direction: 'alternate', easing: 'easeInOutSine',
+    transformOrigin: ['center bottom 0']
+});
+
+animateIfExists('#brows', {
+    translateY: -2, duration: 800, direction: 'alternate', easing: 'easeInOutSine', // Simpler brow animation
+});
+
+animateIfExists('#leftEye', {
+    duration: 3000, scaleY: [.1, 1], delay: anime.stagger(100, {start: 500}), easing: 'easeInOutSine',
+    transformOrigin: 'center center'
+});
+animateIfExists('#rghtEye', { // rightEye
+    duration: 3000, scaleY: [.1, 1], delay: anime.stagger(100, {start: 600}), easing: 'easeInOutSine',
+    transformOrigin: 'center center'
+});
+
+animateIfExists('#flash1', {
+    duration: getRndInteger(400, 600), scale: [.6, 1, 0.6], // Scale anim
+    rotate: getRndInteger(-4, 4), opacity: [0, .7, 0], easing: 'easeInOutSine',
+});
+animateIfExists('#flash2', {
+    delay: 500, duration: getRndInteger(400, 600), scale: [.6, 1, 0.6],
+    rotate: getRndInteger(-4, 4), opacity: [0, .7, 0], easing: 'easeInOutSine',
+});
+
+animateIfExists('#whiteFlash1', {
+    duration: 1000, opacity: [0, 0.9, 0.7, 0.7, 0], easing: 'easeOutQuint',
+});
+animateIfExists('#whiteFlash2', {
+    duration: 900, delay: 200, opacity: [0, .6, 0], easing: 'linear',
+});
+
+animateIfExists('#paper1', {
+    delay: 500, duration: 3500,
+    scale: [0, .6, 0], // Combined scale
+    translateX: ['-150%', '50%'], // Fly across more
+    translateY: ['-100%', '20%'],
+    rotate: getRndInteger(-400, -100),
+    opacity: [0.3, .7, 0],
+    easing: 'cubicBezier(.09,.69,.48,1)', // Custom ease
+});
 
 
 // --- Dynamic Year Update ---
