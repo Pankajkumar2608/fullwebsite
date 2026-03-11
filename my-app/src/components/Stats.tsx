@@ -5,7 +5,7 @@ import { Users, Building, TrendingUp, Award } from 'lucide-react';
 import { useRef, useEffect, useState } from 'react';
 
 const stats = [
-    { label: 'Students Guided', value: 50000, suffix: '+', icon: Users, color: '#3b82f6' },
+    { label: 'Students Guided', value: 10000, suffix: '+', icon: Users, color: '#3b82f6' },
     { label: 'Colleges Predicted', value: 500000, suffix: '+', icon: Building, color: '#10b981' },
     { label: 'Prediction Accuracy', value: 95, suffix: '%', icon: TrendingUp, color: '#fed802' },
     { label: 'Successful Admissions', value: 50000, suffix: '+', icon: Award, color: '#a855f7' },
