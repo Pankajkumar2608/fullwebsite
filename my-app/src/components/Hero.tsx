@@ -13,7 +13,7 @@ const colleges = [
 
 function Particles() {
     const particles = useMemo(() =>
-        Array.from({ length: 20 }, (_, i) => ({
+        Array.from({ length: 40 }, (_, i) => ({
             id: i,
             left: Math.random() * 100,
             size: Math.random() * 3 + 3,
@@ -90,7 +90,7 @@ export function Hero() {
                         color: '#999', fontSize: '13px', fontWeight: 500, letterSpacing: '0.5px',
                     }}>
                         <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#4ade80', boxShadow: '0 0 12px rgba(74,222,128,0.5)' }} />
-                        Trusted by 15,000+ JEE Aspirants
+                        Trusted by 1 Lakh+ JEE Aspirants
                     </span>
                 </motion.div>
 
