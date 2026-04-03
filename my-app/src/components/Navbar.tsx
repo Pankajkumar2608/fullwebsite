@@ -78,7 +78,8 @@ export function Navbar() {
                 {/* Desktop */}
                 <div className="hidden md:flex items-center gap-8">
                     {navLinks.map((link) => {
-                        const isActive = link.href === '/' ? activeSectionId === '' && window.scrollY < 300 : link.href === `#${activeSectionId}`;
+                        const isWindowDefined = typeof window !== 'undefined';
+                        const isActive = link.href === '/' ? activeSectionId === '' && (!isWindowDefined || window.scrollY < 300) : link.href === `#${activeSectionId}`;
                         return (
                             <Link key={link.label} href={link.href}
                                 className={`relative font-display text-[14px] font-medium tracking-[0.5px] transition-colors duration-300 ${isActive ? 'text-[#fed802]' : 'text-muted-foreground hover:text-white'}`}
