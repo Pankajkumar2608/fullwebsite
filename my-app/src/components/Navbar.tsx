@@ -12,9 +12,49 @@ const navLinks = [
     { href: '#resources', label: 'Resources' },
 ];
 
+import { useScroll, useSpring } from 'framer-motion';
+
+function useActiveSection(sectionIds: string[]) {
+    const [activeSection, setActiveSection] = useState<string>('');
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setActiveSection(entry.target.id);
+                    }
+                });
+            },
+            { rootMargin: '-20% 0px -80% 0px' } // triggers when section is near top
+        );
+
+        sectionIds.forEach((id) => {
+            const element = document.getElementById(id);
+            if (element) observer.observe(element);
+        });
+
+        return () => observer.disconnect();
+    }, [sectionIds]);
+
+    return activeSection;
+}
+
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    
+    // Scroll progress
+    const { scrollYProgress } = useScroll();
+    const scaleX = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    });
+
+    // Active section spy
+    const sectionIds = navLinks.map(link => link.href.startsWith('#') ? link.href.substring(1) : '').filter(Boolean);
+    const activeSectionId = useActiveSection(sectionIds);
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 60);
@@ -23,76 +63,74 @@ export function Navbar() {
     }, []);
 
     return (
-        <nav style={{
-            position: 'fixed', width: '100%', top: 0, zIndex: 100,
-            transition: 'all 0.5s cubic-bezier(0.4,0,0.2,1)',
-            background: scrolled ? 'rgba(0,0,0,0.92)' : 'rgba(0,0,0,0.5)',
-            backdropFilter: 'blur(24px) saturate(180%)',
-            borderBottom: `1px solid ${scrolled ? 'rgba(255,255,255,0.06)' : 'transparent'}`,
-        }}>
-            <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '76px' }}>
-                <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', transition: 'transform 0.3s' }}>
-                    <img src="/motivation kaksha logo.png" alt="Motivation Kaksha" style={{ height: '38px', width: 'auto' }} />
+        <nav className={`fixed w-full top-0 z-50 transition-all duration-500 ease-in-out backdrop-blur-xl ${scrolled ? 'bg-black/80 border-b border-white/5 shadow-2xl' : 'bg-transparent border-b border-transparent'}`}>
+            {/* Scroll Progress Bar */}
+            <motion.div 
+                className="absolute top-0 left-0 right-0 h-[2px] bg-[#fed802] origin-left z-50 shadow-[0_0_10px_#fed802]"
+                style={{ scaleX }}
+            />
+
+            <div className="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 h-20 flex items-center justify-between">
+                <Link href="/" className="flex items-center transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-[#fed802] rounded-md">
+                    <img src="/motivation kaksha logo.png" alt="Motivation Kaksha" className="h-[38px] w-auto object-contain" />
                 </Link>
 
                 {/* Desktop */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '36px' }} className="nav-desktop">
-                    {navLinks.map((link) => (
-                        <Link key={link.label} href={link.href}
-                            className="font-display"
-                            style={{ color: '#999', textDecoration: 'none', fontSize: '14px', fontWeight: 500, letterSpacing: '0.5px', transition: 'color 0.3s' }}
-                            onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; }}
-                            onMouseLeave={(e) => { e.currentTarget.style.color = '#999'; }}
+                <div className="hidden md:flex items-center gap-8">
+                    {navLinks.map((link) => {
+                        const isActive = link.href === '/' ? activeSectionId === '' && window.scrollY < 300 : link.href === `#${activeSectionId}`;
+                        return (
+                            <Link key={link.label} href={link.href}
+                                className={`relative font-display text-[14px] font-medium tracking-[0.5px] transition-colors duration-300 ${isActive ? 'text-[#fed802]' : 'text-muted-foreground hover:text-white'}`}
+                            >
+                                {link.label}
+                                {isActive && (
+                                    <motion.div 
+                                        layoutId="navbar-indicator"
+                                        className="absolute -bottom-1 left-0 right-0 h-[2px] bg-[#fed802] shadow-[0_0_8px_#fed802]"
+                                    />
+                                )}
+                            </Link>
+                        );
+                    })}
+                    <div className="relative inline-block">
+                        <div className="absolute inset-0 bg-[#fed802]/30 rounded-full blur-md animate-pulse"></div>
+                        <Link href="https://ai.motivationkaksha.xyz/login"
+                            className="relative font-display bg-gradient-to-br from-[#fed802] to-[#fde047] text-black rounded-full font-bold text-[13px] uppercase tracking-[1.5px] transition-all duration-300 shadow-[0_0_20px_rgba(254,216,2,0.15)] hover:shadow-[0_0_30px_rgba(254,216,2,0.3)] hover:-translate-y-0.5 px-8 py-3 inline-flex items-center justify-center whitespace-nowrap"
                         >
-                            {link.label}
+                            Sign Up
                         </Link>
-                    ))}
-                    <Link href="https://ai.motivationkaksha.xyz/login"
-                        className="font-display"
-                        style={{
-                            background: 'linear-gradient(135deg, #fed802, #fde047)', color: '#000',
-                            padding: '10px 28px', borderRadius: '999px', fontWeight: 700, fontSize: '13px',
-                            textTransform: 'uppercase', letterSpacing: '1.5px', textDecoration: 'none',
-                            transition: 'all 0.3s', boxShadow: '0 0 20px rgba(254,216,2,0.15)',
-                        }}
-                    >
-                        Sign Up
-                    </Link>
+                    </div>
                 </div>
 
                 {/* Mobile */}
-                <button onClick={() => setIsOpen(!isOpen)} className="nav-mobile-toggle"
-                    style={{ display: 'none', background: 'none', border: 'none', color: '#fff', cursor: 'pointer', padding: '8px' }}>
-                    {isOpen ? <X size={24} /> : <Menu size={24} />}
+                <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white transition-colors hover:text-[#fed802] focus:outline-none">
+                    {isOpen ? <X size={28} /> : <Menu size={28} />}
                 </button>
             </div>
 
             <AnimatePresence>
                 {isOpen && (
                     <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
-                        style={{ overflow: 'hidden', background: 'rgba(0,0,0,0.97)', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-                        <div style={{ padding: '16px 24px 28px' }}>
+                        className="overflow-hidden bg-zinc-950/95 backdrop-blur-3xl border-t border-white/5 md:hidden"
+                    >
+                        <div className="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-6 pb-8 space-y-2">
                             {navLinks.map((link) => (
                                 <Link key={link.label} href={link.href} onClick={() => setIsOpen(false)}
-                                    style={{ display: 'block', padding: '14px 0', color: '#bbb', textDecoration: 'none', fontSize: '15px', fontWeight: 500, borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                                    className="block py-3 text-muted-foreground hover:text-white transition-colors text-base font-medium border-b border-white/5"
+                                >
                                     {link.label}
                                 </Link>
                             ))}
                             <Link href="https://ai.motivationkaksha.xyz/login" onClick={() => setIsOpen(false)}
-                                style={{ display: 'block', marginTop: '16px', color: '#fed802', textDecoration: 'none', fontSize: '15px', fontWeight: 700 }}>
-                                Sign Up →
+                                className="block pt-4 text-[#fed802] text-base font-bold tracking-wide"
+                            >
+                                Sign Up &rarr;
                             </Link>
                         </div>
                     </motion.div>
                 )}
             </AnimatePresence>
-
-            <style jsx global>{`
-        @media (max-width: 768px) {
-          .nav-desktop { display: none !important; }
-          .nav-mobile-toggle { display: flex !important; }
-        }
-      `}</style>
         </nav>
     );
 }

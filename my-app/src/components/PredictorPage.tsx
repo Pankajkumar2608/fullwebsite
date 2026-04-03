@@ -267,30 +267,30 @@ export function PredictorPage({ config }: { config: PredictorConfig }) {
   // ── Select renderer ──
   const renderSelect = (label: string, value: string, onChange: (v: string) => void, opts: string[] = [], placeholder = 'Select', required = false, disabled = false) => (
     <div>
-      <label style={labelSt}>{label} {required && <span style={{ color: '#ef4444' }}>*</span>}</label>
-      <select value={value} onChange={(e) => onChange(e.target.value)} style={inputSt} disabled={disabled}>
-        <option value="">{placeholder}</option>
-        {opts.map(o => <option key={o} value={o}>{o}</option>)}
+      <label className="block mb-2 text-[14px] text-[#aaa] font-semibold">{label} {required && <span className="text-red-500">*</span>}</label>
+      <select value={value} onChange={(e) => onChange(e.target.value)} className="w-full relative p-3 rounded-[10px] border border-white/10 bg-white/5 text-[#e5e5e5] text-[14px] outline-none box-border max-w-full appearance-none pr-8 cursor-pointer bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSI4IiBmaWxsPSJub25lIiBzdHJva2U9IiM5OTkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJtMSAxIDYgNiA2LTYiLz48L3N2Zz4=')] bg-size-[12px_12px] bg-position-[calc(100%-16px)_center] bg-no-repeat focus:border-[#fed802]/30 disabled:opacity-50 disabled:cursor-not-allowed" disabled={disabled}>
+        <option value="" className="bg-[#111]">{placeholder}</option>
+        {opts.map(o => <option key={o} value={o} className="bg-[#111]">{o}</option>)}
       </select>
     </div>
   );
 
   return (
-    <main style={{ minHeight: '100vh', background: '#000' }}>
+    <main className="min-h-screen bg-black">
       <Navbar />
-      <div className="predictor-wrapper" style={{ maxWidth: '1400px', margin: '0 auto', padding: '100px 24px 60px' }}>
+      <div className="max-w-[1400px] mx-auto px-6 pt-[100px] pb-[60px] max-md:pt-[90px] max-md:pb-[40px]">
 
         {/* Title */}
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <h1 className="font-display" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: 700, color: '#fff', letterSpacing: '-0.03em', marginBottom: '12px' }}>
+        <div className="text-center mb-10">
+          <h1 className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-bold text-white tracking-[-0.03em] mb-3">
             {config.title.split(' ').map((w, i, arr) => i === arr.length - 1 ? <span key={i} style={{ color: accent }}>{w}</span> : w + ' ')}
           </h1>
-          {config.description && <p style={{ color: '#777', fontSize: '15px', maxWidth: '550px', margin: '0 auto' }}>{config.description}</p>}
+          {config.description && <p className="text-[#777] text-[15px] max-w-[550px] mx-auto">{config.description}</p>}
         </div>
 
         {optionsLoading && (
-          <div style={{ textAlign: 'center', padding: '40px', color: '#888' }}>
-            <Loader2 size={28} style={{ animation: 'spin 1s linear infinite', margin: '0 auto 12px', display: 'block' }} />
+          <div className="text-center py-10 text-[#888]">
+            <Loader2 size={28} className="animate-spin mx-auto mb-3 block" />
             Loading filter options...
           </div>
         )}
@@ -298,13 +298,13 @@ export function PredictorPage({ config }: { config: PredictorConfig }) {
         {!optionsLoading && (
           <>
             {/* PRIMARY FILTERS */}
-            <div className="predictor-card" style={cardSt}>
-              <h2 className="font-display" style={headingSt}>Primary Filters</h2>
-              <div className="predictor-filter-grid">
+            <div className="bg-white/2 border border-white/5 rounded-[20px] p-8 max-sm:p-5 mb-4">
+              <h2 className="font-display text-[18px] font-bold text-white mb-6 pb-4 border-b border-[#fed802]/10 tracking-[-0.02em]">Primary Filters</h2>
+              <div className="grid grid-cols-2 max-md:grid-cols-1 gap-5">
                 <div>
-                  <label style={labelSt}>Your Rank <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="number" value={rank} onChange={(e) => setRank(e.target.value)} placeholder="Enter your CRL rank" min={1} style={inputSt} />
-                  <small style={{ color: '#666', fontSize: '11px', marginTop: '4px', display: 'block' }}>
+                  <label className="block mb-2 text-[14px] text-[#aaa] font-semibold">Your Rank <span className="text-red-500">*</span></label>
+                  <input type="number" value={rank} onChange={(e) => setRank(e.target.value)} placeholder="Enter your CRL rank" min={1} className="w-full text-[14px] bg-white/5 border border-white/10 rounded-[10px] px-3.5 py-3 text-white outline-none focus:border-[#fed802]/30 transition-colors" />
+                  <small className="block mt-1 text-[11px] text-[#666]">
                     Enter CRL rank for General. For reserved categories, enter Category Rank.
                   </small>
                 </div>
@@ -314,16 +314,16 @@ export function PredictorPage({ config }: { config: PredictorConfig }) {
 
             {/* OPTIONAL TOGGLE */}
             <button onClick={() => setShowOptional(!showOptional)}
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', margin: '0 auto 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', padding: '10px 24px', color: '#999', cursor: 'pointer', fontSize: '14px', fontWeight: 500 }}>
+              className="flex items-center justify-center gap-2 mx-auto mb-4 bg-white/3 border border-white/5 rounded-xl px-6 py-2.5 text-[#999] hover:bg-white/5 hover:text-white transition-colors cursor-pointer text-[14px] font-medium">
               {showOptional ? 'Hide' : 'Show'} Optional Filters
               {showOptional ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
             </button>
 
             {/* OPTIONAL FILTERS */}
             {showOptional && (
-              <div className="predictor-card" style={{ ...cardSt, background: '#080808' }}>
-                <h2 className="font-display" style={headingSt}>Optional Filters</h2>
-                <div className="predictor-filter-grid">
+              <div className="bg-[#080808] border border-white/5 rounded-[20px] p-8 max-sm:p-5 mb-4">
+                <h2 className="font-display text-[18px] font-bold text-white mb-6 pb-4 border-b border-[#fed802]/10 tracking-[-0.02em]">Optional Filters</h2>
+                <div className="grid grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1 gap-5">
                   {hasFilter('year') && renderSelect('Year', year, setYear, options.years, 'All Years')}
                   {hasFilter('round') && renderSelect('Round', roundNo, setRoundNo, options.rounds, 'All Rounds')}
                   {hasFilter('quota') && renderSelect('Quota', quota, setQuota, options.quotas, 'All Quotas')}
@@ -336,12 +336,12 @@ export function PredictorPage({ config }: { config: PredictorConfig }) {
             )}
 
             {/* BUTTONS */}
-            <div className="predictor-buttons" style={{ display: 'flex', gap: '16px', justifyContent: 'center', margin: '24px 0 40px', flexWrap: 'wrap' }}>
-              <button onClick={() => handleSearch(1)} disabled={loading} className="btn-primary" style={{ gap: '10px' }}>
-                {loading ? <Loader2 size={18} style={{ animation: 'spin 1s linear infinite' }} /> : <Search size={18} />}
+            <div className="flex gap-4 justify-center my-8 flex-wrap max-sm:flex-col">
+              <button onClick={() => handleSearch(1)} disabled={loading} className="group relative inline-flex items-center justify-center gap-2.5 px-8 py-3.5 bg-[linear-gradient(135deg,#fed802,#fde047)] text-black font-bold text-[15px] font-display rounded-xl uppercase tracking-[1px] transition-all duration-300 shadow-[0_0_20px_rgba(254,216,2,0.2)] hover:shadow-[0_0_30px_rgba(254,216,2,0.4)] disabled:opacity-70 disabled:cursor-not-allowed">
+                {loading ? <Loader2 size={18} className="animate-spin" /> : <Search size={18} />}
                 {loading ? 'Searching...' : 'Predict College'}
               </button>
-              <button onClick={handleReset} className="btn-secondary" style={{ gap: '10px' }}>
+              <button onClick={handleReset} className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 bg-white/5 border border-white/10 text-white font-semibold text-[14px] rounded-xl transition-colors hover:bg-white/10 disabled:opacity-50">
                 <RotateCcw size={18} /> Clear Filters
               </button>
             </div>
@@ -350,60 +350,61 @@ export function PredictorPage({ config }: { config: PredictorConfig }) {
 
         {/* ERROR */}
         {error && (
-          <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '12px', padding: '16px 20px', marginBottom: '24px', color: '#f87171', fontSize: '14px' }}>
+          <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-5 py-4 mb-6 text-red-400 text-[14px]">
             {error}
           </div>
         )}
 
         {/* RESULTS */}
         {results.length > 0 && (
-          <div ref={resultsRef} className="predictor-card" style={cardSt}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.06)', flexWrap: 'wrap', gap: '12px' }}>
-              <h2 className="font-display" style={{ fontSize: '22px', fontWeight: 700, color: '#fff', margin: 0 }}>Predicted Colleges</h2>
-              <span style={{ background: `${accent}15`, color: accent, padding: '6px 16px', borderRadius: '999px', fontSize: '13px', fontWeight: 600, border: `1px solid ${accent}30` }}>
+          <div ref={resultsRef} className="bg-white/2 border border-white/5 rounded-[20px] p-8 max-sm:p-5 mb-4">
+            <div className="flex justify-between items-center mb-6 pb-4 border-b border-white/5 flex-wrap gap-3">
+              <h2 className="font-display text-[22px] font-bold text-white m-0">Predicted Colleges</h2>
+              <span className="px-4 py-1.5 rounded-full text-[13px] font-semibold" style={{ background: `${accent}15`, color: accent, border: `1px solid ${accent}30` }}>
                 {totalCount > 0 ? `${totalCount} results` : `${results.length} results`}
               </span>
             </div>
 
             {/* ── Desktop Table View ── */}
-            <div className="results-table-view" style={{ overflowX: 'auto', borderRadius: '12px', WebkitOverflowScrolling: 'touch' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '700px' }}>
+            <div className="hidden md:block overflow-x-auto rounded-xl">
+              <table className="w-full border-collapse min-w-[700px]">
                 <thead>
                   <tr>
                     {config.columns.map(col => (
-                      <th key={col.key} style={{ ...thSt, textAlign: (col.align || 'left') as any }}>{col.label}</th>
+                      <th key={col.key} className="p-3.5 px-4 text-[12px] font-bold uppercase tracking-[1px] text-[#888] border-b border-white/10 bg-white/2 whitespace-nowrap" style={{ textAlign: (col.align || 'left') as any }}>{col.label}</th>
                     ))}
-                    <th style={{ ...thSt, textAlign: 'center' }}>Actions</th>
+                    <th className="p-3.5 px-4 text-[12px] font-bold uppercase tracking-[1px] text-[#888] border-b border-white/10 bg-white/2 whitespace-nowrap text-center">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {results.map((row, idx) => (
                     <tr key={row.id || idx}
-                      style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', transition: 'background 0.2s' }}
-                      onMouseEnter={(e) => { e.currentTarget.style.background = `${accent}08`; }}
+                      className="border-b border-white/5 transition-colors duration-200"
+                      style={{ '--hover-bg': `${accent}08` } as any}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = e.currentTarget.style.getPropertyValue('--hover-bg'); }}
                       onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}>
                       {config.columns.map(col => {
                         if (col.key === 'details') {
                           const inst = getVal(row, 'institute') || 'N/A';
                           const details = [getVal(row, 'quota'), getVal(row, 'seatType'), getVal(row, 'subCategory'), `${getVal(row, 'year') || '-'} R${getVal(row, 'round') || '-'}`, getVal(row, 'gender')].filter(Boolean).join(' | ');
                           return (
-                            <td key={col.key} style={tdSt}>
-                              <div style={{ fontWeight: 600, color: '#e5e5e5', marginBottom: '4px' }}>{inst}</div>
-                              <div style={{ fontSize: '12px', color: '#666' }}>{details}</div>
+                            <td key={col.key} className="p-3.5 px-4 text-[14px] text-[#999] align-top">
+                              <div className="font-semibold text-[#e5e5e5] mb-1">{inst}</div>
+                              <div className="text-[12px] text-[#666]">{details}</div>
                             </td>
                           );
                         }
                         if (col.key === 'openingRank' || col.key === 'closingRank') {
-                          return <td key={col.key} style={{ ...tdSt, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{fmtRank(getVal(row, col.key))}</td>;
+                          return <td key={col.key} className="p-3.5 px-4 text-[14px] text-[#999] align-top text-right tabular-nums">{fmtRank(getVal(row, col.key))}</td>;
                         }
                         if (col.key === 'program') {
-                          return <td key={col.key} style={tdSt}>{getVal(row, 'program') || 'N/A'}</td>;
+                          return <td key={col.key} className="p-3.5 px-4 text-[14px] text-[#999] align-top">{getVal(row, 'program') || 'N/A'}</td>;
                         }
-                        return <td key={col.key} style={tdSt}>{row[col.key] ?? 'N/A'}</td>;
+                        return <td key={col.key} className="p-3.5 px-4 text-[14px] text-[#999] align-top">{row[col.key] ?? 'N/A'}</td>;
                       })}
-                      <td style={{ ...tdSt, textAlign: 'center' }}>
+                      <td className="p-3.5 px-4 text-[14px] text-[#999] align-top text-center">
                         <button onClick={() => handleShowTrends(row)}
-                          style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)', color: '#60a5fa', padding: '6px 14px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                          className="inline-flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 px-3.5 py-1.5 rounded-lg cursor-pointer text-[12px] font-semibold hover:bg-blue-500/20 transition-colors">
                           <TrendingUp size={14} /> Trends
                         </button>
                       </td>
@@ -414,7 +415,7 @@ export function PredictorPage({ config }: { config: PredictorConfig }) {
             </div>
 
             {/* ── Mobile Card View ── */}
-            <div className="results-cards-view">
+            <div className="block md:hidden">
               {results.map((row, idx) => {
                 const inst = getVal(row, 'institute') || 'N/A';
                 const prog = getVal(row, 'program') || 'N/A';
@@ -423,20 +424,28 @@ export function PredictorPage({ config }: { config: PredictorConfig }) {
                 const or = getVal(row, 'openingRank');
                 const cr = getVal(row, 'closingRank');
                 return (
-                  <div key={row.id || idx} className="result-card">
-                    <div className="result-card__header">
-                      <div style={{ flex: 1 }}>
-                        <div className="result-card__institute">{inst}</div>
-                        <div className="result-card__program">{prog}</div>
+                  <div key={row.id || idx} className="bg-white/3 border border-white/5 rounded-2xl p-5 mb-3 transition-colors hover:border-white/10">
+                    <div className="mb-3">
+                      <div className="flex-1">
+                        <div className="font-bold text-[#e5e5e5] text-[15px] leading-[1.4] mb-1">{inst}</div>
+                        <div className="text-[14px] text-[#999] leading-[1.4]">{prog}</div>
                       </div>
                     </div>
-                    <div className="result-card__details">{details}</div>
-                    <div className="result-card__details" style={{ fontSize: '12px' }}>{yearRound}</div>
-                    <div className="result-card__ranks">
-                      {or != null && <div className="result-card__rank-item"><span className="rank-label">Opening</span><span className="rank-value">{fmtRank(or)}</span></div>}
-                      <div className="result-card__rank-item"><span className="rank-label">Closing</span><span className="rank-value rank-value--highlight">{fmtRank(cr)}</span></div>
+                    <div className="text-[13px] text-[#666] mb-1.5 leading-normal">{details}</div>
+                    <div className="text-[12px] text-[#666] mb-1.5 leading-normal">{yearRound}</div>
+                    <div className="flex gap-4 my-3.5 px-4 py-3 bg-white/2 border border-white/5 rounded-xl">
+                      {or != null && (
+                        <div className="flex flex-col gap-0.5 flex-1">
+                          <span className="text-[11px] uppercase tracking-[1px] text-[#666] font-semibold">Opening</span>
+                          <span className="text-[18px] font-bold text-[#ccc] tabular-nums">{fmtRank(or)}</span>
+                        </div>
+                      )}
+                      <div className="flex flex-col gap-0.5 flex-1">
+                        <span className="text-[11px] uppercase tracking-[1px] text-[#666] font-semibold">Closing</span>
+                        <span className="text-[18px] font-bold text-[#f59e0b] tabular-nums">{fmtRank(cr)}</span>
+                      </div>
                     </div>
-                    <button onClick={() => handleShowTrends(row)} className="result-card__trend-btn">
+                    <button onClick={() => handleShowTrends(row)} className="w-full py-2.5 px-4 bg-blue-500/5 border border-blue-500/15 text-blue-400 rounded-lg cursor-pointer text-[13px] font-semibold flex items-center justify-center gap-2 transition-colors mt-1 hover:bg-blue-500/10 hover:border-blue-500/30">
                       <TrendingUp size={14} /> View Rank Trends
                     </button>
                   </div>
@@ -446,8 +455,8 @@ export function PredictorPage({ config }: { config: PredictorConfig }) {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', marginTop: '24px', flexWrap: 'wrap' }}>
-                <button onClick={() => handleSearch(currentPage - 1)} disabled={currentPage <= 1} style={pageBtnSt}>Prev</button>
+              <div className="flex justify-center items-center gap-2 mt-6 flex-wrap">
+                <button onClick={() => handleSearch(currentPage - 1)} disabled={currentPage <= 1} className="px-3.5 py-2 rounded-lg border border-white/5 bg-white/2 text-[#999] cursor-pointer text-[13px] font-semibold hover:bg-white/5 disabled:opacity-50 transition-colors">Prev</button>
                 {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
                   let p: number;
                   if (totalPages <= 5) p = i + 1;
@@ -456,12 +465,12 @@ export function PredictorPage({ config }: { config: PredictorConfig }) {
                   else p = currentPage - 2 + i;
                   return (
                     <button key={p} onClick={() => handleSearch(p)}
-                      style={{ ...pageBtnSt, ...(p === currentPage ? activePageSt : {}) }}>
+                      className={`px-3.5 py-2 rounded-lg border cursor-pointer text-[13px] font-semibold transition-colors ${p === currentPage ? 'bg-[#fed802]/10 border-[#fed802]/30 text-[#fed802]' : 'border-white/5 bg-white/2 text-[#999] hover:bg-white/5'}`}>
                       {p}
                     </button>
                   );
                 })}
-                <button onClick={() => handleSearch(currentPage + 1)} disabled={currentPage >= totalPages} style={pageBtnSt}>Next</button>
+                <button onClick={() => handleSearch(currentPage + 1)} disabled={currentPage >= totalPages} className="px-3.5 py-2 rounded-lg border border-white/5 bg-white/2 text-[#999] cursor-pointer text-[13px] font-semibold hover:bg-white/5 disabled:opacity-50 transition-colors">Next</button>
               </div>
             )}
           </div>
@@ -469,15 +478,15 @@ export function PredictorPage({ config }: { config: PredictorConfig }) {
 
         {/* TRENDS */}
         {showTrends && (
-          <div ref={trendsRef} className="predictor-card" style={{ ...cardSt, marginTop: '24px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h2 className="font-display" style={{ fontSize: '20px', fontWeight: 700, color: '#fff', margin: 0 }}>Rank Trends</h2>
-              <button onClick={() => setShowTrends(false)} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#888', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <div ref={trendsRef} className="bg-white/2 border border-white/5 rounded-[20px] p-8 max-sm:p-5 mt-6 mb-4">
+            <div className="flex justify-between items-center mb-5">
+              <h2 className="font-display text-[20px] font-bold text-white m-0">Rank Trends</h2>
+              <button onClick={() => setShowTrends(false)} className="bg-white/5 border border-white/10 text-[#888] px-4 py-2 rounded-lg cursor-pointer text-[13px] flex items-center gap-1.5 transition-colors hover:text-white hover:bg-white/10">
                 <X size={14} /> Close
               </button>
             </div>
-            {trendInfo && <p style={{ color: '#888', fontSize: '14px', fontStyle: 'italic' }}>{trendInfo}</p>}
-            {trendData && <div style={{ height: '400px', position: 'relative' }}><canvas ref={canvasRef} /></div>}
+            {trendInfo && <p className="text-[#888] text-[14px] italic">{trendInfo}</p>}
+            {trendData && <div className="h-[400px] relative"><canvas ref={canvasRef} /></div>}
           </div>
         )}
       </div>
@@ -486,126 +495,13 @@ export function PredictorPage({ config }: { config: PredictorConfig }) {
 
       {showBackToTop && (
         <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          style={{ position: 'fixed', bottom: '24px', right: '24px', width: '44px', height: '44px', borderRadius: '12px', background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, border: 'none', color: '#000', cursor: 'pointer', boxShadow: `0 4px 20px ${accent}50`, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 }}>
+          className="fixed bottom-6 right-6 w-11 h-11 rounded-xl border-none text-black cursor-pointer flex items-center justify-center z-50 transition-transform hover:-translate-y-1"
+          style={{ background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, boxShadow: `0 4px 20px ${accent}50` }}>
           <ArrowUp size={20} />
         </button>
       )}
 
-      <style jsx global>{`
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .predictor-filter-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
 
-        /* ── Results: Table vs Cards ── */
-        .results-table-view { display: block; }
-        .results-cards-view { display: none; }
-
-        /* ── Card Styles ── */
-        .result-card {
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.06);
-          border-radius: 16px;
-          padding: 20px;
-          margin-bottom: 12px;
-          transition: border-color 0.2s;
-        }
-        .result-card:hover { border-color: rgba(255,255,255,0.12); }
-        .result-card__header { margin-bottom: 12px; }
-        .result-card__institute {
-          font-weight: 700;
-          color: #e5e5e5;
-          font-size: 15px;
-          line-height: 1.4;
-          margin-bottom: 4px;
-        }
-        .result-card__program {
-          font-size: 14px;
-          color: #999;
-          line-height: 1.4;
-        }
-        .result-card__details {
-          font-size: 13px;
-          color: #666;
-          margin-bottom: 6px;
-          line-height: 1.5;
-        }
-        .result-card__ranks {
-          display: flex;
-          gap: 16px;
-          margin: 14px 0;
-          padding: 12px 16px;
-          background: rgba(255,255,255,0.02);
-          border: 1px solid rgba(255,255,255,0.04);
-          border-radius: 12px;
-        }
-        .result-card__rank-item {
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
-          flex: 1;
-        }
-        .rank-label {
-          font-size: 11px;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-          color: #666;
-          font-weight: 600;
-        }
-        .rank-value {
-          font-size: 18px;
-          font-weight: 700;
-          color: #ccc;
-          font-variant-numeric: tabular-nums;
-        }
-        .rank-value--highlight { color: #f59e0b; }
-        .result-card__trend-btn {
-          width: 100%;
-          padding: 10px 16px;
-          background: rgba(59,130,246,0.06);
-          border: 1px solid rgba(59,130,246,0.15);
-          color: #60a5fa;
-          border-radius: 10px;
-          cursor: pointer;
-          font-size: 13px;
-          font-weight: 600;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          transition: all 0.2s;
-          margin-top: 4px;
-        }
-        .result-card__trend-btn:hover {
-          background: rgba(59,130,246,0.12);
-          border-color: rgba(59,130,246,0.3);
-        }
-
-        /* ── Mobile Breakpoints ── */
-        @media (max-width: 768px) {
-          .results-table-view { display: none !important; }
-          .results-cards-view { display: block !important; }
-          .predictor-filter-grid { grid-template-columns: 1fr; gap: 16px; }
-          .predictor-card { padding: 20px !important; border-radius: 16px !important; }
-          .predictor-wrapper { padding: 90px 16px 40px !important; }
-          .predictor-buttons { flex-direction: column; align-items: stretch; }
-          .predictor-buttons button { width: 100%; }
-        }
-        @media (min-width: 769px) and (max-width: 1024px) {
-          .predictor-filter-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (min-width: 1025px) {
-          .predictor-filter-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-      `}</style>
     </main>
   );
 }
-
-// ─── Shared Styles ───
-const cardSt: React.CSSProperties = { background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '20px', padding: '32px', marginBottom: '16px' };
-const headingSt: React.CSSProperties = { fontSize: '18px', fontWeight: 700, color: '#fff', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid rgba(254,216,2,0.1)', letterSpacing: '-0.02em' };
-const labelSt: React.CSSProperties = { display: 'block', marginBottom: '8px', fontSize: '14px', color: '#aaa', fontWeight: 600 };
-const inputSt: React.CSSProperties = { width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.03)', color: '#e5e5e5', fontSize: '14px', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' as const, maxWidth: '100%' };
-const thSt: React.CSSProperties = { padding: '14px 16px', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', color: '#888', borderBottom: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.02)', whiteSpace: 'nowrap' };
-const tdSt: React.CSSProperties = { padding: '14px 16px', fontSize: '14px', color: '#999', verticalAlign: 'top' };
-const pageBtnSt: React.CSSProperties = { padding: '8px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)', color: '#999', cursor: 'pointer', fontSize: '13px', fontWeight: 600 };
-const activePageSt: React.CSSProperties = { background: 'rgba(254,216,2,0.1)', borderColor: 'rgba(254,216,2,0.3)', color: '#fed802' };

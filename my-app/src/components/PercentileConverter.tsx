@@ -89,35 +89,23 @@ export function PercentileConverter() {
     }
   }, [result]);
 
-  // ─── Shared inline styles matching PredictorPage ───
-  const cardSt: React.CSSProperties = {
-    background: 'rgba(255,255,255,0.02)',
-    border: '1px solid rgba(255,255,255,0.06)',
-    borderRadius: '20px',
-    padding: '32px',
-    marginBottom: '16px',
-  };
 
-  const headingSt: React.CSSProperties = {
-    fontSize: '18px', fontWeight: 700, color: '#fff', marginBottom: '24px', paddingBottom: '16px',
-    borderBottom: '1px solid rgba(254,216,2,0.1)', letterSpacing: '-0.02em',
-  };
 
   return (
-    <div className="percentile-wrapper" style={{ width: '100%' }}>
+    <div className="w-full">
       {/* ─── Calculator Card ─── */}
-      <div className="predictor-card" style={cardSt}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid rgba(254,216,2,0.1)' }}>
-          <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', width: '48px', height: '48px', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Calculator size={22} color="#ef4444" />
+      <div className="bg-white/2 border border-white/5 rounded-[20px] p-8 max-sm:p-5 mb-4">
+        <div className="flex items-center gap-3.5 mb-6 pb-4 border-b border-[#fed802]/10">
+          <div className="bg-red-500/10 border border-red-500/20 w-12 h-12 rounded-[14px] flex items-center justify-center">
+            <Calculator size={22} className="text-red-500" />
           </div>
-          <h2 className="font-display" style={{ fontSize: '18px', fontWeight: 700, color: '#fff', margin: 0, letterSpacing: '-0.02em' }}>
+          <h2 className="font-display text-[18px] font-bold text-white m-0 tracking-[-0.02em]">
             Percentile to Rank
           </h2>
         </div>
 
         <form onSubmit={handleCalculate}>
-          <div className="percentile-grid" style={{ display: 'grid', gap: '20px', marginBottom: '24px' }}>
+          <div className="grid gap-5 mb-6">
             <div className="space-y-2">
               <Label>Your JEE Main Percentile <span className="text-destructive">*</span></Label>
               <Input
@@ -136,21 +124,19 @@ export function PercentileConverter() {
           </div>
 
           {/* Quick conversions */}
-          <div style={{ marginBottom: '24px' }}>
-            <p style={{ fontSize: '13px', color: '#666', marginBottom: '10px', fontWeight: 500 }}>Quick convert:</p>
-            <div className="quick-tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+          <div className="mb-6">
+            <p className="text-[13px] text-[#666] mb-2.5 font-medium">Quick convert:</p>
+            <div className="flex flex-wrap gap-2">
               {quickConversions.map(p => (
                 <button
                   type="button"
                   key={p}
                   onClick={() => handleQuick(p)}
-                  style={{
-                    background: percentile === String(p) ? 'rgba(254,216,2,0.15)' : 'rgba(255,255,255,0.03)',
-                    border: `1px solid ${percentile === String(p) ? 'rgba(254,216,2,0.3)' : 'rgba(255,255,255,0.06)'}`,
-                    color: percentile === String(p) ? '#fed802' : '#888',
-                    padding: '6px 16px', borderRadius: '999px', cursor: 'pointer', fontSize: '13px', fontWeight: 600,
-                    transition: 'all 0.2s',
-                  }}
+                  className={`px-4 py-1.5 rounded-full cursor-pointer text-[13px] font-semibold transition-all duration-200 ${
+                    percentile === String(p)
+                      ? 'bg-[#fed802]/15 border border-[#fed802]/30 text-[#fed802]'
+                      : 'bg-white/3 border border-white/5 text-[#888] hover:bg-white/5'
+                  }`}
                 >
                   {p}%
                 </button>
@@ -173,68 +159,68 @@ export function PercentileConverter() {
 
       {/* ─── Error ─── */}
       {error && (
-        <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '12px', padding: '16px 20px', marginBottom: '16px', color: '#f87171', fontSize: '14px' }}>
+        <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-5 py-4 mb-4 text-red-400 text-[14px]">
           {error}
         </div>
       )}
 
       {/* ─── Result Card ─── */}
       {result && (
-        <div ref={resultRef} className="predictor-card" style={{ ...cardSt, animation: 'fadeSlideIn 0.4s ease' }}>
-          <h2 className="font-display" style={headingSt}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div ref={resultRef} className="bg-white/2 border border-white/5 rounded-[20px] p-8 max-sm:p-5 mb-4 animate-[fadeSlideIn_0.4s_ease]">
+          <h2 className="font-display text-[18px] font-bold text-white mb-6 pb-4 border-b border-[#fed802]/10 tracking-[-0.02em]">
+            <div className="flex items-center gap-2.5">
               <Sparkles size={18} color="#fed802" /> Your Result
             </div>
           </h2>
 
           {/* Main rank display */}
-          <div className="result-hero" style={{ textAlign: 'center', padding: '32px 0', marginBottom: '24px', background: 'rgba(254,216,2,0.03)', border: '1px solid rgba(254,216,2,0.08)', borderRadius: '16px' }}>
-            <p style={{ fontSize: '13px', color: '#888', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 600, marginBottom: '8px' }}>
+          <div className="text-center py-8 mb-6 bg-[#fed802]/5 border border-[#fed802]/10 rounded-2xl">
+            <p className="text-[13px] text-[#888] uppercase tracking-[2px] font-semibold mb-2">
               Estimated CRL Rank
             </p>
-            <div style={{ fontSize: 'clamp(2.5rem, 8vw, 3.5rem)', fontWeight: 800, color: '#fff', lineHeight: 1, fontVariantNumeric: 'tabular-nums', letterSpacing: '-0.03em' }}>
+            <div className="text-[clamp(2.5rem,8vw,3.5rem)] font-extrabold text-white leading-none tabular-nums tracking-[-0.03em]">
               {result.rank.toLocaleString()}
             </div>
-            <p style={{ fontSize: '14px', color: '#666', marginTop: '12px' }}>
-              For <span style={{ color: '#fed802', fontWeight: 700 }}>{result.percentile}</span> percentile
+            <p className="text-[14px] text-[#666] mt-3">
+              For <span className="text-[#fed802] font-bold">{result.percentile}</span> percentile
             </p>
           </div>
 
           {/* Details grid */}
-          <div className="result-details-grid">
+          <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-3.5">
             {/* Rank Range */}
-            <div className="result-detail-card" style={{ background: 'rgba(59,130,246,0.05)', border: '1px solid rgba(59,130,246,0.12)', borderRadius: '14px', padding: '20px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+            <div className="bg-blue-500/5 border border-blue-500/10 rounded-[14px] p-5">
+              <div className="flex items-center gap-2 mb-3">
                 <TrendingUp size={16} color="#3b82f6" />
-                <span style={{ fontSize: '13px', color: '#3b82f6', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Rank Range</span>
+                <span className="text-[13px] text-blue-500 font-semibold uppercase tracking-[1px]">Rank Range</span>
               </div>
-              <p style={{ fontSize: '22px', fontWeight: 700, color: '#e5e5e5', fontVariantNumeric: 'tabular-nums' }}>
+              <p className="text-[22px] font-bold text-[#e5e5e5] tabular-nums">
                 {result.rangeHigh} — {result.rangeLow}
               </p>
-              <p style={{ fontSize: '12px', color: '#666', marginTop: '6px' }}>±10% approximate variance</p>
+              <p className="text-[12px] text-[#666] mt-1.5">±10% approximate variance</p>
             </div>
 
             {/* College Tier */}
-            <div className="result-detail-card" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '14px', padding: '20px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+            <div className="bg-white/2 border border-white/5 rounded-[14px] p-5">
+              <div className="flex items-center gap-2 mb-3">
                 <Info size={16} color={result.difficultyColor} />
-                <span style={{ fontSize: '13px', color: result.difficultyColor, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Expected Tier</span>
+                <span className="text-[13px] font-semibold uppercase tracking-[1px]" style={{ color: result.difficultyColor }}>Expected Tier</span>
               </div>
-              <p style={{ fontSize: '20px', fontWeight: 700, color: result.difficultyColor }}>
+              <p className="text-[20px] font-bold" style={{ color: result.difficultyColor }}>
                 {result.difficulty}
               </p>
-              <p style={{ fontSize: '12px', color: '#666', marginTop: '6px' }}>Based on general category cutoffs</p>
+              <p className="text-[12px] text-[#666] mt-1.5">Based on general category cutoffs</p>
             </div>
           </div>
 
           {/* CTA */}
-          <div style={{ marginTop: '24px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-            <a href="/josaa" style={{ textDecoration: 'none', flex: 1, minWidth: '200px' }}>
+          <div className="mt-6 flex gap-3 flex-wrap">
+            <a href="/josaa" className="no-underline flex-1 min-w-[200px]">
               <Button variant="default" size="lg" className="w-full rounded-xl font-bold">
                 Predict Colleges <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </a>
-            <a href="/csab" style={{ textDecoration: 'none', flex: 1, minWidth: '200px' }}>
+            <a href="/csab" className="no-underline flex-1 min-w-[200px]">
               <Button variant="outline" size="lg" className="w-full rounded-xl">
                 Try CSAB Predictor <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -244,16 +230,16 @@ export function PercentileConverter() {
       )}
 
       {/* ─── Quick Reference Table ─── */}
-      <div className="predictor-card" style={cardSt}>
-        <h2 className="font-display" style={headingSt}>Quick Reference Table</h2>
+      <div className="bg-white/2 border border-white/5 rounded-[20px] p-8 max-sm:p-5 mb-4">
+        <h2 className="font-display text-[18px] font-bold text-white mb-6 pb-4 border-b border-[#fed802]/10 tracking-[-0.02em]">Quick Reference Table</h2>
 
         {/* Desktop table */}
-        <div className="ref-table-view">
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <div className="block max-sm:hidden">
+          <table className="w-full border-collapse">
             <thead>
               <tr>
                 {['Percentile', 'Approx Rank', 'Expected Tier'].map(h => (
-                  <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: 700, color: '#888', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)' }}>
+                  <th key={h} className="p-3 px-4 text-left text-[12px] font-bold text-[#888] uppercase tracking-[1px] border-b border-white/5 bg-white/2">
                     {h}
                   </th>
                 ))}
@@ -264,15 +250,13 @@ export function PercentileConverter() {
                 const b = calculateBreakdown(p);
                 return (
                   <tr key={p}
-                    style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', transition: 'background 0.2s', cursor: 'pointer' }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(254,216,2,0.03)'; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                    className="border-b border-white/5 transition-colors duration-200 cursor-pointer hover:bg-[#fed802]/5"
                     onClick={() => handleQuick(p)}
                   >
-                    <td style={{ padding: '14px 16px', fontSize: '14px', color: '#fed802', fontWeight: 700 }}>{p}%</td>
-                    <td style={{ padding: '14px 16px', fontSize: '14px', color: '#e5e5e5', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>{b.rank.toLocaleString()}</td>
-                    <td style={{ padding: '14px 16px' }}>
-                      <span style={{ fontSize: '12px', fontWeight: 600, color: b.difficultyColor, background: `${b.difficultyColor}15`, padding: '4px 12px', borderRadius: '999px', border: `1px solid ${b.difficultyColor}25` }}>
+                    <td className="p-3.5 px-4 text-[14px] text-[#fed802] font-bold">{p}%</td>
+                    <td className="p-3.5 px-4 text-[14px] text-[#e5e5e5] font-semibold tabular-nums">{b.rank.toLocaleString()}</td>
+                    <td className="p-3.5 px-4">
+                      <span className="text-[12px] font-semibold py-1 px-3 rounded-full" style={{ color: b.difficultyColor, background: `${b.difficultyColor}15`, border: `1px solid ${b.difficultyColor}25` }}>
                         {b.difficulty}
                       </span>
                     </td>
@@ -284,25 +268,20 @@ export function PercentileConverter() {
         </div>
 
         {/* Mobile card view */}
-        <div className="ref-cards-view">
+        <div className="hidden max-sm:block">
           {[99.9, 99.5, 99, 98, 97, 95, 90, 85, 80, 75, 50].map((p) => {
             const b = calculateBreakdown(p);
             return (
               <div
                 key={p}
                 onClick={() => handleQuick(p)}
-                style={{
-                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
-                  borderRadius: '14px', padding: '16px', marginBottom: '10px',
-                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                  cursor: 'pointer', transition: 'border-color 0.2s',
-                }}
+                className="bg-white/5 border border-white/5 rounded-[14px] p-4 mb-2.5 flex justify-between items-center cursor-pointer transition-colors duration-200 hover:border-white/10"
               >
                 <div>
-                  <div style={{ fontSize: '16px', fontWeight: 700, color: '#fed802' }}>{p}%</div>
-                  <div style={{ fontSize: '12px', color: '#666', marginTop: '2px' }}>Rank: <span style={{ color: '#e5e5e5', fontWeight: 600 }}>{b.rank.toLocaleString()}</span></div>
+                  <div className="text-[16px] font-bold text-[#fed802]">{p}%</div>
+                  <div className="text-[12px] text-[#666] mt-0.5">Rank: <span className="text-[#e5e5e5] font-semibold">{b.rank.toLocaleString()}</span></div>
                 </div>
-                <span style={{ fontSize: '11px', fontWeight: 600, color: b.difficultyColor, background: `${b.difficultyColor}15`, padding: '4px 10px', borderRadius: '999px', border: `1px solid ${b.difficultyColor}25`, whiteSpace: 'nowrap' }}>
+                <span className="text-[11px] font-semibold py-1 px-2.5 rounded-full whitespace-nowrap" style={{ color: b.difficultyColor, background: `${b.difficultyColor}15`, border: `1px solid ${b.difficultyColor}25` }}>
                   {b.difficulty}
                 </span>
               </div>
@@ -312,41 +291,20 @@ export function PercentileConverter() {
       </div>
 
       {/* ─── Info / Disclaimer ─── */}
-      <div className="predictor-card" style={{ ...cardSt, background: 'rgba(254,216,2,0.02)', borderColor: 'rgba(254,216,2,0.08)' }}>
-        <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
-          <Info size={18} color="#fed802" style={{ marginTop: '2px', flexShrink: 0 }} />
+      <div className="bg-[#fed802]/5 border border-[#fed802]/10 rounded-[20px] p-8 max-sm:p-5 mb-4">
+        <div className="flex gap-3.5 items-start">
+          <Info size={18} color="#fed802" className="mt-0.5 shrink-0" />
           <div>
-            <h3 className="font-display" style={{ fontSize: '15px', fontWeight: 700, color: '#fff', marginBottom: '8px' }}>How We Predict Rank</h3>
-            <p style={{ fontSize: '13px', color: '#777', lineHeight: 1.8 }}>
-              The formula used is: <strong style={{ color: '#e5e5e5' }}>Rank = ((100 − Percentile) / 100) × Total Candidates</strong>.<br />
-              For 2026, we use an estimated <strong style={{ color: '#e5e5e5' }}>13,04,653 candidates</strong>. The actual rank may vary by ±5–10% depending on the session and normalization. This is an approximate conversion for general category (CRL). Category ranks may differ.
+            <h3 className="font-display text-[15px] font-bold text-white mb-2">How We Predict Rank</h3>
+            <p className="text-[13px] text-[#777] leading-[1.8]">
+              The formula used is: <strong className="text-[#e5e5e5]">Rank = ((100 − Percentile) / 100) × Total Candidates</strong>.<br />
+              For 2026, we use an estimated <strong className="text-[#e5e5e5]">13,04,653 candidates</strong>. The actual rank may vary by ±5–10% depending on the session and normalization. This is an approximate conversion for general category (CRL). Category ranks may differ.
             </p>
           </div>
         </div>
       </div>
 
-      <style jsx global>{`
-        @keyframes fadeSlideIn {
-          from { opacity: 0; transform: translateY(12px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .result-details-grid {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 14px;
-        }
-        .ref-table-view { display: block; }
-        .ref-cards-view { display: none; }
-        @media (max-width: 640px) {
-          .result-details-grid { grid-template-columns: 1fr; }
-          .ref-table-view { display: none !important; }
-          .ref-cards-view { display: block !important; }
-          .predictor-card { padding: 20px !important; border-radius: 16px !important; }
-          .percentile-wrapper { padding: 0 !important; }
-          .predictor-buttons { flex-direction: column; }
-          .predictor-buttons > * { width: 100% !important; min-width: 0 !important; }
-        }
-      `}</style>
+      
     </div>
   );
 }

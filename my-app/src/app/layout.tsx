@@ -57,10 +57,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning style={{ scrollBehavior: 'smooth' }}>
-      <body className={`${barlowCondensed.variable}  ${inter.variable} ${outfit.variable} ${dancing.variable}`}
-        style={{ margin: 0, padding: 0 }}
-      >
+    <html lang="en" suppressHydrationWarning className="scroll-smooth">
+      <body className={`${barlowCondensed.variable} ${inter.variable} ${outfit.variable} ${dancing.variable} m-0 p-0`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           {children}
         </ThemeProvider>

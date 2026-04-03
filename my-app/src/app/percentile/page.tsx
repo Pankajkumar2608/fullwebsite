@@ -17,16 +17,16 @@ export default function PercentilePage() {
   }, []);
 
   return (
-    <main style={{ minHeight: '100vh', background: '#000' }}>
+    <main className="min-h-screen bg-black">
       <Navbar />
 
-      <div className="predictor-wrapper" style={{ maxWidth: '900px', margin: '0 auto', padding: '100px 24px 60px' }}>
+      <div className="max-w-[900px] mx-auto px-6 pt-[100px] pb-[60px] max-md:pt-[90px] max-md:pb-[40px]">
         {/* Page Title */}
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <h1 className="font-display" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: 700, color: '#fff', letterSpacing: '-0.03em', marginBottom: '12px' }}>
-            Percentile to Rank <span style={{ color: '#fed802' }}>Converter</span>
+        <div className="text-center mb-10">
+          <h1 className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-bold text-white tracking-[-0.03em] mb-3">
+            Percentile to Rank <span className="text-[#fed802]">Converter</span>
           </h1>
-          <p style={{ color: '#777', fontSize: '15px', maxWidth: '500px', margin: '0 auto' }}>
+          <p className="text-[#777] text-[15px] max-w-[500px] mx-auto">
             Instantly convert your JEE Main percentile to an approximate All India Rank.
           </p>
         </div>
@@ -49,11 +49,6 @@ export default function PercentilePage() {
         </Button>
       )}
 
-      <style jsx global>{`
-        @media (max-width: 768px) {
-          .predictor-wrapper { padding: 90px 16px 40px !important; }
-        }
-      `}</style>
     </main>
   );
 }

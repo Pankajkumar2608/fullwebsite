@@ -107,29 +107,29 @@ function AutocompleteInput({
   };
 
   return (
-    <div ref={wrapperRef} style={{ position: 'relative' }}>
-      <label style={labelStyle}>{label}</label>
-      <div style={{ position: 'relative' }}>
+    <div ref={wrapperRef} className="relative">
+      <label className="block mb-2 text-[14px] text-[#aaa] font-semibold">{label}</label>
+      <div className="relative">
         <input
           type="text" value={display} placeholder={placeholder}
           onChange={(e) => handleInput(e.target.value)}
           onFocus={() => { if (suggestions.length > 0) setShowDropdown(true); }}
-          style={inputStyle}
+          className="w-full p-3 py-3 px-3.5 rounded-[10px] border border-white/10 bg-white/5 text-[#e5e5e5] text-[14px] outline-none transition-colors max-w-full font-inherit focus:border-white/30"
         />
         {loading && (
-          <Loader2 size={16} style={{ position: 'absolute', right: '36px', top: '50%', transform: 'translateY(-50%)', color: '#666', animation: 'spin 1s linear infinite' }} />
+          <Loader2 size={16} className="absolute right-9 top-1/2 -translate-y-1/2 text-[#666] animate-spin" />
         )}
         {display && (
-          <button onClick={handleClear} style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: '18px', padding: '2px' }}>
+          <button onClick={handleClear} className="absolute right-2.5 top-1/2 -translate-y-1/2 bg-transparent border-none text-[#888] cursor-pointer text-[18px] p-0.5 hover:text-white transition-colors">
             ×
           </button>
         )}
       </div>
       {showDropdown && suggestions.length > 0 && (
-        <div style={dropdownStyle}>
+        <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-[#1a1a1a] border border-white/10 rounded-[10px] max-h-[200px] overflow-y-auto shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
           {suggestions.map((s, i) => (
             <div key={i} onMouseDown={(e) => { e.preventDefault(); handleSelect(s); }}
-              style={dropdownItemStyle}>
+              className="px-3.5 py-2.5 cursor-pointer text-[#ccc] text-[13px] border-b border-white/5 transition-colors hover:bg-white/5">
               {s}
             </div>
           ))}
@@ -335,52 +335,53 @@ export default function JoSAAPage() {
   };
 
   return (
-    <main style={{ minHeight: '100vh', background: '#000' }}>
+    <main className="min-h-screen bg-black">
       <Navbar />
 
-      <div className="predictor-wrapper" style={{ maxWidth: '1400px', margin: '0 auto', padding: '100px 24px 60px' }}>
+      <div className="max-w-[1400px] mx-auto px-6 pt-[100px] pb-[60px] max-md:pt-[90px] max-md:pb-[40px]">
         {/* Page Title */}
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <h1 className="font-display" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: 700, color: '#fff', letterSpacing: '-0.03em', marginBottom: '12px' }}>
-            JoSAA College <span style={{ color: '#fed802' }}>Predictor</span>
+        <div className="text-center mb-10">
+          <h1 className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-bold text-white tracking-[-0.03em] mb-3">
+            JoSAA College <span className="text-[#fed802]">Predictor</span>
           </h1>
-          <p style={{ color: '#777', fontSize: '15px', maxWidth: '500px', margin: '0 auto' }}>
+          <p className="text-[#777] text-[15px] max-w-[500px] mx-auto">
             Find your ideal college based on your JEE rank and preferences.
           </p>
         </div>
 
         {/* ── PRIMARY FILTERS ── */}
-        <div className="predictor-card" style={filterCardStyle}>
-          <h2 className="font-display" style={filterHeadingStyle}>Primary Filters</h2>
-          <div className="predictor-filter-grid">
+        <div className="bg-white/2 border border-white/5 rounded-[20px] p-8 max-sm:p-5 mb-4">
+          <h2 className="font-display text-[18px] font-bold text-white mb-6 pb-4 border-b border-[#fed802]/10 tracking-[-0.02em]">Primary Filters</h2>
+          <div className="grid grid-cols-2 max-md:grid-cols-1 gap-5">
             <div>
-              <label style={labelStyle}>Your JEE Rank <span style={{ color: '#ef4444' }}>*</span></label>
+              <label className="block mb-2 text-[14px] text-[#aaa] font-semibold">Your JEE Rank <span className="text-red-500">*</span></label>
               <input
                 type="number" value={rank} onChange={(e) => setRank(e.target.value)}
-                placeholder="Enter your rank (e.g. 15000)" min={1} style={inputStyle}
+                placeholder="Enter your rank (e.g. 15000)" min={1} className="w-full text-[14px] bg-white/5 border border-white/10 rounded-[10px] px-3.5 py-3 text-white outline-none focus:border-[#fed802]/30 transition-colors"
               />
-              <small style={{ color: '#666', fontSize: '12px', marginTop: '4px', display: 'block' }}>
+              <small className="block mt-1 text-[11px] text-[#666]">
                 Enter CRL rank for General. For OBC/SC/ST/EWS, enter Category Rank.
               </small>
             </div>
             <div>
-              <label style={labelStyle}>Category <span style={{ color: '#ef4444' }}>*</span></label>
-              <select value={seatType} onChange={(e) => setSeatType(e.target.value)} style={inputStyle}>
-                <option value="">-- Select Category --</option>
-                {filterOptions?.seatTypes.map(st => <option key={st} value={st}>{st}</option>)}
+              <label className="block mb-2 text-[14px] text-[#aaa] font-semibold">Category <span className="text-red-500">*</span></label>
+              <select value={seatType} onChange={(e) => setSeatType(e.target.value)} className="w-full text-[14px] bg-white/5 border border-white/10 rounded-[10px] px-3.5 py-3 text-white outline-none focus:border-[#fed802]/30 transition-colors cursor-pointer appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSI4IiBmaWxsPSJub25lIiBzdHJva2U9IiM5OTkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJtMSAxIDYgNiA2LTYiLz48L3N2Zz4=')] bg-size-[12px_12px] bg-position-[calc(100%-16px)_center] bg-no-repeat">
+                <option value="" className="bg-[#111]">-- Select Category --</option>
+                {filterOptions?.seatTypes.map(st => <option key={st} value={st} className="bg-[#111]">{st}</option>)}
               </select>
             </div>
             <div>
-              <label style={labelStyle}>Institute Type</label>
-              <select value={instType} onChange={(e) => setInstType(e.target.value)} style={inputStyle}>
-                {filterOptions?.instituteTypes.map(t => <option key={t} value={t}>{t === 'All' ? '-- All Institute Types --' : t}</option>)}
+              <label className="block mb-2 text-[14px] text-[#aaa] font-semibold">Institute Type</label>
+              <select value={instType} onChange={(e) => setInstType(e.target.value)} className="w-full text-[14px] bg-white/5 border border-white/10 rounded-[10px] px-3.5 py-3 text-white outline-none focus:border-[#fed802]/30 transition-colors cursor-pointer appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSI4IiBmaWxsPSJub25lIiBzdHJva2U9IiM5OTkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJtMSAxIDYgNiA2LTYiLz48L3N2Zz4=')] bg-size-[12px_12px] bg-position-[calc(100%-16px)_center] bg-no-repeat">
+                <option value="All" className="bg-[#111]">-- All Institute Types --</option>
+                {filterOptions?.instituteTypes.filter(t => t !== 'All').map(t => <option key={t} value={t} className="bg-[#111]">{t}</option>)}
               </select>
             </div>
             <div>
-              <label style={labelStyle}>Gender</label>
-              <select value={gender} onChange={(e) => setGender(e.target.value)} style={inputStyle}>
-                <option value="">All Genders</option>
-                {filterOptions?.genders.map(g => <option key={g} value={g}>{g}</option>)}
+              <label className="block mb-2 text-[14px] text-[#aaa] font-semibold">Gender</label>
+              <select value={gender} onChange={(e) => setGender(e.target.value)} className="w-full text-[14px] bg-white/5 border border-white/10 rounded-[10px] px-3.5 py-3 text-white outline-none focus:border-[#fed802]/30 transition-colors cursor-pointer appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSI4IiBmaWxsPSJub25lIiBzdHJva2U9IiM5OTkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJtMSAxIDYgNiA2LTYiLz48L3N2Zz4=')] bg-size-[12px_12px] bg-position-[calc(100%-16px)_center] bg-no-repeat">
+                <option value="" className="bg-[#111]">All Genders</option>
+                {filterOptions?.genders.map(g => <option key={g} value={g} className="bg-[#111]">{g}</option>)}
               </select>
             </div>
           </div>
@@ -388,79 +389,79 @@ export default function JoSAAPage() {
 
         {/* ── OPTIONAL FILTERS TOGGLE ── */}
         <button onClick={() => setShowOptional(!showOptional)}
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', margin: '0 auto 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', padding: '10px 24px', color: '#999', cursor: 'pointer', fontSize: '14px', fontWeight: 500 }}>
+          className="flex items-center justify-center gap-2 mx-auto mb-4 bg-white/3 border border-white/5 rounded-xl px-6 py-2.5 text-[#999] hover:bg-white/5 hover:text-white transition-colors cursor-pointer text-[14px] font-medium">
           {showOptional ? 'Hide' : 'Show'} Optional Filters
           {showOptional ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
         </button>
 
         {/* ── OPTIONAL FILTERS ── */}
         {showOptional && (
-          <div className="predictor-card" style={{ ...filterCardStyle, background: '#080808' }}>
-            <h2 className="font-display" style={filterHeadingStyle}>Optional Filters</h2>
-            <div className="predictor-filter-grid">
+          <div className="bg-[#080808] border border-white/5 rounded-[20px] p-8 max-sm:p-5 mb-4">
+            <h2 className="font-display text-[18px] font-bold text-white mb-6 pb-4 border-b border-[#fed802]/10 tracking-[-0.02em]">Optional Filters</h2>
+            <div className="grid grid-cols-2 max-md:grid-cols-1 gap-5">
               <div>
-                <label style={labelStyle}>Year</label>
-                <select value={year} onChange={(e) => { setYear(e.target.value); setRound(''); }} style={inputStyle}>
-                  <option value="">All Years</option>
-                  {filterOptions?.years.map(y => <option key={y} value={y}>{y}</option>)}
+                <label className="block mb-2 text-[14px] text-[#aaa] font-semibold">Year</label>
+                <select value={year} onChange={(e) => { setYear(e.target.value); setRound(''); }} className="w-full text-[14px] bg-white/5 border border-white/10 rounded-[10px] px-3.5 py-3 text-white outline-none focus:border-[#fed802]/30 transition-colors cursor-pointer appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSI4IiBmaWxsPSJub25lIiBzdHJva2U9IiM5OTkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJtMSAxIDYgNiA2LTYiLz48L3N2Zz4=')] bg-size-[12px_12px] bg-position-[calc(100%-16px)_center] bg-no-repeat">
+                  <option value="" className="bg-[#111]">All Years</option>
+                  {filterOptions?.years.map(y => <option key={y} value={y} className="bg-[#111]">{y}</option>)}
                 </select>
               </div>
               <div>
-                <label style={labelStyle}>Round</label>
-                <select value={round} onChange={(e) => setRound(e.target.value)} style={inputStyle} disabled={!year}>
-                  <option value="">{year ? '-- Select Round --' : '-- Select Year First --'}</option>
-                  {roundOptions.map(r => <option key={r} value={r}>Round {r}</option>)}
+                <label className="block mb-2 text-[14px] text-[#aaa] font-semibold">Round</label>
+                <select value={round} onChange={(e) => setRound(e.target.value)} disabled={!year} className="w-full text-[14px] bg-white/5 border border-white/10 rounded-[10px] px-3.5 py-3 text-white outline-none focus:border-[#fed802]/30 transition-colors cursor-pointer appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSI4IiBmaWxsPSJub25lIiBzdHJva2U9IiM5OTkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJtMSAxIDYgNiA2LTYiLz48L3N2Zz4=')] bg-size-[12px_12px] bg-position-[calc(100%-16px)_center] bg-no-repeat disabled:opacity-50 disabled:cursor-not-allowed">
+                  <option value="" className="bg-[#111]">{year ? '-- Select Round --' : '-- Select Year First --'}</option>
+                  {roundOptions.map(r => <option key={r} value={r} className="bg-[#111]">Round {r}</option>)}
                 </select>
               </div>
               <AutocompleteInput label="Institute (optional)" placeholder="Type to search institute..." endpoint="suggest-institutes" value={institute.display} onChange={(d, h) => setInstitute({ display: d, hidden: h })} instType={instType} />
               <AutocompleteInput label="Program (optional)" placeholder="Type to search program..." endpoint="suggest-programs" value={program.display} onChange={(d, h) => setProgram({ display: d, hidden: h })} />
               <div>
-                <label style={labelStyle}>Quota</label>
-                <select value={quota} onChange={(e) => setQuota(e.target.value)} style={inputStyle}>
-                  <option value="">All Quotas</option>
-                  {filterOptions?.quotas.map(q => <option key={q} value={q}>{q}</option>)}
+                <label className="block mb-2 text-[14px] text-[#aaa] font-semibold">Quota</label>
+                <select value={quota} onChange={(e) => setQuota(e.target.value)} className="w-full text-[14px] bg-white/5 border border-white/10 rounded-[10px] px-3.5 py-3 text-white outline-none focus:border-[#fed802]/30 transition-colors cursor-pointer appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSI4IiBmaWxsPSJub25lIiBzdHJva2U9IiM5OTkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJtMSAxIDYgNiA2LTYiLz48L3N2Zz4=')] bg-size-[12px_12px] bg-position-[calc(100%-16px)_center] bg-no-repeat">
+                  <option value="" className="bg-[#111]">All Quotas</option>
+                  {filterOptions?.quotas.map(q => <option key={q} value={q} className="bg-[#111]">{q}</option>)}
                 </select>
-                <small style={{ color: '#666', fontSize: '12px', marginTop: '4px', display: 'block' }}>HS(Home State), OS(Other State), AI(All India)</small>
+                <small className="block mt-1 text-[11px] text-[#666]">HS(Home State), OS(Other State), AI(All India)</small>
               </div>
             </div>
           </div>
         )}
 
         {/* ── BUTTONS ── */}
-        <div className="predictor-buttons" style={{ display: 'flex', gap: '16px', justifyContent: 'center', margin: '24px 0 40px', flexWrap: 'wrap' }}>
-          <button onClick={handleSearch} disabled={loading} className="btn-primary" style={{ gap: '10px' }}>
-            {loading ? <Loader2 size={18} style={{ animation: 'spin 1s linear infinite' }} /> : <Search size={18} />}
+        <div className="flex gap-4 justify-center my-8 flex-wrap max-sm:flex-col">
+          <button onClick={handleSearch} disabled={loading} className="group relative inline-flex items-center justify-center gap-2.5 px-8 py-3.5 bg-[linear-gradient(135deg,#fed802,#fde047)] text-black font-bold text-[15px] font-display rounded-xl uppercase tracking-[1px] transition-all duration-300 shadow-[0_0_20px_rgba(254,216,2,0.2)] hover:shadow-[0_0_30px_rgba(254,216,2,0.4)] disabled:opacity-70 disabled:cursor-not-allowed">
+            {loading ? <Loader2 size={18} className="animate-spin" /> : <Search size={18} />}
             {loading ? 'Searching...' : 'Search Colleges'}
           </button>
-          <button onClick={handleReset} className="btn-secondary" style={{ gap: '10px' }}>
+          <button onClick={handleReset} className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 bg-white/5 border border-white/10 text-white font-semibold text-[14px] rounded-xl transition-colors hover:bg-white/10 disabled:opacity-50">
             <RotateCcw size={18} /> Reset Filters
           </button>
         </div>
 
         {/* ── ERROR ── */}
         {error && (
-          <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '12px', padding: '16px 20px', marginBottom: '24px', color: '#f87171', fontSize: '14px' }}>
+          <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 mb-6 text-red-500 text-[14px]">
             {error}
           </div>
         )}
 
         {/* ── RESULTS ── */}
         {results.length > 0 && (
-          <div ref={resultsRef} className="predictor-card" style={filterCardStyle}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.06)', flexWrap: 'wrap', gap: '12px' }}>
-              <h2 className="font-display" style={{ fontSize: '22px', fontWeight: 700, color: '#fff', margin: 0 }}>Matching Colleges</h2>
-              <span style={{ background: 'rgba(254,216,2,0.08)', color: '#fed802', padding: '6px 16px', borderRadius: '999px', fontSize: '13px', fontWeight: 600, border: '1px solid rgba(254,216,2,0.15)' }}>
+          <div ref={resultsRef} className="bg-white/2 border border-white/5 rounded-[20px] p-8 max-sm:p-5 mb-4">
+            <div className="flex justify-between items-center mb-6 pb-4 border-b border-white/5 flex-wrap gap-3">
+              <h2 className="font-display text-[22px] font-bold text-white m-0">Matching Colleges</h2>
+              <span className="bg-[#fed802]/10 text-[#fed802] px-4 py-1.5 rounded-full text-[13px] font-semibold border border-[#fed802]/15">
                 {results.length} results
               </span>
             </div>
 
             {/* ── Desktop Table View ── */}
-            <div className="results-table-view" style={{ overflowX: 'auto', borderRadius: '12px' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '800px' }}>
+            <div className="overflow-x-auto rounded-xl max-md:hidden">
+              <table className="w-full border-collapse min-w-[800px]">
                 <thead>
                   <tr>
                     {['College Name & Details', 'Program', 'Opening Rank', 'Closing Rank', ...(rank ? ['Probability'] : []), 'Trends'].map((h, i) => (
-                      <th key={h} style={{ ...thStyle, textAlign: i >= 2 && i <= (rank ? 4 : 3) ? 'right' as const : 'left' as const }}>{h}</th>
+                      <th key={h} className="p-3.5 px-4 text-[12px] font-bold uppercase tracking-[1px] text-[#888] border-b border-white/10 bg-white/2 whitespace-nowrap" style={{ textAlign: i >= 2 && i <= (rank ? 4 : 3) ? 'right' : 'left' }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -468,31 +469,29 @@ export default function JoSAAPage() {
                   {pageData.map((c, idx) => {
                     const prob = c.probability != null ? c.probability * 100 : null;
                     return (
-                      <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', transition: 'background 0.2s' }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(254,216,2,0.03)'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}>
-                        <td style={tdStyle}>
-                          <div style={{ fontWeight: 600, color: '#e5e5e5', marginBottom: '4px' }}>{c.Institute || 'N/A'}</div>
-                          <div style={{ fontSize: '12px', color: '#666' }}>{c.Quota || '-'} | {c['Seat Type'] || '-'} | {c.Year || '-'} | R{c.Round || '-'} | {c.Gender || '-'}</div>
+                      <tr key={idx} className="border-b border-white/5 transition-colors hover:bg-[#fed802]/5">
+                        <td className="p-3.5 px-4 text-[14px] color-[#999] align-top">
+                          <div className="font-semibold text-[#e5e5e5] mb-1">{c.Institute || 'N/A'}</div>
+                          <div className="text-[12px] text-[#666]">{c.Quota || '-'} | {c['Seat Type'] || '-'} | {c.Year || '-'} | R{c.Round || '-'} | {c.Gender || '-'}</div>
                         </td>
-                        <td style={tdStyle}>{c['Academic Program Name'] || 'N/A'}</td>
-                        <td style={{ ...tdStyle, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{c['Opening Rank']?.toLocaleString() || 'N/A'}</td>
-                        <td style={{ ...tdStyle, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{c['Closing Rank']?.toLocaleString() || 'N/A'}</td>
+                        <td className="p-3.5 px-4 text-[14px] color-[#999] align-top text-[#ccc]">{c['Academic Program Name'] || 'N/A'}</td>
+                        <td className="p-3.5 px-4 text-[14px] align-top text-right tabular-nums text-[#ccc]">{c['Opening Rank']?.toLocaleString() || 'N/A'}</td>
+                        <td className="p-3.5 px-4 text-[14px] align-top text-right tabular-nums text-[#f59e0b] font-bold">{c['Closing Rank']?.toLocaleString() || 'N/A'}</td>
                         {rank && (
-                          <td style={{ ...tdStyle, textAlign: 'right' }}>
+                          <td className="p-3.5 px-4 text-[14px] align-top text-right">
                             {prob != null ? (
-                              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
-                                <div style={{ width: '50px', height: '6px', borderRadius: '3px', background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
-                                  <div style={{ width: `${prob}%`, height: '100%', background: getProbColor(prob), borderRadius: '3px' }} />
+                              <div className="flex items-center justify-end gap-2">
+                                <div className="w-[50px] h-1.5 rounded-[3px] bg-white/10 overflow-hidden">
+                                  <div className="h-full rounded-[3px]" style={{ width: `${prob}%`, backgroundColor: getProbColor(prob) }} />
                                 </div>
-                                <span style={{ color: getProbColor(prob), fontWeight: 700, fontSize: '13px', fontVariantNumeric: 'tabular-nums' }}>{prob.toFixed(1)}%</span>
+                                <span className="font-bold text-[13px] tabular-nums" style={{ color: getProbColor(prob) }}>{prob.toFixed(1)}%</span>
                               </div>
                             ) : 'N/A'}
                           </td>
                         )}
-                        <td style={{ ...tdStyle, textAlign: 'right' }}>
+                        <td className="p-3.5 px-4 text-[14px] align-top text-right">
                           <button onClick={() => handleShowTrends(c.Institute, c['Academic Program Name'], c['Seat Type'], c.Quota, c.Gender)}
-                            style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)', color: '#60a5fa', padding: '6px 14px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '6px', transition: 'all 0.2s' }}>
+                            className="bg-blue-500/10 border border-blue-500/20 text-blue-400 px-3.5 py-1.5 rounded-lg cursor-pointer text-[12px] font-semibold inline-flex items-center gap-1.5 transition-colors hover:bg-blue-500/20">
                             <TrendingUp size={14} /> Trends
                           </button>
                         </td>
@@ -504,43 +503,43 @@ export default function JoSAAPage() {
             </div>
 
             {/* ── Mobile Card View ── */}
-            <div className="results-cards-view">
+            <div className="hidden max-md:block">
               {pageData.map((c, idx) => {
                 const prob = c.probability != null ? c.probability * 100 : null;
                 const details = [c.Quota, c['Seat Type'], c.Gender].filter(Boolean).join(' · ');
                 const yearRound = `${c.Year || '-'} · Round ${String(c.Round || '-').replace(/[^0-9]/g, '')}`;
                 return (
-                  <div key={idx} className="result-card">
-                    <div className="result-card__header">
-                      <div style={{ flex: 1 }}>
-                        <div className="result-card__institute">{c.Institute || 'N/A'}</div>
-                        <div className="result-card__program">{c['Academic Program Name'] || 'N/A'}</div>
+                  <div key={idx} className="bg-white/3 border border-white/5 rounded-2xl p-5 mb-3 transition-colors hover:border-white/10">
+                    <div className="mb-3">
+                      <div className="flex-1">
+                        <div className="font-bold text-[#e5e5e5] text-[15px] leading-snug mb-1">{c.Institute || 'N/A'}</div>
+                        <div className="text-[14px] text-[#999] leading-snug">{c['Academic Program Name'] || 'N/A'}</div>
                       </div>
                     </div>
-                    <div className="result-card__details">{details}</div>
-                    <div className="result-card__details" style={{ fontSize: '12px' }}>{yearRound}</div>
-                    <div className="result-card__ranks">
-                      <div className="result-card__rank-item">
-                        <span className="rank-label">Opening</span>
-                        <span className="rank-value">{c['Opening Rank']?.toLocaleString() || 'N/A'}</span>
+                    <div className="text-[13px] text-[#666] mb-1.5 leading-snug">{details}</div>
+                    <div className="text-[12px] text-[#666] mb-1.5 leading-snug">{yearRound}</div>
+                    <div className="flex flex-wrap gap-3 my-3.5 px-4 py-3 bg-white/2 border border-white/5 rounded-xl">
+                      <div className="flex flex-col gap-0.5 flex-1 min-w-[70px]">
+                        <span className="text-[11px] uppercase tracking-[1px] color-[##666] font-semibold text-[#666]">Opening</span>
+                        <span className="text-[18px] font-bold text-[#ccc] tabular-nums">{c['Opening Rank']?.toLocaleString() || 'N/A'}</span>
                       </div>
-                      <div className="result-card__rank-item">
-                        <span className="rank-label">Closing</span>
-                        <span className="rank-value rank-value--highlight">{c['Closing Rank']?.toLocaleString() || 'N/A'}</span>
+                      <div className="flex flex-col gap-0.5 flex-1 min-w-[70px]">
+                        <span className="text-[11px] uppercase tracking-[1px] color-[##666] font-semibold text-[#666]">Closing</span>
+                        <span className="text-[18px] font-bold tabular-nums text-[#f59e0b]">{c['Closing Rank']?.toLocaleString() || 'N/A'}</span>
                       </div>
                       {prob != null && (
-                        <div className="result-card__rank-item">
-                          <span className="rank-label">Chance</span>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
-                            <div style={{ width: '36px', height: '5px', borderRadius: '3px', background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
-                              <div style={{ width: `${prob}%`, height: '100%', background: getProbColor(prob), borderRadius: '3px' }} />
+                        <div className="flex flex-col gap-0.5 flex-1 min-w-[70px]">
+                          <span className="text-[11px] uppercase tracking-[1px] color-[##666] font-semibold text-[#666]">Chance</span>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <div className="w-[36px] h-[5px] rounded-[3px] bg-white/10 overflow-hidden">
+                              <div className="h-full rounded-[3px]" style={{ width: `${prob}%`, backgroundColor: getProbColor(prob) }} />
                             </div>
-                            <span style={{ color: getProbColor(prob), fontWeight: 700, fontSize: '14px' }}>{prob.toFixed(0)}%</span>
+                            <span className="font-bold text-[14px]" style={{ color: getProbColor(prob) }}>{prob.toFixed(0)}%</span>
                           </div>
                         </div>
                       )}
                     </div>
-                    <button onClick={() => handleShowTrends(c.Institute, c['Academic Program Name'], c['Seat Type'], c.Quota, c.Gender)} className="result-card__trend-btn">
+                    <button onClick={() => handleShowTrends(c.Institute, c['Academic Program Name'], c['Seat Type'], c.Quota, c.Gender)} className="w-full py-2.5 px-4 bg-blue-500/5 border border-blue-500/15 text-blue-400 rounded-lg cursor-pointer text-[13px] font-semibold flex items-center justify-center gap-2 transition-colors mt-1 hover:bg-blue-500/10 hover:border-blue-500/30">
                       <TrendingUp size={14} /> View Rank Trends
                     </button>
                   </div>
@@ -550,8 +549,8 @@ export default function JoSAAPage() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', marginTop: '24px', flexWrap: 'wrap' }}>
-                <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1} style={pageButtonStyle}>Prev</button>
+              <div className="flex justify-center items-center gap-2 mt-6 flex-wrap">
+                <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1} className="px-3.5 py-2 rounded-lg border border-white/5 bg-white/2 text-[#999] cursor-pointer text-[13px] font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:not-disabled:bg-white/10">Prev</button>
                 {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
                   let page: number;
                   if (totalPages <= 7) page = i + 1;
@@ -560,12 +559,12 @@ export default function JoSAAPage() {
                   else page = currentPage - 3 + i;
                   return (
                     <button key={page} onClick={() => setCurrentPage(page)}
-                      style={{ ...pageButtonStyle, ...(page === currentPage ? activePageStyle : {}) }}>
+                      className={`px-3.5 py-2 rounded-lg border cursor-pointer text-[13px] font-semibold transition-colors ${page === currentPage ? 'bg-[#fed802]/10 border-[#fed802]/30 text-[#fed802]' : 'border-white/5 bg-white/2 text-[#999] hover:bg-white/10'}`}>
                       {page}
                     </button>
                   );
                 })}
-                <button onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages} style={pageButtonStyle}>Next</button>
+                <button onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages} className="px-3.5 py-2 rounded-lg border border-white/5 bg-white/2 text-[#999] cursor-pointer text-[13px] font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:not-disabled:bg-white/10">Next</button>
               </div>
             )}
           </div>
@@ -573,16 +572,16 @@ export default function JoSAAPage() {
 
         {/* ── TRENDS ── */}
         {showTrends && (
-          <div ref={trendsRef} className="predictor-card" style={{ ...filterCardStyle, marginTop: '24px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h2 className="font-display" style={{ fontSize: '20px', fontWeight: 700, color: '#fff', margin: 0 }}>Rank Trends</h2>
-              <button onClick={() => setShowTrends(false)} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#888', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <div ref={trendsRef} className="bg-[#080808] border border-white/5 rounded-[20px] p-8 max-sm:p-5 mt-6">
+            <div className="flex justify-between items-center mb-5">
+              <h2 className="font-display text-[20px] font-bold text-white m-0">Rank Trends</h2>
+              <button onClick={() => setShowTrends(false)} className="flex items-center gap-1.5 px-4 py-2 border border-white/10 bg-white/5 text-[#888] rounded-lg cursor-pointer text-[13px] font-medium transition-colors hover:text-white hover:bg-white/10">
                 <X size={14} /> Close
               </button>
             </div>
-            {trendInfo && <p style={{ color: '#888', fontSize: '14px', fontStyle: 'italic', marginBottom: '16px' }}>{trendInfo}</p>}
+            {trendInfo && <p className="text-[#888] text-[14px] italic mb-4">{trendInfo}</p>}
             {trendData && (
-              <div style={{ height: '400px', position: 'relative' }}>
+              <div className="h-[400px] relative w-full">
                 <canvas ref={canvasRef} />
               </div>
             )}
@@ -595,133 +594,10 @@ export default function JoSAAPage() {
       {/* Back to top */}
       {showBackToTop && (
         <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          style={{ position: 'fixed', bottom: '24px', right: '24px', width: '44px', height: '44px', borderRadius: '12px', background: 'linear-gradient(135deg, #fed802, #fde047)', border: 'none', color: '#000', cursor: 'pointer', boxShadow: '0 4px 20px rgba(254,216,2,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, transition: 'transform 0.3s' }}>
+          className="fixed bottom-6 right-6 w-[44px] h-[44px] rounded-xl bg-[linear-gradient(135deg,#fed802,#fde047)] border-none text-black cursor-pointer shadow-[0_4px_20px_rgba(254,216,2,0.3)] flex items-center justify-center z-50 transition-transform hover:scale-105">
           <ArrowUp size={20} />
         </button>
       )}
-
-      <style jsx global>{`
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .predictor-filter-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-
-        /* ── Results: Table vs Cards ── */
-        .results-table-view { display: block; }
-        .results-cards-view { display: none; }
-
-        /* ── Mobile Result Card Styles ── */
-        .result-card {
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.06);
-          border-radius: 16px;
-          padding: 20px;
-          margin-bottom: 12px;
-          transition: border-color 0.2s;
-        }
-        .result-card:hover { border-color: rgba(255,255,255,0.12); }
-        .result-card__header { margin-bottom: 12px; }
-        .result-card__institute {
-          font-weight: 700; color: #e5e5e5; font-size: 15px;
-          line-height: 1.4; margin-bottom: 4px;
-        }
-        .result-card__program { font-size: 14px; color: #999; line-height: 1.4; }
-        .result-card__details { font-size: 13px; color: #666; margin-bottom: 6px; line-height: 1.5; }
-        .result-card__ranks {
-          display: flex; gap: 12px; margin: 14px 0; padding: 12px 16px;
-          background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04);
-          border-radius: 12px; flex-wrap: wrap;
-        }
-        .result-card__rank-item { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 70px; }
-        .rank-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #666; font-weight: 600; }
-        .rank-value { font-size: 18px; font-weight: 700; color: #ccc; font-variant-numeric: tabular-nums; }
-        .rank-value--highlight { color: #f59e0b; }
-        .result-card__trend-btn {
-          width: 100%; padding: 10px 16px; background: rgba(59,130,246,0.06);
-          border: 1px solid rgba(59,130,246,0.15); color: #60a5fa; border-radius: 10px;
-          cursor: pointer; font-size: 13px; font-weight: 600; display: flex;
-          align-items: center; justify-content: center; gap: 8px;
-          transition: all 0.2s; margin-top: 4px;
-        }
-        .result-card__trend-btn:hover {
-          background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.3);
-        }
-
-        /* ── Mobile Breakpoints ── */
-        @media (max-width: 768px) {
-          .results-table-view { display: none !important; }
-          .results-cards-view { display: block !important; }
-          .predictor-filter-grid { grid-template-columns: 1fr; gap: 16px; }
-          .predictor-card { padding: 20px !important; border-radius: 16px !important; }
-          .predictor-wrapper { padding: 90px 16px 40px !important; }
-          .predictor-buttons { flex-direction: column; align-items: stretch; }
-          .predictor-buttons button { width: 100%; }
-        }
-        @media (min-width: 769px) and (max-width: 1024px) {
-          .predictor-filter-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (min-width: 1025px) {
-          .predictor-filter-grid { grid-template-columns: repeat(4, 1fr); }
-        }
-      `}</style>
     </main>
   );
 }
-
-// ─────────────────────────────────────────────────────────────
-// Shared Styles
-// ─────────────────────────────────────────────────────────────
-const filterCardStyle: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.02)',
-  border: '1px solid rgba(255,255,255,0.06)',
-  borderRadius: '20px',
-  padding: '32px',
-  marginBottom: '16px',
-};
-
-const filterHeadingStyle: React.CSSProperties = {
-  fontSize: '18px', fontWeight: 700, color: '#fff', marginBottom: '24px', paddingBottom: '16px',
-  borderBottom: '1px solid rgba(254,216,2,0.1)', letterSpacing: '-0.02em',
-};
-
-// filterGridStyle removed — now handled via CSS class .predictor-filter-grid
-
-const labelStyle: React.CSSProperties = {
-  display: 'block', marginBottom: '8px', fontSize: '14px', color: '#aaa', fontWeight: 600,
-};
-
-const inputStyle: React.CSSProperties = {
-  width: '100%', padding: '12px 14px', borderRadius: '10px',
-  border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.03)',
-  color: '#e5e5e5', fontSize: '14px', outline: 'none', transition: 'border-color 0.3s',
-  fontFamily: 'inherit', boxSizing: 'border-box' as const, maxWidth: '100%',
-};
-
-const dropdownStyle: React.CSSProperties = {
-  position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 50, marginTop: '4px',
-  background: '#000', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px',
-  maxHeight: '200px', overflowY: 'auto', boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
-};
-
-const dropdownItemStyle: React.CSSProperties = {
-  padding: '10px 14px', cursor: 'pointer', color: '#ccc', fontSize: '13px',
-  borderBottom: '1px solid rgba(255,255,255,0.04)', transition: 'background 0.2s',
-};
-
-const thStyle: React.CSSProperties = {
-  padding: '14px 16px', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase' as const,
-  letterSpacing: '1px', color: '#888', borderBottom: '1px solid rgba(255,255,255,0.08)',
-  background: 'rgba(255,255,255,0.02)', whiteSpace: 'nowrap' as const,
-};
-
-const tdStyle: React.CSSProperties = {
-  padding: '14px 16px', fontSize: '14px', color: '#999', verticalAlign: 'top',
-};
-
-const pageButtonStyle: React.CSSProperties = {
-  padding: '8px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.06)',
-  background: 'rgba(255,255,255,0.02)', color: '#999', cursor: 'pointer', fontSize: '13px',
-  fontWeight: 600, transition: 'all 0.2s',
-};
-
-const activePageStyle: React.CSSProperties = {
-  background: 'rgba(254,216,2,0.1)', borderColor: 'rgba(254,216,2,0.3)', color: '#fed802',
-};

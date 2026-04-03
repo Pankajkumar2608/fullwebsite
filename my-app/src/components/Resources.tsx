@@ -1,8 +1,13 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
-import { ChevronDown, ExternalLink, Bell, CalendarDays, FileText } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ExternalLink, Bell, CalendarDays, FileText } from 'lucide-react';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion"
 
 const faqs = [
     {
@@ -31,89 +36,60 @@ const faqs = [
 ];
 
 export function Resources() {
-    const [openIdx, setOpenIdx] = useState<number | null>(null);
-
     return (
-        <section id="resources" className="section" style={{ background: '#000' }}>
-            <div className="divider" style={{ position: 'absolute', top: 0, left: 0, right: 0 }} />
-            <div style={{ maxWidth: '720px', margin: '0 auto', padding: '0 24px', position: 'relative', zIndex: 10 }}>
-                <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-                    <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="section-title font-display">
-                        Resources & <span>FAQs</span>
+        <section id="resources" className="py-24 sm:py-32 relative overflow-visible bg-black w-full">
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+            <div className="w-full max-w-3xl mx-auto px-6 sm:px-8 lg:px-16 relative z-10">
+                <div className="text-center mb-16">
+                    <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="font-display text-4xl sm:text-5xl font-bold text-white mb-5 leading-tight tracking-tight">
+                        Resources & <span className="text-[#fed802]">FAQs</span>
                     </motion.h2>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    {faqs.map((faq, i) => {
-                        const Icon = faq.icon;
-                        const isOpen = openIdx === i;
-                        return (
-                            <motion.div
-                                key={faq.title}
-                                initial={{ opacity: 0, y: 15 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.1 }}
-                                style={{
-                                    borderRadius: '16px', background: '#0a0a0a',
-                                    border: '1px solid rgba(255,255,255,0.06)', overflow: 'hidden',
-                                }}
-                            >
-                                <button
-                                    onClick={() => setOpenIdx(isOpen ? null : i)}
-                                    style={{
-                                        width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                                        padding: '20px 24px', background: 'none', border: 'none', cursor: 'pointer', color: '#fff',
-                                        textAlign: 'left',
-                                    }}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="w-full bg-card/40 backdrop-blur-md rounded-2xl border border-white/5 p-2 sm:p-6 shadow-xl"
+                >
+                    <Accordion type="single" collapsible className="w-full flex flex-col gap-3">
+                        {faqs.map((faq, i) => {
+                            const Icon = faq.icon;
+                            return (
+                                <AccordionItem 
+                                    key={faq.title} 
+                                    value={`item-${i}`}
+                                    className="border border-white/5 bg-background/50 rounded-xl px-2 sm:px-6 hover:border-white/10 transition-colors"
                                 >
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                                        <div style={{
-                                            width: '40px', height: '40px', borderRadius: '12px',
-                                            background: 'rgba(254,216,2,0.08)', border: '1px solid rgba(254,216,2,0.15)',
-                                            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                                        }}>
-                                            <Icon size={18} color="#fed802" />
+                                    <AccordionTrigger className="hover:no-underline py-5 text-left flex justify-between">
+                                        <div className="flex items-center gap-4 w-full">
+                                            <div className="w-10 h-10 rounded-xl bg-[#fed802]/5 border border-[#fed802]/15 flex items-center justify-center shrink-0">
+                                                <Icon size={18} className="text-[#fed802]" />
+                                            </div>
+                                            <span className="font-semibold text-base sm:text-lg text-foreground">{faq.title}</span>
                                         </div>
-                                        <span style={{ fontWeight: 600, fontSize: '16px' }}>{faq.title}</span>
-                                    </div>
-                                    <ChevronDown
-                                        size={20}
-                                        color="#666"
-                                        style={{ transition: 'transform 0.3s', transform: isOpen ? 'rotate(180deg)' : 'rotate(0)' }}
-                                    />
-                                </button>
-
-                                <AnimatePresence>
-                                    {isOpen && (
-                                        <motion.div
-                                            initial={{ height: 0, opacity: 0 }}
-                                            animate={{ height: 'auto', opacity: 1 }}
-                                            exit={{ height: 0, opacity: 0 }}
-                                            transition={{ duration: 0.3 }}
-                                            style={{ overflow: 'hidden' }}
-                                        >
-                                            <ul style={{ padding: '0 24px 24px', margin: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                                {faq.content.map((item, idx) => (
-                                                    <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', fontSize: '14px', color: '#888', lineHeight: 1.6 }}>
-                                                        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'rgba(254,216,2,0.4)', marginTop: '8px', flexShrink: 0 }} />
-                                                        {item.href ? (
-                                                            <a href={item.href} target="_blank" rel="noopener noreferrer" style={{ color: '#fed802', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                                                                {item.text} <ExternalLink size={12} />
-                                                            </a>
-                                                        ) : (
-                                                            <span>{item.text}</span>
-                                                        )}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </motion.div>
-                        );
-                    })}
-                </div>
+                                    </AccordionTrigger>
+                                    <AccordionContent className="pb-6">
+                                        <ul className="m-0 space-y-3 pl-14 pr-4">
+                                            {faq.content.map((item, idx) => (
+                                                <li key={idx} className="flex items-start gap-3 text-sm text-muted-foreground leading-relaxed">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-[#fed802]/40 mt-2 shrink-0" />
+                                                    {item.href ? (
+                                                        <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-[#fed802] hover:text-[#fde047] transition-colors inline-flex items-center gap-1.5">
+                                                            {item.text} <ExternalLink size={12} />
+                                                        </a>
+                                                    ) : (
+                                                        <span>{item.text}</span>
+                                                    )}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </AccordionContent>
+                                </AccordionItem>
+                            );
+                        })}
+                    </Accordion>
+                </motion.div>
             </div>
         </section>
     );
