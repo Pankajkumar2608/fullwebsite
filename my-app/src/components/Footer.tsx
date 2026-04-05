@@ -23,9 +23,13 @@ export function Footer() {
 
                 {/* Links */}
                 <div className="flex justify-center gap-8 flex-wrap mb-8">
-                    {['Privacy Policy', 'Terms of Service', 'Contact Support'].map((link) => (
-                        <a key={link} href="#" className="text-[#555] no-underline text-[14px] font-medium transition-colors duration-300 hover:text-[#fed802]">
-                            {link}
+                    {[
+                        { label: 'Privacy Policy', href: '/privacy' },
+                        { label: 'Terms of Service', href: '/terms' },
+                        { label: 'Contact Support', href: '#' }
+                    ].map((link) => (
+                        <a key={link.label} href={link.href} className="text-[#555] no-underline text-[14px] font-medium transition-colors duration-300 hover:text-[#fed802]">
+                            {link.label}
                         </a>
                     ))}
                 </div>
