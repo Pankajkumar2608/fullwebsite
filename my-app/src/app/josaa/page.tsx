@@ -8,6 +8,7 @@ import {
   TrendingUp, X, Loader2, FileDown, ArrowUp, Star
 } from 'lucide-react';
 import { useWishlist } from '@/hooks/useWishlist';
+import { useSession } from 'next-auth/react';
 
 const API_BASE_URL = 'https://collegepredictorapi.onrender.com';
 const PAGE_SIZE = 15;
@@ -144,6 +145,7 @@ function AutocompleteInput({
 // Main JoSAA Predictor Page
 // ─────────────────────────────────────────────────────────────
 export default function JoSAAPage() {
+  const { data: session } = useSession();
   const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
   // Filter state
   const [rank, setRank] = useState('');
@@ -155,6 +157,16 @@ export default function JoSAAPage() {
   const [institute, setInstitute] = useState({ display: '', hidden: '' });
   const [program, setProgram] = useState({ display: '', hidden: '' });
   const [quota, setQuota] = useState('');
+
+  // Auto-populate from session profile
+  useEffect(() => {
+    if (session?.user) {
+        const u = session.user as any;
+        if (u.rank && !rank) setRank(u.rank);
+        if (u.category && !seatType) setSeatType(u.category);
+        if (u.gender && !gender) setGender(u.gender);
+    }
+  }, [session]);
 
   // Data state
   const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(null);

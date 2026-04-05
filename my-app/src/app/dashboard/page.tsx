@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Search, RotateCcw, Loader2, Star, TrendingUp, Lock } from 'lucide-react';
@@ -33,6 +33,16 @@ export default function DashboardPage() {
   const [rank, setRank] = useState('');
   const [seatType, setSeatType] = useState('');
   const [gender, setGender] = useState('');
+
+  // Auto-populate from session profile
+  useEffect(() => {
+    if (session?.user) {
+        const u = session.user as any;
+        if (u.rank && !rank) setRank(u.rank);
+        if (u.category && !seatType) setSeatType(u.category);
+        if (u.gender && !gender) setGender(u.gender);
+    }
+  }, [session]);
 
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<UnifiedRow[]>([]);

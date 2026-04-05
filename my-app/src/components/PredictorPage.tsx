@@ -8,6 +8,7 @@ import {
   TrendingUp, X, Loader2, ArrowUp, Star
 } from 'lucide-react';
 import { useWishlist, WishlistItem } from '@/hooks/useWishlist';
+import { useSession } from 'next-auth/react';
 
 // ─────────────────────────────────────────────────────────────
 // Types
@@ -83,6 +84,7 @@ const fmtRank = (v: any) => v != null && !isNaN(v) ? Number(v).toLocaleString() 
 // Main PredictorPage Component
 // ─────────────────────────────────────────────────────────────
 export function PredictorPage({ config }: { config: PredictorConfig }) {
+  const { data: session } = useSession();
   const PAGE_SIZE = 25;
   const accent = config.accent || '#fed802';
 
@@ -96,6 +98,16 @@ export function PredictorPage({ config }: { config: PredictorConfig }) {
   const [institute, setInstitute] = useState('');
   const [program, setProgram] = useState('');
   const [subCategory, setSubCategory] = useState('');
+
+  // Auto-populate from session profile
+  useEffect(() => {
+    if (session?.user) {
+        const u = session.user as any;
+        if (u.rank && !rank) setRank(u.rank);
+        if (u.category && !seatType) setSeatType(u.category);
+        if (u.gender && !gender) setGender(u.gender);
+    }
+  }, [session]);
 
   // Data state
   const [options, setOptions] = useState<DropdownOptions>({});

@@ -119,7 +119,12 @@ export function Navbar() {
                                 <span className="text-[13px] font-bold text-white max-w-[100px] truncate">{session.user?.name?.split(' ')[0]}</span>
                             </button>
                             <div className="absolute right-0 top-full mt-2 w-[160px] bg-[#111] border border-white/10 rounded-xl shadow-2xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                                <button onClick={() => signOut()} className="w-full text-left px-4 py-3 text-[13px] text-red-500 hover:bg-white/5 flex items-center gap-2">
+                                <Link href="/profile" className="block w-full text-left px-4 py-3 text-[13px] text-[#ccc] hover:bg-white/5 hover:text-white transition-colors">
+                                    <div className="flex items-center gap-2">
+                                        <User size={16} /> My Profile
+                                    </div>
+                                </Link>
+                                <button onClick={() => signOut()} className="w-full text-left px-4 py-3 text-[13px] text-red-500 hover:bg-white/5 flex items-center gap-2 border-t border-white/5">
                                     <LogOut size={16} /> Log Out
                                 </button>
                             </div>

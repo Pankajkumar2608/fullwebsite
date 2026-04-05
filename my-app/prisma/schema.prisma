@@ -46,6 +46,12 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
+  // Profile Specific Fields
+  rank          String?
+  category      String?
+  gender        String?
+  state         String?
+
   @@map("users")
 }
 
