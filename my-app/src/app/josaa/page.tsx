@@ -5,8 +5,9 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import {
   Search, RotateCcw, ChevronDown, ChevronUp,
-  TrendingUp, X, Loader2, FileDown, ArrowUp
+  TrendingUp, X, Loader2, FileDown, ArrowUp, Star
 } from 'lucide-react';
+import { useWishlist } from '@/hooks/useWishlist';
 
 const API_BASE_URL = 'https://collegepredictorapi.onrender.com';
 const PAGE_SIZE = 15;
@@ -143,6 +144,7 @@ function AutocompleteInput({
 // Main JoSAA Predictor Page
 // ─────────────────────────────────────────────────────────────
 export default function JoSAAPage() {
+  const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
   // Filter state
   const [rank, setRank] = useState('');
   const [seatType, setSeatType] = useState('');
@@ -460,7 +462,7 @@ export default function JoSAAPage() {
               <table className="w-full border-collapse min-w-[800px]">
                 <thead>
                   <tr>
-                    {['College Name & Details', 'Program', 'Opening Rank', 'Closing Rank', ...(rank ? ['Probability'] : []), 'Trends'].map((h, i) => (
+                    {['College Name & Details', 'Program', 'Opening Rank', 'Closing Rank', ...(rank ? ['Probability'] : []), 'Actions'].map((h, i) => (
                       <th key={h} className="p-3.5 px-4 text-[12px] font-bold uppercase tracking-[1px] text-[#888] border-b border-white/10 bg-white/2 whitespace-nowrap" style={{ textAlign: i >= 2 && i <= (rank ? 4 : 3) ? 'right' : 'left' }}>{h}</th>
                     ))}
                   </tr>
@@ -489,11 +491,38 @@ export default function JoSAAPage() {
                             ) : 'N/A'}
                           </td>
                         )}
-                        <td className="p-3.5 px-4 text-[14px] align-top text-right">
-                          <button onClick={() => handleShowTrends(c.Institute, c['Academic Program Name'], c['Seat Type'], c.Quota, c.Gender)}
-                            className="bg-blue-500/10 border border-blue-500/20 text-blue-400 px-3.5 py-1.5 rounded-lg cursor-pointer text-[12px] font-semibold inline-flex items-center gap-1.5 transition-colors hover:bg-blue-500/20">
-                            <TrendingUp size={14} /> Trends
-                          </button>
+                        <td className="p-3.5 px-4 text-[14px] align-top text-center">
+                          <div className="flex flex-col gap-2 items-center">
+                            <button onClick={() => handleShowTrends(c.Institute, c['Academic Program Name'], c['Seat Type'], c.Quota, c.Gender)}
+                              className="w-full bg-blue-500/10 border border-blue-500/20 text-blue-400 px-3.5 py-1.5 rounded-lg cursor-pointer text-[12px] font-semibold inline-flex items-center justify-center gap-1.5 transition-colors hover:bg-blue-500/20">
+                              <TrendingUp size={14} /> Trends
+                            </button>
+                            <button 
+                              onClick={() => {
+                                const id = `JoSAA-${c.Institute}-${c['Academic Program Name']}-${c.Quota}-${c['Seat Type']}-${c.Gender}`;
+                                toggleWishlist({
+                                  id,
+                                  institute: c.Institute,
+                                  program: c['Academic Program Name'],
+                                  quota: c.Quota,
+                                  seatType: c['Seat Type'],
+                                  gender: c.Gender,
+                                  closingRank: c['Closing Rank'],
+                                  openingRank: c['Opening Rank'],
+                                  source: 'JoSAA',
+                                  year: c.Year,
+                                  round: c.Round
+                                });
+                              }}
+                              className={`w-full inline-flex items-center justify-center gap-1.5 border px-3.5 py-1.5 rounded-lg cursor-pointer text-[12px] font-semibold transition-colors ${
+                                isInWishlist(`JoSAA-${c.Institute}-${c['Academic Program Name']}-${c.Quota}-${c['Seat Type']}-${c.Gender}`)
+                                  ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-400 hover:bg-yellow-500/20'
+                                  : 'bg-white/5 border-white/10 text-[#888] hover:bg-white/10 hover:text-white'
+                              }`}>
+                              <Star size={14} className={isInWishlist(`JoSAA-${c.Institute}-${c['Academic Program Name']}-${c.Quota}-${c['Seat Type']}-${c.Gender}`) ? "fill-yellow-400" : ""} />
+                              {isInWishlist(`JoSAA-${c.Institute}-${c['Academic Program Name']}-${c.Quota}-${c['Seat Type']}-${c.Gender}`) ? 'Saved' : 'Save'}
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     );
@@ -539,9 +568,36 @@ export default function JoSAAPage() {
                         </div>
                       )}
                     </div>
-                    <button onClick={() => handleShowTrends(c.Institute, c['Academic Program Name'], c['Seat Type'], c.Quota, c.Gender)} className="w-full py-2.5 px-4 bg-blue-500/5 border border-blue-500/15 text-blue-400 rounded-lg cursor-pointer text-[13px] font-semibold flex items-center justify-center gap-2 transition-colors mt-1 hover:bg-blue-500/10 hover:border-blue-500/30">
-                      <TrendingUp size={14} /> View Rank Trends
-                    </button>
+                    <div className="flex gap-2 mt-1">
+                      <button onClick={() => handleShowTrends(c.Institute, c['Academic Program Name'], c['Seat Type'], c.Quota, c.Gender)} className="flex-1 py-2.5 px-4 bg-blue-500/5 border border-blue-500/15 text-blue-400 rounded-lg cursor-pointer text-[13px] font-semibold flex items-center justify-center gap-2 transition-colors hover:bg-blue-500/10 hover:border-blue-500/30">
+                        <TrendingUp size={14} /> Trends
+                      </button>
+                      <button 
+                        onClick={() => {
+                          const id = `JoSAA-${c.Institute}-${c['Academic Program Name']}-${c.Quota}-${c['Seat Type']}-${c.Gender}`;
+                          toggleWishlist({
+                            id,
+                            institute: c.Institute,
+                            program: c['Academic Program Name'],
+                            quota: c.Quota,
+                            seatType: c['Seat Type'],
+                            gender: c.Gender,
+                            closingRank: c['Closing Rank'],
+                            openingRank: c['Opening Rank'],
+                            source: 'JoSAA',
+                            year: c.Year,
+                            round: c.Round
+                          });
+                        }}
+                        className={`flex-1 py-2.5 px-4 border rounded-lg cursor-pointer text-[13px] font-semibold flex items-center justify-center gap-2 transition-colors ${
+                          isInWishlist(`JoSAA-${c.Institute}-${c['Academic Program Name']}-${c.Quota}-${c['Seat Type']}-${c.Gender}`)
+                            ? 'bg-yellow-500/5 border-yellow-500/15 text-yellow-500 hover:bg-yellow-500/10'
+                            : 'bg-white/5 border-white/10 text-[#888] hover:bg-white/10 hover:text-white'
+                        }`}>
+                        <Star size={14} className={isInWishlist(`JoSAA-${c.Institute}-${c['Academic Program Name']}-${c.Quota}-${c['Seat Type']}-${c.Gender}`) ? "fill-yellow-500" : ""} /> 
+                        Save
+                      </button>
+                    </div>
                   </div>
                 );
               })}

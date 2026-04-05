@@ -7,6 +7,7 @@ import {
   Search, RotateCcw, ChevronDown, ChevronUp,
   TrendingUp, X, Loader2, ArrowUp, Star
 } from 'lucide-react';
+import { useWishlist, WishlistItem } from '@/hooks/useWishlist';
 
 // ─────────────────────────────────────────────────────────────
 // Types
@@ -107,6 +108,8 @@ export function PredictorPage({ config }: { config: PredictorConfig }) {
   const [error, setError] = useState('');
   const [showOptional, setShowOptional] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
+
+  const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
 
   // Trends
   const [showTrends, setShowTrends] = useState(false);
@@ -403,10 +406,39 @@ export function PredictorPage({ config }: { config: PredictorConfig }) {
                         return <td key={col.key} className="p-3.5 px-4 text-[14px] text-[#999] align-top">{row[col.key] ?? 'N/A'}</td>;
                       })}
                       <td className="p-3.5 px-4 text-[14px] text-[#999] align-top text-center">
-                        <button onClick={() => handleShowTrends(row)}
-                          className="inline-flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 px-3.5 py-1.5 rounded-lg cursor-pointer text-[12px] font-semibold hover:bg-blue-500/20 transition-colors">
-                          <TrendingUp size={14} /> Trends
-                        </button>
+                        <div className="flex flex-col gap-2 items-center">
+                          <button onClick={() => handleShowTrends(row)}
+                            className="w-full inline-flex items-center justify-center gap-1.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 px-3.5 py-1.5 rounded-lg cursor-pointer text-[12px] font-semibold hover:bg-blue-500/20 transition-colors">
+                            <TrendingUp size={14} /> Trends
+                          </button>
+                          <button 
+                            onClick={() => {
+                              const inst = getVal(row, 'institute') || '';
+                              const prog = getVal(row, 'program') || '';
+                              const id = `${config.title}-${inst}-${prog}-${getVal(row, 'quota')}-${getVal(row, 'seatType')}-${getVal(row, 'gender')}`;
+                              toggleWishlist({
+                                id,
+                                institute: inst,
+                                program: prog,
+                                quota: getVal(row, 'quota') || '',
+                                seatType: getVal(row, 'seatType') || '',
+                                gender: getVal(row, 'gender') || '',
+                                closingRank: getVal(row, 'closingRank') || null,
+                                openingRank: getVal(row, 'openingRank') || null,
+                                source: config.title,
+                                year: getVal(row, 'year') || '',
+                                round: getVal(row, 'round') || ''
+                              });
+                            }}
+                            className={`w-full inline-flex items-center justify-center gap-1.5 border px-3.5 py-1.5 rounded-lg cursor-pointer text-[12px] font-semibold transition-colors ${
+                              isInWishlist(`${config.title}-${getVal(row, 'institute') || ''}-${getVal(row, 'program') || ''}-${getVal(row, 'quota')}-${getVal(row, 'seatType')}-${getVal(row, 'gender')}`)
+                                ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-400 hover:bg-yellow-500/20'
+                                : 'bg-white/5 border-white/10 text-[#888] hover:bg-white/10 hover:text-white'
+                            }`}>
+                            <Star size={14} className={isInWishlist(`${config.title}-${getVal(row, 'institute') || ''}-${getVal(row, 'program') || ''}-${getVal(row, 'quota')}-${getVal(row, 'seatType')}-${getVal(row, 'gender')}`) ? "fill-yellow-400" : ""} />
+                            {isInWishlist(`${config.title}-${getVal(row, 'institute') || ''}-${getVal(row, 'program') || ''}-${getVal(row, 'quota')}-${getVal(row, 'seatType')}-${getVal(row, 'gender')}`) ? 'Saved' : 'Save'}
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -445,9 +477,36 @@ export function PredictorPage({ config }: { config: PredictorConfig }) {
                         <span className="text-[18px] font-bold text-[#f59e0b] tabular-nums">{fmtRank(cr)}</span>
                       </div>
                     </div>
-                    <button onClick={() => handleShowTrends(row)} className="w-full py-2.5 px-4 bg-blue-500/5 border border-blue-500/15 text-blue-400 rounded-lg cursor-pointer text-[13px] font-semibold flex items-center justify-center gap-2 transition-colors mt-1 hover:bg-blue-500/10 hover:border-blue-500/30">
-                      <TrendingUp size={14} /> View Rank Trends
-                    </button>
+                    <div className="flex gap-2 mt-1">
+                      <button onClick={() => handleShowTrends(row)} className="flex-1 py-2.5 px-4 bg-blue-500/5 border border-blue-500/15 text-blue-400 rounded-lg cursor-pointer text-[13px] font-semibold flex items-center justify-center gap-2 transition-colors hover:bg-blue-500/10 hover:border-blue-500/30">
+                        <TrendingUp size={14} /> Trends
+                      </button>
+                      <button 
+                        onClick={() => {
+                          const id = `${config.title}-${inst}-${prog}-${getVal(row, 'quota')}-${getVal(row, 'seatType')}-${getVal(row, 'gender')}`;
+                          toggleWishlist({
+                            id,
+                            institute: inst,
+                            program: prog,
+                            quota: getVal(row, 'quota') || '',
+                            seatType: getVal(row, 'seatType') || '',
+                            gender: getVal(row, 'gender') || '',
+                            closingRank: cr || null,
+                            openingRank: or || null,
+                            source: config.title,
+                            year: getVal(row, 'year') || '',
+                            round: getVal(row, 'round') || ''
+                          });
+                        }}
+                        className={`flex-1 py-2.5 px-4 border rounded-lg cursor-pointer text-[13px] font-semibold flex items-center justify-center gap-2 transition-colors ${
+                          isInWishlist(`${config.title}-${inst}-${prog}-${getVal(row, 'quota')}-${getVal(row, 'seatType')}-${getVal(row, 'gender')}`)
+                            ? 'bg-yellow-500/5 border-yellow-500/15 text-yellow-500 hover:bg-yellow-500/10'
+                            : 'bg-white/5 border-white/10 text-[#888] hover:bg-white/10 hover:text-white'
+                        }`}>
+                        <Star size={14} className={isInWishlist(`${config.title}-${inst}-${prog}-${getVal(row, 'quota')}-${getVal(row, 'seatType')}-${getVal(row, 'gender')}`) ? "fill-yellow-500" : ""} /> 
+                        Save
+                      </button>
+                    </div>
                   </div>
                 );
               })}
