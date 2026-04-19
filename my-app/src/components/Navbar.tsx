@@ -108,7 +108,7 @@ export function Navbar() {
                             </Link>
                         );
                     })}
-                    {/* {session ? (
+                    {session ? (
                         <div className="relative inline-block group">
                             <button className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full hover:bg-white/10 transition-colors">
                                 {session.user?.image ? (
@@ -138,7 +138,7 @@ export function Navbar() {
                                 Sign In / Up
                             </button>
                         </div>
-                    )} */}
+                    )}
                     <div className="relative inline-block ml-2">
                         <button onClick={() => setShowNotifications(!showNotifications)} className="relative p-2 text-zinc-400 hover:text-[#fed802] transition-colors focus:outline-none rounded-full hover:bg-white/5">
                             <Bell size={20} />
