@@ -89,7 +89,7 @@ export default function WishlistPage() {
               {wishlist.length > 0 && (
                 <button onClick={() => {
                     if(!session) {
-                        signIn('google');
+                        signIn('google', { callbackUrl: '/' });
                         return;
                     }
                     setShowChoiceList(true);

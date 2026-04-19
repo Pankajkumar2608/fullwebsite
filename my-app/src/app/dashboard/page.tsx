@@ -50,7 +50,7 @@ export default function DashboardPage() {
 
   const handleSearch = async () => {
     if (!session) {
-      signIn('google');
+      signIn('google', { callbackUrl: '/' });
       return;
     }
     if (!rank || !seatType) {

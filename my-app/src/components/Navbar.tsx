@@ -132,7 +132,7 @@ export function Navbar() {
                     ) : (
                         <div className="relative inline-block">
                             <div className="absolute inset-0 bg-[#fed802]/30 rounded-full blur-md animate-pulse"></div>
-                            <button onClick={() => signIn('google')}
+                            <button onClick={() => signIn('google', { callbackUrl: '/' })}
                                 className="relative font-display bg-[linear-gradient(135deg,#fed802,#fde047)] text-black rounded-full font-bold text-[13px] uppercase tracking-[1.5px] transition-all duration-300 shadow-[0_0_20px_rgba(254,216,2,0.15)] hover:shadow-[0_0_30px_rgba(254,216,2,0.3)] hover:-translate-y-0.5 px-8 py-3 inline-flex items-center justify-center whitespace-nowrap cursor-pointer border-none"
                             >
                                 Sign In / Up
@@ -204,7 +204,7 @@ export function Navbar() {
                                     Log Out
                                 </button>
                             ) : (
-                                <button onClick={() => { setIsOpen(false); signIn('google'); }}
+                                <button onClick={() => { setIsOpen(false); signIn('google', { callbackUrl: '/' }); }}
                                     className="block w-full text-left pt-4 text-[#fed802] text-base font-bold tracking-wide cursor-pointer border-none bg-transparent"
                                 >
                                     Sign In / Up &rarr;
