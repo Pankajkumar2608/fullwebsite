@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import { Menu, X, Bell, LogOut, User } from 'lucide-react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { usePostHog } from "posthog-js/react";
@@ -15,8 +15,6 @@ const navLinks = [
     { href: '/#predictors', label: 'Predictors' },
    { href: '/#how-it-works', label: 'How It Works' },
 ];
-
-import { useScroll, useSpring } from 'framer-motion';
 
 function useActiveSection(sectionIds: string[]) {
     const [activeSection, setActiveSection] = useState<string>('');
