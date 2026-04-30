@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Bell, LogOut, User } from 'lucide-react';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import { usePostHog } from "posthog-js/react";
+
 
 const navLinks = [
     { href: '/', label: 'Home' },
@@ -48,6 +50,16 @@ export function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [showNotifications, setShowNotifications] = useState(false);
     const [activeEvents, setActiveEvents] = useState<any[]>([]);
+    const posthog = usePostHog();
+
+    useEffect(() => {
+      if (session?.user?.email) {
+        posthog.identify(session.user.email, {
+          email: session.user.email,
+          name: session.user.name,
+        });
+      }
+    }, [session]);
 
     useEffect(() => {
         fetch('/api/news')

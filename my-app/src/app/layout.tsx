@@ -4,6 +4,7 @@ import './globals.css';
 import { Dancing_Script } from "next/font/google";
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { Providers } from '@/components/Providers';
+import { CSPostHogProvider } from "./providers";
 
 const dancing = Dancing_Script({
   subsets: ["latin"],
@@ -59,13 +60,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
-      <body className={`${barlowCondensed.variable} ${inter.variable} ${outfit.variable} ${dancing.variable} m-0 p-0`}>
-        <Providers>
-          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-            {children}
-          </ThemeProvider>
-        </Providers>
-      </body>
+      <CSPostHogProvider>
+        <body
+          className={`${barlowCondensed.variable} ${inter.variable} ${outfit.variable} ${dancing.variable} m-0 p-0`}
+        >
+          <Providers>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </Providers>
+        </body>
+      </CSPostHogProvider>
     </html>
   );
 }
